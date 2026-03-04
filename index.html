@@ -11,9 +11,9 @@
   <style>
     :root {
       /* ── Exact colours from app.groupbook.co.za ── */
-      --nav-bg:      #1e3a4f;   /* deep royal blue nav — from screenshot */
+      --nav-bg:      #06263d;   /* exact match to groupbook-logo.png background */
       --navy:        #35424A;   /* body text / headings */
-      --navy-dark:   #1e3a4f;   /* same as nav */
+      --navy-dark:   #06263d;   /* same as nav */
       --navy-light:  #4A5D67;
       --gold:        #B88A44;   /* primary gold — unchanged */
       --gold-light:  #C8A057;
@@ -68,11 +68,10 @@
       flex-shrink: 0;
     }
 
-    /* Real logo PNG — dark background version fits naturally on navy nav */
+    /* Transparent PNG — sits cleanly on any dark nav background */
     .nav-logo img {
-      height: 38px;
+      height: 36px;
       display: block;
-      border-radius: 4px;
     }
 
     .nav-links {
@@ -1887,7 +1886,7 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <img src="groupbook-logo.png" alt="GroupBook" style="height:36px;margin-bottom:10px;display:block;border-radius:3px;">
+        <img src="groupbook-logo-web-white.png" alt="GroupBook" style="height:32px;margin-bottom:10px;display:block;">
         <div class="footer-tagline">Connect. Book. Conquer.</div>
         <div class="footer-about">A PanDaan product built for group travel professionals. One platform for every step — from client brief to final reconciliation.</div>
       </div>
