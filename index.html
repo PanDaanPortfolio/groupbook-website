@@ -166,6 +166,97 @@
       flex-shrink: 0;
     }
 
+    /* ─── HAMBURGER BUTTON ─────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Animate to X when open */
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE DROPDOWN MENU ─────────────────────────────── */
+    .nav-mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: var(--nav-bg);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 24px 24px;
+      gap: 4px;
+    }
+
+    .nav-mobile-menu.open { display: flex; }
+
+    .nav-mobile-menu a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: color 0.2s;
+    }
+
+    .nav-mobile-menu a:last-child { border-bottom: none; }
+    .nav-mobile-menu a:hover { color: var(--gold); }
+
+    .nav-mobile-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-mobile-cta a {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none !important;
+    }
+
+    .nav-mobile-cta .btn-mobile-demo {
+      background: var(--gold);
+      color: var(--white) !important;
+    }
+
+    .nav-mobile-cta .btn-mobile-signin {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85) !important;
+      border: 1px solid rgba(255,255,255,0.2) !important;
+    }
+
+    /* ─── MOBILE BREAKPOINT ────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-inner { height: 56px; }
+    }
+
     .btn-ghost {
       padding: 7px 16px;
       border: none;
@@ -1413,15 +1504,15 @@
 <body>
 
 <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
-<nav>
+<nav id="main-nav">
   <div class="nav-inner">
 
-    <!-- Real logo PNG — served from same directory as index.html -->
+    <!-- Logo -->
     <a href="#" class="nav-logo">
       <img src="groupbook-logo.png" alt="GroupBook">
     </a>
 
-    <!-- Nav links — matches app menu items -->
+    <!-- Desktop nav links -->
     <ul class="nav-links">
       <li><a href="#modules">Modules</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
@@ -1430,12 +1521,30 @@
       <li><a href="#faq">FAQ</a></li>
     </ul>
 
-    <!-- CTAs — Request Demo (ghost outline) + Sign In (gold pill) -->
+    <!-- Desktop CTAs -->
     <div class="nav-cta">
       <a href="#" onclick="openModal();return false;" class="btn-ghost">Request Demo</a>
       <a href="https://app.groupbook.co.za" class="btn-primary-nav">Sign In →</a>
     </div>
 
+    <!-- Hamburger (mobile only) -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+
+  <!-- Mobile dropdown menu -->
+  <div class="nav-mobile-menu" id="nav-mobile-menu">
+    <a href="#modules" class="nav-mobile-link">Modules</a>
+    <a href="#how-it-works" class="nav-mobile-link">How It Works</a>
+    <a href="#features" class="nav-mobile-link">Features</a>
+    <a href="#pricing" class="nav-mobile-link">Pricing</a>
+    <a href="#faq" class="nav-mobile-link">FAQ</a>
+    <div class="nav-mobile-cta">
+      <a href="#" onclick="openModal();return false;" class="btn-mobile-demo">Request a Demo →</a>
+      <a href="https://app.groupbook.co.za" class="btn-mobile-signin">Sign In →</a>
+    </div>
   </div>
 </nav>
 
@@ -2310,7 +2419,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.animate').forEach(el => observer.observe(el));
-  // Nav scroll
+  // Hamburger toggle
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileMenu = document.getElementById('nav-mobile-menu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    // Close menu when a mobile link is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+    // Nav scroll
   const nav = document.querySelector('.nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
