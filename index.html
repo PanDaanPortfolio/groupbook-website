@@ -2162,9 +2162,11 @@
   background: rgba(6,38,61,0.85);
   backdrop-filter: blur(6px);
   z-index: 9999;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 20px;
+  padding-top: max(20px, env(safe-area-inset-top, 20px));
+  overflow-y: auto;
 }
 .modal-overlay.open { display: flex; }
 
@@ -2175,8 +2177,7 @@
   max-width: 580px;
   width: 100%;
   position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
+  margin: 20px auto 40px;
   box-shadow: 0 32px 80px rgba(0,0,0,0.4);
 }
 
@@ -2354,7 +2355,8 @@ footer {
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
   .form-row { grid-template-columns: 1fr; }
-  .modal-box { padding: 28px 20px; }
+  .modal-box { padding: 28px 20px; margin-top: 12px; }
+  .modal-close { top: 12px; right: 12px; }
 }
 </style>
 
