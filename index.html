@@ -1329,13 +1329,17 @@
       .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 
       /* 3-column pillar grid → stack on mobile */
-      .modules-section [style*="grid-template-columns:repeat(3"] {
+      .pillar-grid-3col {
         grid-template-columns: 1fr !important;
       }
       /* Core engine card → stack on mobile */
-      .modules-section [style*="grid-template-columns:auto 1fr"] {
+      .core-engine-card {
         grid-template-columns: 1fr !important;
         text-align: center;
+      }
+      /* Data flow cards → stack on mobile */
+      .flow-card-grid {
+        grid-template-columns: 1fr !important;
       }
     }
 
@@ -1490,7 +1494,7 @@
     </div>
 
     <!-- Core Engine Card -->
-    <div style="background:var(--navy);border-radius:16px;padding:40px;margin-bottom:48px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;position:relative;overflow:hidden;">
+    <div class="core-engine-card" style="background:var(--navy);border-radius:16px;padding:40px;margin-bottom:48px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;position:relative;overflow:hidden;">
       <div style="position:absolute;inset:0;background:radial-gradient(ellipse 600px 300px at 50% 50%,rgba(184,138,68,0.06),transparent);pointer-events:none;"></div>
       <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#96722e);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 40px rgba(184,138,68,0.25);flex-shrink:0;position:relative;z-index:1;">✉️</div>
       <div style="position:relative;z-index:1;">
@@ -1513,7 +1517,7 @@
     </div>
 
     <!-- THREE PILLAR CARDS — ALL LIVE -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px;">
+    <div class="pillar-grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px;">
       <!-- Pillar 1: Guest Management -->
       <div class="module-tile live" style="border-top:3px solid #4CAF50;">
         <div class="module-tile-header">
@@ -1572,7 +1576,7 @@
       <h2 class="section-title" style="max-width:480px;margin:0 auto 8px;">One Email. Five Outcomes.</h2>
     </div>
     <div style="display:grid;gap:16px;">
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
+      <div class="flow-card-grid" style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
         <div style="width:44px;height:44px;border-radius:10px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--gold);flex-shrink:0;">1</div>
         <div>
           <div style="font-size:0.8rem;color:var(--gold);font-weight:500;margin-bottom:2px;">Forward supplier confirmation → Smart Inbox → AutoReconcile</div>
@@ -1580,7 +1584,7 @@
           <p style="font-size:0.85rem;color:var(--text-mid);line-height:1.6;">Agent forwards an email. Next time they open Recon, the booking is already there — and matched against the Diners statement.</p>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
+      <div class="flow-card-grid" style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
         <div style="width:44px;height:44px;border-radius:10px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--gold);flex-shrink:0;">2</div>
         <div>
           <div style="font-size:0.8rem;color:var(--gold);font-weight:500;margin-bottom:2px;">Forward flight/hotel PDF → Smart Inbox → Aide Memoire</div>
@@ -1588,7 +1592,7 @@
           <p style="font-size:0.85rem;color:var(--text-mid);line-height:1.6;">Agent forwards a confirmation. The guest's Aide Memoire now shows their flight details automatically — no copy-paste.</p>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
+      <div class="flow-card-grid" style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
         <div style="width:44px;height:44px;border-radius:10px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--gold);flex-shrink:0;">3</div>
         <div>
           <div style="font-size:0.8rem;color:var(--gold);font-weight:500;margin-bottom:2px;">Forward any booking → Smart Inbox → Supplier Map</div>
@@ -1596,7 +1600,7 @@
           <p style="font-size:0.85rem;color:var(--text-mid);line-height:1.6;">The system learns supplier names from forwarded emails and builds the database for you. No manual supplier entry.</p>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
+      <div class="flow-card-grid" style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
         <div style="width:44px;height:44px;border-radius:10px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--gold);flex-shrink:0;">4</div>
         <div>
           <div style="font-size:0.8rem;color:var(--gold);font-weight:500;margin-bottom:2px;">Hotel replies to RFP → Smart Inbox → Side-by-side comparison</div>
@@ -1604,7 +1608,7 @@
           <p style="font-size:0.85rem;color:var(--text-mid);line-height:1.6;">Hotels reply. AI parses rates, inclusions, and availability into a clean comparison table — no spreadsheet needed.</p>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
+      <div class="flow-card-grid" style="display:grid;grid-template-columns:auto 1fr;gap:20px;padding:24px;background:var(--cream);border:1.5px solid var(--border);border-radius:12px;">
         <div style="width:44px;height:44px;border-radius:10px;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--gold);flex-shrink:0;">5</div>
         <div>
           <div style="font-size:0.8rem;color:var(--gold);font-weight:500;margin-bottom:2px;">Upload PDF → Smart Inbox → Aide Memoire + Recon</div>
