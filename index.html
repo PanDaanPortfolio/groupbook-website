@@ -102,6 +102,33 @@
       flex-shrink: 0;
     }
 
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: 8px;
+    }
+    .hamburger span {
+      width: 22px;
+      height: 2px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
     .btn-ghost {
       padding: 7px 16px;
       border: none;
@@ -1336,10 +1363,77 @@
       .core-engine-card {
         grid-template-columns: 1fr !important;
         text-align: center;
+        padding: 28px 20px !important;
+      }
+      .core-engine-card > div:first-child {
+        margin: 0 auto;
       }
       /* Data flow cards → stack on mobile */
       .flow-card-grid {
         grid-template-columns: 1fr !important;
+      }
+      /* Nav → hamburger menu */
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background: var(--nav-bg);
+        flex-direction: column;
+        padding: 16px 28px 20px;
+        gap: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .nav-links a {
+        font-size: 1rem;
+        padding: 8px 0;
+      }
+      .nav-cta {
+        gap: 8px;
+      }
+      .nav-cta .btn-ghost {
+        display: none;
+      }
+      .hamburger {
+        display: flex !important;
+      }
+      /* Section padding reduction */
+      .section {
+        padding: 60px 20px;
+      }
+      /* Partner grid gap */
+      .partner-grid {
+        gap: 40px;
+      }
+      .partner-quote {
+        padding: 28px;
+      }
+      .partner-quote blockquote {
+        font-size: 1.1rem;
+      }
+      /* Trust bar wrap */
+      .trust-inner {
+        gap: 20px;
+      }
+      .trust-item {
+        font-size: 0.78rem;
+      }
+      /* Hero stats */
+      .hero-stats {
+        gap: 24px;
+      }
+      /* Steps grid on small mobile */
+      .step-desc {
+        font-size: 0.72rem;
+      }
+      /* Inline style overrides for badge wraps */
+      .core-engine-card [style*="display:flex;gap:10px"] {
+        justify-content: center;
       }
     }
 
@@ -1378,6 +1472,9 @@
     <div class="nav-cta">
       <a href="#" onclick="openModal();return false;" class="btn-ghost">Request Demo</a>
       <a href="https://app.groupbook.co.za" class="btn-primary-nav">Sign In →</a>
+      <button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open');" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -1830,7 +1927,7 @@
       <h3>Request a Demo</h3>
       <p>Tell us a little about yourself and we'll be in touch within 24 hours to arrange your 15-minute walkthrough.</p>
     </div>
-    <form id="demoForm" action="https://formspree.io/f/xeelynzn" method="POST" onsubmit="handleSubmit(event)">
+    <form id="demoForm" onsubmit="handleSubmit(event)">
       <div class="form-row">
         <div class="form-group">
           <label>Your Name *</label>
@@ -2100,10 +2197,13 @@ async function handleSubmit(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
   try {
-    const res = await fetch(form.action, {
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => { data[key] = value; });
+    const res = await fetch('https://app.groupbook.co.za/api/demo-request', {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
     if (res.ok) {
       form.style.display = 'none';
@@ -2132,6 +2232,13 @@ document.addEventListener('DOMContentLoaded', () => {
     q.addEventListener('click', () => {
       const item = q.parentElement;
       item.classList.toggle('open');
+    });
+  });
+  // Close mobile nav on link click
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.remove('open');
+      document.querySelector('.hamburger').classList.remove('open');
     });
   });
   // Scroll animations
