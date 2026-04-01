@@ -1871,7 +1871,6 @@
     <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#B88A44;margin-bottom:12px;">See It In Action</p>
     <h2 style="font-size:2rem;font-weight:800;color:#152742;margin-bottom:12px;line-height:1.2;">GroupBook System Tour</h2>
     <p style="font-size:1rem;color:#555;max-width:600px;margin:0 auto 40px;line-height:1.7;">From client brief to hotel RFPs to guest Aide Memoires to reconciliation — see the full platform in one interactive walkthrough. No login required.</p>
-    <!-- Supademo interactive demo embed -->
     <div style="position:relative;box-sizing:content-box;max-height:80vh;width:100%;aspect-ratio:1.85;padding:40px 0;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(21,39,66,0.15);">
       <iframe
         src="https://app.supademo.com/embed/cmnep3tf32ex0u98h0g0c95og?embed_v=2&utm_source=embed"
@@ -1886,7 +1885,7 @@
       </iframe>
     </div>
     <p style="margin-top:32px;font-size:0.9rem;color:#888;">Want a personalised walkthrough with your own data?</p>
-    <a href="#" onclick="openModal();return false;" class="btn-hero-primary" style="display:inline-block;margin-top:12px;">Request a Personal Demo →</a>
+    <a href="https://www.groupbook.co.za/?demo=true" class="btn-hero-primary" style="display:inline-block;margin-top:12px;">Book a Personal Demo →</a>
   </div>
 </section>
 
@@ -2247,6 +2246,10 @@ async function handleSubmit(e) {
 
 // ── Wire ALL "Request Demo" buttons to open modal ──
 document.addEventListener('DOMContentLoaded', () => {
+  // Auto-open demo modal if ?demo=true — used by Supademo End CTA button
+  if (new URLSearchParams(window.location.search).get('demo') === 'true') {
+    setTimeout(() => openModal(), 500);
+  }
   document.querySelectorAll('a').forEach(a => {
     const text = a.textContent.trim().toLowerCase();
     if (text.includes('request') && (text.includes('demo') || text.includes('demo'))) {
