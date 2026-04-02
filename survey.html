@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GroupBook — Shape the future of group travel software in SA</title>
+<meta name="description" content="5-minute survey for South African travel professionals. Help us get the pricing right. 3 lucky winners each get 3 months GroupBook free.">
+<meta property="og:title" content="Win 3 months free — GroupBook pricing survey">
+<meta property="og:description" content="5 minutes. 3 winners. Help shape SA's group travel platform. Enter the lucky draw.">
+<meta property="og:image" content="https://groupbook.co.za/images/survey-og.png">
+<meta property="og:url" content="https://groupbook.co.za/survey">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #152742;
+    --gold: #B88A44;
+    --gold-light: #B88A4418;
+    --gold-mid: #B88A4440;
+    --cream: #F0F0E6;
+    --text: #1a1a1a;
+    --text-secondary: #6b7280;
+    --text-hint: #9ca3af;
+    --border: #e5e7eb;
+    --border-hover: #B88A4466;
+    --surface: #ffffff;
+    --surface-secondary: #f9fafb;
+    --radius: 10px;
+    --radius-sm: 7px;
+    --danger: #dc2626;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-hint: #64748b;
+      --border: #2a3547;
+      --border-hover: #B88A4466;
+      --surface: #111827;
+      --surface-secondary: #1e293b;
+    }
+    body { background: #0d1420; }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: #f3f4f6;
+    min-height: 100vh;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  @media (prefers-color-scheme: dark) { body { background: #0d1420; } }
+
+  /* ---- Layout ---- */
+  .page-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: var(--navy);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-logo {
+    width: 30px;
+    height: 30px;
+    background: var(--gold);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: .04em;
+    flex-shrink: 0;
+  }
+  .topbar-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: .01em;
+  }
+  .topbar-tagline {
+    font-size: 12px;
+    color: rgba(255,255,255,.5);
+    margin-left: auto;
+  }
+
+  .main {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 2rem 2rem 1.75rem;
+    width: 100%;
+    max-width: 620px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  }
+  @media (max-width: 480px) {
+    .card { padding: 1.5rem 1.25rem 1.5rem; border-radius: 12px; }
+  }
+
+  /* ---- Progress ---- */
+  .progress-wrap {
+    margin-bottom: 1.75rem;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .progress-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .progress-count {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width .4s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ---- Screens ---- */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ---- Cover ---- */
+  .prize-banner {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .prize-banner::after {
+    content: '';
+    position: absolute;
+    right: -24px; top: -24px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(184,138,68,.15);
+    pointer-events: none;
+  }
+  .prize-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(184,138,68,.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .prize-icon svg { width: 22px; height: 22px; }
+  .prize-text-top {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .prize-text-main {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .prize-text-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+    margin-top: 3px;
+  }
+
+  .cover-heading {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: .6rem;
+  }
+  .cover-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+  }
+  .cover-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.75rem;
+  }
+  .cover-chip {
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--surface-secondary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cover-chip-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* ---- Section badge ---- */
+  .section-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-light);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-bottom: .85rem;
+    border: 1px solid var(--gold-mid);
+  }
+
+  /* ---- Question ---- */
+  .q-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: .5rem;
+  }
+  .q-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: .9rem;
+  }
+
+  /* ---- Options ---- */
+  .options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    background: var(--surface);
+    user-select: none;
+  }
+  .opt:hover { border-color: var(--border-hover); background: var(--gold-light); }
+  .opt.selected { border-color: var(--gold); background: var(--gold-light); }
+
+  .opt-radio {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    transition: all .15s;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface);
+  }
+  .opt.selected .opt-radio {
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+  .opt-radio-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .opt.selected .opt-radio-dot { opacity: 1; }
+
+  .opt-check {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    transition: all .15s;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface);
+  }
+  .opt.selected .opt-check {
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+  .opt-check svg { opacity: 0; transition: opacity .15s; }
+  .opt.selected .opt-check svg { opacity: 1; }
+
+  .opt-label { font-size: 14px; color: var(--text); line-height: 1.4; }
+
+  /* ---- Multi select note ---- */
+  .multi-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: .75rem;
+  }
+
+  /* ---- Price inputs ---- */
+  .price-intro {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+    padding: 12px 14px;
+    background: var(--surface-secondary);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .price-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 420px) { .price-grid { grid-template-columns: 1fr; } }
+
+  .price-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .price-input-row {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--surface);
+    transition: border-color .15s;
+  }
+  .price-input-row:focus-within { border-color: var(--gold); }
+  .price-prefix {
+    padding: 0 10px;
+    background: var(--surface-secondary);
+    border-right: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex; align-items: center;
+    flex-shrink: 0;
+  }
+  .price-input-row input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0 10px;
+    font-size: 14px;
+    color: var(--text);
+    height: 40px;
+    width: 100%;
+    font-family: inherit;
+  }
+  .price-input-row input::placeholder { color: var(--text-hint); }
+
+  /* ---- Text areas ---- */
+  .text-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color .15s;
+    font-family: inherit;
+    line-height: 1.55;
+    resize: vertical;
+    margin-bottom: 1.5rem;
+  }
+  .text-input:focus { border-color: var(--gold); }
+  .text-input::placeholder { color: var(--text-hint); }
+
+  /* ---- Entry form ---- */
+  .entry-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
+  .field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .field-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color .15s;
+    font-family: inherit;
+    height: 44px;
+  }
+  .field-input:focus { border-color: var(--gold); }
+  .field-input::placeholder { color: var(--text-hint); }
+
+  .popia-note {
+    font-size: 11px;
+    color: var(--text-hint);
+    line-height: 1.6;
+    margin-top: -.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ---- Errors ---- */
+  .err-msg {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: -.75rem;
+    margin-bottom: .75rem;
+    display: none;
+  }
+  .err-msg.visible { display: block; }
+
+  /* ---- Navigation ---- */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: .5rem;
+  }
+  .nav-left { display: flex; align-items: center; gap: 10px; }
+
+  .btn {
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    border: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-back {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 10px 16px;
+  }
+  .btn-back:hover { border-color: var(--border-hover); color: var(--text); }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    padding: 11px 24px;
+  }
+  .btn-primary:hover { background: #1d3560; }
+  .btn-primary:active { transform: scale(.98); }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+  .btn-gold {
+    background: var(--gold);
+    color: #fff;
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+  .btn-gold:hover { background: #a07838; }
+
+  .step-indicator {
+    font-size: 12px;
+    color: var(--text-hint);
+    flex-shrink: 0;
+  }
+
+  /* ---- Done screen ---- */
+  .done-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    border: 1px solid var(--gold-mid);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+  .done-heading {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: .5rem;
+    line-height: 1.3;
+  }
+  .done-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .done-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+  .share-heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: .9rem;
+  }
+  .share-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn-linkedin {
+    background: #0A66C2; color: #fff;
+    padding: 10px 18px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit; border: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: background .15s;
+  }
+  .btn-linkedin:hover { background: #085196; }
+  .btn-copy {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 10px 18px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+    display: flex; align-items: center; gap: 8px;
+    transition: all .15s;
+  }
+  .btn-copy:hover { border-color: var(--border-hover); }
+  .copy-confirm {
+    font-size: 12px;
+    color: var(--gold);
+    margin-top: .5rem;
+    display: none;
+  }
+
+  /* ---- Entry draw receipt ---- */
+  .draw-receipt {
+    background: var(--surface-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .draw-receipt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .draw-receipt-label { color: var(--text-secondary); }
+  .draw-receipt-value { color: var(--text); font-weight: 500; }
+  .draw-receipt-prize {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ---- Footer ---- */
+  .footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    font-size: 11px;
+    color: var(--text-hint);
+    line-height: 1.7;
+  }
+  .footer a { color: var(--text-hint); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+  <nav class="topbar">
+    <div class="topbar-logo">GB</div>
+    <span class="topbar-name">GroupBook</span>
+    <span class="topbar-tagline">groupbook.co.za</span>
+  </nav>
+
+  <main class="main">
+    <div class="card">
+
+      <!-- Progress bar (hidden on cover & done) -->
+      <div class="progress-wrap" id="progress-wrap" style="display:none">
+        <div class="progress-meta">
+          <span class="progress-label" id="section-label">About you</span>
+          <span class="progress-count" id="step-count">1 / 14</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 0 — COVER ============ -->
+      <div class="screen active" id="sc-cover">
+        <div class="prize-banner">
+          <div class="prize-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#B88A44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="prize-text-top">Lucky draw — 3 winners</div>
+            <div class="prize-text-main">3 months GroupBook free</div>
+            <div class="prize-text-sub">Complete the survey to enter. Winners drawn at launch.</div>
+          </div>
+        </div>
+
+        <h1 class="cover-heading">Help shape SA's group travel platform — and win</h1>
+        <p class="cover-sub">GroupBook is being built for travel professionals like you — ITCs, boutique agencies, and TMCs. This 5-minute survey helps us price it correctly and build the right features. Your answers go directly to the product team.</p>
+
+        <div class="cover-chips">
+          <div class="cover-chip"><div class="cover-chip-dot"></div>5 minutes to complete</div>
+          <div class="cover-chip"><div class="cover-chip-dot"></div>14 questions</div>
+          <div class="cover-chip"><div class="cover-chip-dot"></div>3 lucky draw winners</div>
+          <div class="cover-chip"><div class="cover-chip-dot"></div>Confidential</div>
+        </div>
+
+        <div class="nav" style="justify-content:flex-end">
+          <button class="btn btn-gold" onclick="go(1)">Start survey →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 1 — Role ============ -->
+      <div class="screen" id="sc-1">
+        <div class="section-badge">About you</div>
+        <p class="q-text">Which best describes your role?</p>
+        <div class="options" id="opts-1">
+          <div class="opt" onclick="pickSingle(1,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Solo ITC / independent travel agent</span></div>
+          <div class="opt" onclick="pickSingle(1,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Boutique agency owner (2–5 staff)</span></div>
+          <div class="opt" onclick="pickSingle(1,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Mid-size agency (6–20 staff)</span></div>
+          <div class="opt" onclick="pickSingle(1,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">TMC / large agency (20+ staff)</span></div>
+        </div>
+        <div class="err-msg" id="err-1">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(0)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(1, 2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 2 — RFP Volume ============ -->
+      <div class="screen" id="sc-2">
+        <div class="section-badge">About you</div>
+        <p class="q-text">How many group hotel RFPs do you send per month on average?</p>
+        <div class="options" id="opts-2">
+          <div class="opt" onclick="pickSingle(2,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">0–2 per month</span></div>
+          <div class="opt" onclick="pickSingle(2,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">3–5 per month</span></div>
+          <div class="opt" onclick="pickSingle(2,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">6–10 per month</span></div>
+          <div class="opt" onclick="pickSingle(2,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">11–20 per month</span></div>
+          <div class="opt" onclick="pickSingle(2,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">More than 20 per month</span></div>
+        </div>
+        <div class="err-msg" id="err-2">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(1)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(2, 3)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 3 — Reconciliation ============ -->
+      <div class="screen" id="sc-3">
+        <div class="section-badge">About you</div>
+        <p class="q-text">Do you personally handle card or Diners Club reconciliation for your travel spend?</p>
+        <p class="q-note">Reconciliation means matching your card statement line by line to booking confirmations.</p>
+        <div class="options" id="opts-3">
+          <div class="opt" onclick="pickSingle(3,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Yes — I reconcile my own statements personally</span></div>
+          <div class="opt" onclick="pickSingle(3,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">My host TMC or back-office handles this for me</span></div>
+          <div class="opt" onclick="pickSingle(3,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">I don't handle group travel card spend</span></div>
+          <div class="opt" onclick="pickSingle(3,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not applicable to my role</span></div>
+        </div>
+        <div class="err-msg" id="err-3">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(2)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(3, 4)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 4 — Pain points ============ -->
+      <div class="screen" id="sc-4">
+        <div class="section-badge">About you</div>
+        <p class="q-text">What are your biggest pain points in group travel today?</p>
+        <p class="multi-note">Select up to 2 that apply most.</p>
+        <div class="options" id="opts-4">
+          <div class="opt" onclick="toggleMulti(4,0,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Sourcing and comparing hotel quotes</span></div>
+          <div class="opt" onclick="toggleMulti(4,1,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Managing guest lists (dietary, rooming, transfers)</span></div>
+          <div class="opt" onclick="toggleMulti(4,2,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Tracking bookings vs card charges</span></div>
+          <div class="opt" onclick="toggleMulti(4,3,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Client finance reporting</span></div>
+          <div class="opt" onclick="toggleMulti(4,4,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Coordinating multiple suppliers</span></div>
+          <div class="opt" onclick="toggleMulti(4,5,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Duplicate data entry across systems</span></div>
+        </div>
+        <div class="err-msg" id="err-4">Please select at least one option.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(3)">← Back</button>
+          <button class="btn btn-primary" onclick="nextMulti(4, 5)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 5 — Concept relevance ============ -->
+      <div class="screen" id="sc-5">
+        <div class="section-badge">Concept check</div>
+        <p class="q-text">GroupBook automates group travel back-office work: hotel RFP matching, guest management, AI email extraction, and reconciliation — all in one platform. How relevant is this to your workflow?</p>
+        <div class="options" id="opts-5">
+          <div class="opt" onclick="pickSingle(5,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Extremely relevant — I need this now</span></div>
+          <div class="opt" onclick="pickSingle(5,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Very relevant — would improve my work significantly</span></div>
+          <div class="opt" onclick="pickSingle(5,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Somewhat relevant — useful for some tasks</span></div>
+          <div class="opt" onclick="pickSingle(5,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not very relevant to my workflow</span></div>
+          <div class="opt" onclick="pickSingle(5,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not relevant at all</span></div>
+        </div>
+        <div class="err-msg" id="err-5">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(4)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(5, 6)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 6 — Most valuable module ============ -->
+      <div class="screen" id="sc-6">
+        <div class="section-badge">Concept check</div>
+        <p class="q-text">Which GroupBook module would deliver the most immediate value to you?</p>
+        <div class="options" id="opts-6">
+          <div class="opt" onclick="pickSingle(6,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Hotel RFP matching — send briefs and compare quotes automatically</span></div>
+          <div class="opt" onclick="pickSingle(6,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Guest management — RSVP, dietary, rooming, aide memoire</span></div>
+          <div class="opt" onclick="pickSingle(6,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">AI email extraction — auto-capture booking confirmations</span></div>
+          <div class="opt" onclick="pickSingle(6,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Reconciliation — match card statements to bookings automatically</span></div>
+        </div>
+        <div class="err-msg" id="err-6">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(5)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(6, 7)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 7 — Van Westendorp pricing ============ -->
+      <div class="screen" id="sc-7">
+        <div class="section-badge">Pricing</div>
+        <p class="q-text">Four quick pricing questions</p>
+        <p class="price-intro">Think about a monthly subscription for a solo travel professional. These are for your gut instinct — no right or wrong answers. Enter Rand amounts.</p>
+        <div class="price-grid">
+          <div class="price-field">
+            <label style="color:#dc2626">So cheap you'd question the quality</label>
+            <div class="price-input-row">
+              <div class="price-prefix">R</div>
+              <input type="number" min="0" step="1" placeholder="e.g. 300" id="p-too-cheap" oninput="savePriceVal('too_cheap',this.value)">
+            </div>
+          </div>
+          <div class="price-field">
+            <label style="color:#B88A44">Good value — no hesitation</label>
+            <div class="price-input-row">
+              <div class="price-prefix">R</div>
+              <input type="number" min="0" step="1" placeholder="e.g. 999" id="p-good-value" oninput="savePriceVal('good_value',this.value)">
+            </div>
+          </div>
+          <div class="price-field">
+            <label style="color:#6b7280">Getting expensive — I'd think carefully</label>
+            <div class="price-input-row">
+              <div class="price-prefix">R</div>
+              <input type="number" min="0" step="1" placeholder="e.g. 1999" id="p-expensive" oninput="savePriceVal('getting_expensive',this.value)">
+            </div>
+          </div>
+          <div class="price-field">
+            <label style="color:#152742">Too expensive — I wouldn't subscribe</label>
+            <div class="price-input-row">
+              <div class="price-prefix">R</div>
+              <input type="number" min="0" step="1" placeholder="e.g. 4000" id="p-too-exp" oninput="savePriceVal('too_expensive',this.value)">
+            </div>
+          </div>
+        </div>
+        <div class="err-msg" id="err-prices">Please fill in all four price fields.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(6)">← Back</button>
+          <button class="btn btn-primary" onclick="nextPrices(8)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 8 — Feature: RFP only ============ -->
+      <div class="screen" id="sc-8">
+        <div class="section-badge">Feature value</div>
+        <p class="q-text">If GroupBook covered only hotel RFP matching and client brief management, what monthly price feels fair?</p>
+        <div class="options" id="opts-8">
+          <div class="opt" onclick="pickSingle(8,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R0 — should be free</span></div>
+          <div class="opt" onclick="pickSingle(8,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R299–R499 / month</span></div>
+          <div class="opt" onclick="pickSingle(8,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R500–R799 / month</span></div>
+          <div class="opt" onclick="pickSingle(8,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R800–R999 / month</span></div>
+          <div class="opt" onclick="pickSingle(8,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R1,000–R1,499 / month</span></div>
+          <div class="opt" onclick="pickSingle(8,5,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">More than R1,499 / month</span></div>
+        </div>
+        <div class="err-msg" id="err-8">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(7)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(8, 9)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 9 — Feature: Recon ============ -->
+      <div class="screen" id="sc-9">
+        <div class="section-badge">Feature value</div>
+        <p class="q-text">How much would you pay specifically for automated reconciliation — matching your Diners or lodge card statement to bookings?</p>
+        <div class="options" id="opts-9">
+          <div class="opt" onclick="pickSingle(9,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Nothing — I don't reconcile cards myself</span></div>
+          <div class="opt" onclick="pickSingle(9,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R0 — should be included in the base price</span></div>
+          <div class="opt" onclick="pickSingle(9,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R200–R400 extra / month</span></div>
+          <div class="opt" onclick="pickSingle(9,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R401–R700 extra / month</span></div>
+          <div class="opt" onclick="pickSingle(9,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">R701–R1,000 extra / month</span></div>
+          <div class="opt" onclick="pickSingle(9,5,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">More than R1,000 extra / month</span></div>
+        </div>
+        <div class="err-msg" id="err-9">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(8)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(9, 10)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 10 — Feature: Payment Gateway ============ -->
+      <div class="screen" id="sc-10">
+        <div class="section-badge">Feature value</div>
+        <p class="q-text">GroupBook includes a payment gateway so clients can pay invoices online (credit card or EFT). Would you pay extra for this?</p>
+        <div class="options" id="opts-10">
+          <div class="opt" onclick="pickSingle(10,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Yes — R200–R400 / month extra</span></div>
+          <div class="opt" onclick="pickSingle(10,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Yes — R100–R199 / month extra</span></div>
+          <div class="opt" onclick="pickSingle(10,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Yes — under R100 / month</span></div>
+          <div class="opt" onclick="pickSingle(10,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">No — should be included at no extra cost</span></div>
+          <div class="opt" onclick="pickSingle(10,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">No — I wouldn't use this feature</span></div>
+        </div>
+        <div class="err-msg" id="err-10">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(9)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(10, 11)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 11 — Team size ============ -->
+      <div class="screen" id="sc-11">
+        <div class="section-badge">Team size</div>
+        <p class="q-text">How many people in your team would use GroupBook?</p>
+        <div class="options" id="opts-11">
+          <div class="opt" onclick="pickSingle(11,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Just me (1 user)</span></div>
+          <div class="opt" onclick="pickSingle(11,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">2–3 people</span></div>
+          <div class="opt" onclick="pickSingle(11,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">4–6 people</span></div>
+          <div class="opt" onclick="pickSingle(11,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">7–10 people</span></div>
+          <div class="opt" onclick="pickSingle(11,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">11 or more</span></div>
+        </div>
+        <div class="err-msg" id="err-11">Please select an option to continue.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(10)">← Back</button>
+          <button class="btn btn-primary" onclick="nextSingle(11, 12)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 12 — Open feedback ============ -->
+      <div class="screen" id="sc-12">
+        <div class="section-badge">Last question</div>
+        <p class="q-text">What's your biggest hesitation about subscribing to new software for group travel?</p>
+        <p class="q-note">Your honest answer helps us address real concerns — not just build features.</p>
+        <textarea class="text-input" id="open-feedback" rows="4" placeholder='e.g. "Price, getting my team to adopt it, not sure it fits my workflow..."' oninput="state.answers['open_feedback']=this.value"></textarea>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(11)">← Back</button>
+          <button class="btn btn-primary" onclick="go(13)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 13 — Entry form ============ -->
+      <div class="screen" id="sc-13">
+        <div class="section-badge">Enter the draw</div>
+        <p class="q-text">One last step — enter the lucky draw</p>
+        <p class="q-note" style="margin-bottom:1.25rem">3 winners will each receive 3 months GroupBook free when we launch. You'll also be the first to know when we go live.</p>
+        <div class="entry-fields">
+          <div>
+            <label class="field-label" for="inp-name">Your name</label>
+            <input class="field-input" type="text" id="inp-name" placeholder="e.g. Thandi Nkosi" autocomplete="name">
+          </div>
+          <div>
+            <label class="field-label" for="inp-email">Email address</label>
+            <input class="field-input" type="email" id="inp-email" placeholder="you@youragency.co.za" autocomplete="email">
+          </div>
+          <div>
+            <label class="field-label" for="inp-agency">Agency / company name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-hint)">(optional)</span></label>
+            <input class="field-input" type="text" id="inp-agency" placeholder="e.g. Sunshine Travel" autocomplete="organization">
+          </div>
+        </div>
+        <p class="popia-note">By submitting you consent to GroupBook storing your contact details in line with POPIA. We will never sell or share your details. You can unsubscribe at any time.</p>
+        <div class="err-msg" id="err-entry">Please enter your name and a valid email address.</div>
+        <div class="nav">
+          <button class="btn btn-back" onclick="go(12)">← Back</button>
+          <button class="btn btn-gold" onclick="submitSurvey()">Submit & enter draw →</button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 14 — DONE ============ -->
+      <div class="screen" id="sc-done">
+        <div class="done-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M5 13l6 6L21 7" stroke="#B88A44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="done-heading">You're in the draw!</h1>
+        <p class="done-sub">Thank you — your answers go directly to the GroupBook team. We'll be in touch when we launch, and we'll notify draw winners personally.</p>
+
+        <div class="draw-receipt" id="draw-receipt">
+          <div class="draw-receipt-row">
+            <span class="draw-receipt-label">Name</span>
+            <span class="draw-receipt-value" id="receipt-name">—</span>
+          </div>
+          <div class="draw-receipt-row">
+            <span class="draw-receipt-label">Email</span>
+            <span class="draw-receipt-value" id="receipt-email">—</span>
+          </div>
+          <div class="draw-receipt-prize">3 winners · 3 months GroupBook free each</div>
+        </div>
+
+        <div class="done-divider"></div>
+
+        <p class="share-heading">Know someone else in travel? Share the survey</p>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem">The more responses we get, the better we can build GroupBook for the whole industry. Every share helps.</p>
+        <div class="share-btns">
+          <button class="btn-linkedin" onclick="shareLinkedIn()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Share on LinkedIn
+          </button>
+          <button class="btn-copy" onclick="copyLink()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy link
+          </button>
+        </div>
+        <p class="copy-confirm" id="copy-confirm">Link copied to clipboard!</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 PanDaan (Pty) Ltd · GroupBook · <a href="https://groupbook.co.za/privacy" target="_blank">Privacy policy</a> · POPIA compliant</p>
+    <p style="margin-top:4px">Survey responses are confidential and used solely for product research.</p>
+  </footer>
+</div>
+
+<script>
+  const TOTAL_QUESTION_SCREENS = 13;
+  const SURVEY_URL = 'https://groupbook.co.za/survey';
+
+  const SECTION_MAP = {
+    1:'About you', 2:'About you', 3:'About you', 4:'About you',
+    5:'Concept check', 6:'Concept check',
+    7:'Pricing', 8:'Feature value', 9:'Feature value', 10:'Feature value',
+    11:'Team size', 12:'Last question', 13:'Enter the draw'
+  };
+
+  const state = {
+    current: 'cover',
+    answers: {},
+    prices: {}
+  };
+
+  const screenOrder = ['cover',1,2,3,4,5,6,7,8,9,10,11,12,13,'done'];
+
+  function getIdx(sc) { return screenOrder.indexOf(sc); }
+
+  function go(sc) {
+    const prev = state.current;
+    state.current = sc;
+    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+
+    let el;
+    if (sc === 'cover') el = document.getElementById('sc-cover');
+    else if (sc === 'done') el = document.getElementById('sc-done');
+    else el = document.getElementById('sc-' + sc);
+
+    if (el) el.classList.add('active');
+
+    const progressWrap = document.getElementById('progress-wrap');
+    if (sc === 'cover' || sc === 'done') {
+      progressWrap.style.display = 'none';
+    } else {
+      progressWrap.style.display = 'block';
+      const idx = getIdx(sc);
+      const pct = Math.round(((idx - 1) / TOTAL_QUESTION_SCREENS) * 100);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('section-label').textContent = SECTION_MAP[sc] || '';
+      document.getElementById('step-count').textContent = (idx) + ' / ' + TOTAL_QUESTION_SCREENS;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (sc === 'done') {
+      document.getElementById('receipt-name').textContent = state.name || '—';
+      document.getElementById('receipt-email').textContent = state.email || '—';
+    }
+
+    restoreScreen(sc);
+  }
+
+  function restoreScreen(sc) {
+    if (sc === 7) {
+      const p = state.prices;
+      if (p.too_cheap) document.getElementById('p-too-cheap').value = p.too_cheap;
+      if (p.good_value) document.getElementById('p-good-value').value = p.good_value;
+      if (p.getting_expensive) document.getElementById('p-expensive').value = p.getting_expensive;
+      if (p.too_expensive) document.getElementById('p-too-exp').value = p.too_expensive;
+    }
+    if (sc === 12 && state.answers['open_feedback']) {
+      document.getElementById('open-feedback').value = state.answers['open_feedback'];
+    }
+    if (sc === 13) {
+      if (state.name) document.getElementById('inp-name').value = state.name;
+      if (state.email) document.getElementById('inp-email').value = state.email;
+      if (state.agency) document.getElementById('inp-agency').value = state.agency;
+    }
+    const numericSc = typeof sc === 'number' ? sc : null;
+    if (numericSc && [1,2,3,5,6,8,9,10,11].includes(numericSc)) {
+      const saved = state.answers['q' + sc];
+      if (saved !== undefined) {
+        const opts = document.querySelectorAll('#opts-' + sc + ' .opt');
+        opts.forEach((o, i) => {
+          o.classList.toggle('selected', i === saved);
+        });
+      }
+    }
+    if (sc === 4) {
+      const saved = state.answers['q4'] || [];
+      const opts = document.querySelectorAll('#opts-4 .opt');
+      opts.forEach((o, i) => o.classList.toggle('selected', saved.includes(i)));
+    }
+  }
+
+  function pickSingle(sc, val, el) {
+    state.answers['q' + sc] = val;
+    document.querySelectorAll('#opts-' + sc + ' .opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    setTimeout(() => {
+      const next = screenOrder[getIdx(sc) + 1];
+      go(next);
+    }, 220);
+  }
+
+  function toggleMulti(sc, val, el, max) {
+    let arr = state.answers['q' + sc] || [];
+    if (arr.includes(val)) {
+      arr = arr.filter(v => v !== val);
+      el.classList.remove('selected');
+    } else {
+      if (arr.length >= max) return;
+      arr = [...arr, val];
+      el.classList.add('selected');
+    }
+    state.answers['q' + sc] = arr;
+  }
+
+  function nextSingle(sc, next) {
+    const err = document.getElementById('err-' + sc);
+    if (state.answers['q' + sc] === undefined) {
+      err.classList.add('visible'); return;
+    }
+    err.classList.remove('visible');
+    go(next);
+  }
+
+  function nextMulti(sc, next) {
+    const arr = state.answers['q' + sc] || [];
+    const err = document.getElementById('err-' + sc);
+    if (arr.length === 0) { err.classList.add('visible'); return; }
+    err.classList.remove('visible');
+    go(next);
+  }
+
+  function savePriceVal(key, val) {
+    state.prices[key] = val;
+  }
+
+  function nextPrices(next) {
+    const keys = ['too_cheap', 'good_value', 'getting_expensive', 'too_expensive'];
+    const err = document.getElementById('err-prices');
+    if (keys.some(k => !state.prices[k] || state.prices[k] === '')) {
+      err.classList.add('visible'); return;
+    }
+    err.classList.remove('visible');
+    go(next);
+  }
+
+  function submitSurvey() {
+    const name = document.getElementById('inp-name').value.trim();
+    const email = document.getElementById('inp-email').value.trim();
+    const agency = document.getElementById('inp-agency').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const err = document.getElementById('err-entry');
+    if (!name || !emailOk) { err.classList.add('visible'); return; }
+    err.classList.remove('visible');
+    state.name = name;
+    state.email = email;
+    state.agency = agency;
+
+    const payload = {
+      submitted_at: new Date().toISOString(),
+      name, email, agency,
+      role: state.answers['q1'],
+      rfp_volume: state.answers['q2'],
+      self_reconciles: state.answers['q3'],
+      pain_points: state.answers['q4'],
+      concept_relevance: state.answers['q5'],
+      top_module: state.answers['q6'],
+      prices: state.prices,
+      rfp_only_price: state.answers['q8'],
+      recon_price: state.answers['q9'],
+      payment_gateway: state.answers['q10'],
+      team_size: state.answers['q11'],
+      open_feedback: state.answers['open_feedback'] || ''
+    };
+
+    console.log('GroupBook VWT Survey submission:', JSON.stringify(payload, null, 2));
+
+    /* 
+      INTEGRATION POINT: Replace console.log above with your actual submission.
+      Option A — Supabase:
+        await supabase.from('survey_responses').insert([payload]);
+      Option B — Resend + email notification:
+        await fetch('/api/survey/submit', { method:'POST', body:JSON.stringify(payload) });
+      Option C — Formspree / Typeform webhook: configure in their dashboard.
+    */
+
+    go('done');
+  }
+
+  function shareLinkedIn() {
+    const url = encodeURIComponent(SURVEY_URL);
+    const msg = encodeURIComponent('I just helped shape GroupBook — SA\'s new group travel platform. 5-minute survey, lucky draw with 3 winners each getting 3 months free. Worth it if you\'re in travel! 👇');
+    window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url + '&summary=' + msg, '_blank');
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(SURVEY_URL).then(() => {
+      const el = document.getElementById('copy-confirm');
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 2500);
+    });
+  }
+</script>
+
+</body>
+</html>
