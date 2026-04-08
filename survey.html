@@ -995,25 +995,42 @@
       </div>
 
       <!-- ================================================================
-           SCREEN 12 - Entry form
+           SCREEN 12 - Survey complete + draw choice
+           Survey data is submitted here. Draw entry is a separate opt-in.
            ================================================================ -->
       <div class="screen" id="sc-12">
-        <div class="section-badge">Done -- thank you!</div>
-        <p class="q-text">Your responses have been recorded.</p>
-        <p class="q-note" style="margin-bottom:1.25rem">Optionally, leave your details below to enter the lucky draw and be the first to hear when GroupBook launches. Entirely optional -- your answers are submitted either way.</p>
-
-        <div style="background:var(--gold-light);border:1px solid var(--gold-mid);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;font-size:12px;color:var(--text-secondary);line-height:1.6;">
-          <strong style="color:var(--gold);font-size:11px;letter-spacing:.06em;text-transform:uppercase;">Lucky draw &mdash; 5 winners</strong><br>
-          5 respondents will each win 1 month GroupBook free at launch. Winners drawn 5 May 2026.
+        <div class="done-icon" style="margin-bottom:1rem">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M5 13l6 6L21 7" stroke="#B88A44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
+        <p class="q-text" style="margin-bottom:.5rem">That's it -- your responses have been recorded.</p>
+        <p class="q-note" style="margin-bottom:1.5rem">Thank you for helping shape GroupBook's pricing and features. Your input goes directly to the product team.</p>
 
+        <div style="border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:.35rem;">Would you like to enter the lucky draw?</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1.1rem;">5 winners will each receive 1 month GroupBook free at launch. Winners drawn 5 May 2026. Entering takes 30 seconds.</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn btn-gold" style="width:100%;justify-content:center;" onclick="go(13)">Yes -- enter the lucky draw &rarr;</button>
+            <button class="btn btn-back" style="width:100%;justify-content:center;" onclick="submitAnonymous()">No thanks, I'm done</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================
+           SCREEN 13 - Draw entry form (only reached by choice)
+           ================================================================ -->
+      <div class="screen" id="sc-13">
+        <div class="section-badge">Lucky draw entry</div>
+        <p class="q-text">Enter your details to be included in the draw</p>
+        <p class="q-note" style="margin-bottom:1.25rem">5 winners each receive 1 month GroupBook free at launch. Winners drawn 5 May 2026 and notified by email.</p>
         <div class="entry-fields">
           <div>
-            <label class="field-label" for="inp-name">Your name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-hint)">(optional)</span></label>
+            <label class="field-label" for="inp-name">Your name</label>
             <input class="field-input" type="text" id="inp-name" placeholder="e.g. Thandi Nkosi" autocomplete="name">
           </div>
           <div>
-            <label class="field-label" for="inp-email">Email address <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-hint)">(optional)</span></label>
+            <label class="field-label" for="inp-email">Email address</label>
             <input class="field-input" type="email" id="inp-email" placeholder="you@youragency.co.za" autocomplete="email">
           </div>
           <div>
@@ -1021,14 +1038,11 @@
             <input class="field-input" type="text" id="inp-agency" placeholder="e.g. Sunshine Travel" autocomplete="organization">
           </div>
         </div>
-        <p class="popia-note">If you leave your details, you consent to GroupBook storing them in line with POPIA. We will never sell or share your details. You can unsubscribe at any time.</p>
-        <div class="err-msg" id="err-entry">Please enter a valid email address to be entered into the draw.</div>
+        <p class="popia-note">By entering you consent to GroupBook storing your contact details in line with POPIA. We will never sell or share your details. You can unsubscribe at any time.</p>
+        <div class="err-msg" id="err-entry">Please enter your name and a valid email address.</div>
         <div class="nav">
-          <button class="btn btn-back" onclick="go(11)">&larr; Back</button>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-            <button class="btn btn-gold" id="submit-btn" onclick="submitSurvey()">Submit &amp; enter draw &rarr;</button>
-            <button class="btn" style="background:transparent;color:var(--text-hint);font-size:12px;padding:4px 0;font-weight:400;border:none;cursor:pointer;" onclick="submitAnonymous()">Skip -- submit without entering the draw</button>
-          </div>
+          <button class="btn btn-back" onclick="go(12)">&larr; Back</button>
+          <button class="btn btn-gold" id="submit-btn" onclick="submitSurvey()">Submit &amp; enter draw &rarr;</button>
         </div>
       </div>
 
@@ -1041,10 +1055,10 @@
             <path d="M5 13l6 6L21 7" stroke="#B88A44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <h1 class="done-heading">You're in the draw!</h1>
-        <p class="done-sub">Thank you -- your answers go directly to the GroupBook team. We'll be in touch when we launch, and we'll notify draw winners personally.</p>
+        <h1 class="done-heading" id="done-heading">Thank you!</h1>
+        <p class="done-sub" id="done-sub">Your answers go directly to the GroupBook team.</p>
 
-        <div class="draw-receipt" id="draw-receipt">
+        <div class="draw-receipt" id="draw-receipt" style="display:none">
           <div class="draw-receipt-row">
             <span class="draw-receipt-label">Name</span>
             <span class="draw-receipt-value" id="receipt-name">--</span>
@@ -1111,7 +1125,7 @@
 
 <script>
   // ---- Constants ----
-  const TOTAL_QUESTION_SCREENS = 12;
+  const TOTAL_QUESTION_SCREENS = 11; // Screen 12 is the completion/choice screen, not a question
   const SURVEY_URL = 'https://groupbook.co.za/survey';
 
   // Maps screen number to section label shown in progress bar
@@ -1126,12 +1140,11 @@
     8: 'Nice-to-have features',
     9: 'Your fit',
     10: 'Team size',
-    11: 'Last question',
-    12: 'Enter the draw'
+    11: 'Last question'
   };
 
   // All screens in traversal order
-  const screenOrder = ['cover', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 'done'];
+  const screenOrder = ['cover', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 'done'];
 
   // Survey state -- answers keyed by question number, prices keyed by label
   const state = {
@@ -1155,13 +1168,17 @@
     var el;
     if (sc === 'cover') el = document.getElementById('sc-cover');
     else if (sc === 'done') el = document.getElementById('sc-done');
+    else if (sc === 13) el = document.getElementById('sc-13');
     else el = document.getElementById('sc-' + sc);
     if (el) el.classList.add('active');
 
     // Progress bar
     var progressWrap = document.getElementById('progress-wrap');
-    if (sc === 'cover' || sc === 'done') {
+    // Hide progress bar on cover, done, screen 12 (completion), screen 13 (draw entry)
+    // Screen 12 also fires the auto-submit
+    if (sc === 'cover' || sc === 'done' || sc === 12 || sc === 13) {
       progressWrap.style.display = 'none';
+      if (sc === 12) autoSubmitSurvey();
     } else {
       progressWrap.style.display = 'block';
       var idx = getIdx(sc);
@@ -1173,10 +1190,21 @@
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Done screen receipt
+    // Done screen — content depends on whether they entered the draw
     if (sc === 'done') {
-      document.getElementById('receipt-name').textContent = state.name || '--';
-      document.getElementById('receipt-email').textContent = state.email || '--';
+      const enteredDraw = !!(state.email);
+      document.getElementById('done-heading').textContent = enteredDraw ? "You're in the draw!" : "Thank you!";
+      document.getElementById('done-sub').textContent = enteredDraw
+        ? "Your answers go directly to the GroupBook team. We'll notify draw winners personally after 5 May 2026."
+        : "Your answers go directly to the GroupBook team. We'll use them to shape GroupBook's pricing and features.";
+      const receipt = document.getElementById('draw-receipt');
+      if (enteredDraw) {
+        receipt.style.display = 'block';
+        document.getElementById('receipt-name').textContent = state.name || '--';
+        document.getElementById('receipt-email').textContent = state.email || '--';
+      } else {
+        receipt.style.display = 'none';
+      }
     }
 
     restoreScreen(sc);
@@ -1206,6 +1234,17 @@
       if (state.name) document.getElementById('inp-name').value = state.name;
       if (state.email) document.getElementById('inp-email').value = state.email;
       if (state.agency) document.getElementById('inp-agency').value = state.agency;
+    }
+    if (sc === 13) {
+      if (state.name) document.getElementById('inp-name').value = state.name;
+      if (state.email) document.getElementById('inp-email').value = state.email;
+      if (state.agency) document.getElementById('inp-agency').value = state.agency;
+    }
+    // Restore sc-12 entry fields (legacy - kept for back navigation safety)
+    if (sc === 12) {
+      if (state.name) { var n = document.getElementById('inp-name'); if(n) n.value = state.name; }
+      if (state.email) { var e = document.getElementById('inp-email'); if(e) e.value = state.email; }
+      if (state.agency) { var a = document.getElementById('inp-agency'); if(a) a.value = state.agency; }
     }
     if (typeof sc === 'number' && [1, 2, 3, 5, 9, 10].includes(sc)) {
       var saved = state.answers['q' + sc];
@@ -1306,26 +1345,20 @@
     go(next);
   }
 
-  // ---- Submission ----
-  function submitSurvey() {
-    var name = document.getElementById('inp-name').value.trim();
-    var email = document.getElementById('inp-email').value.trim();
-    var agency = document.getElementById('inp-agency').value.trim();
-    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    var err = document.getElementById('err-entry');
+  // Auto-submit survey data when screen 12 is reached
+  var surveyAutoSubmitted = false;
+  function autoSubmitSurvey() {
+    if (surveyAutoSubmitted) return;
+    surveyAutoSubmitted = true;
+    fetch('https://app.groupbook.co.za/api/survey/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildPayload(null, null, null))
+    }).catch(function(e) { console.error('Survey auto-submit error:', e); });
+  }
 
-    // Only block if they typed something invalid -- blank is fine (anonymous)
-    if (email.length > 0 && !emailOk) {
-      err.classList.add('visible');
-      return;
-    }
-    err.classList.remove('visible');
-
-    state.name = name;
-    state.email = email;
-    state.agency = agency;
-
-    var payload = {
+  function buildPayload(name, email, agency) {
+    return {
       submitted_at: new Date().toISOString(),
       name: name || null,
       email: email || null,
@@ -1345,53 +1378,32 @@
       team_size: state.answers['q10'],
       open_feedback: state.answers['open_feedback'] || ''
     };
+  }
 
+  // Submit draw entry from screen 13
+  function submitSurvey() {
+    var name = document.getElementById('inp-name').value.trim();
+    var email = document.getElementById('inp-email').value.trim();
+    var agency = document.getElementById('inp-agency').value.trim();
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    var err = document.getElementById('err-entry');
+    if (!name || !emailOk) { err.classList.add('visible'); return; }
+    err.classList.remove('visible');
+    state.name = name;
+    state.email = email;
+    state.agency = agency;
     var submitBtn = document.getElementById('submit-btn');
-    if (submitBtn) {
-      submitBtn.textContent = 'Submitting...';
-      submitBtn.disabled = true;
-    }
-
+    if (submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
     fetch('https://app.groupbook.co.za/api/survey/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).catch(function(e) {
-      console.error('Survey submit error:', e);
-    });
-
+      body: JSON.stringify(buildPayload(name, email, agency))
+    }).catch(function(e) { console.error('Draw entry error:', e); });
     go('done');
   }
 
-  // Submit without entering contact details
+  // "No thanks" -- data already submitted on screen 12, just go to done
   function submitAnonymous() {
-    var submitBtn = document.getElementById('submit-btn');
-    if (submitBtn) { submitBtn.disabled = true; }
-    var payload = {
-      submitted_at: new Date().toISOString(),
-      name: null,
-      email: null,
-      agency: null,
-      role: state.answers['q1'],
-      rfp_volume: state.answers['q2'],
-      self_reconciles: state.answers['q3'],
-      pain_points: state.answers['q4'],
-      concept_relevance: state.answers['q5'],
-      tier1_good_value: state.prices['tier1_good_value'] || null,
-      tier1_too_expensive: state.prices['tier1_too_expensive'] || null,
-      tier2_good_value: state.prices['tier2_good_value'] || null,
-      tier2_too_expensive: state.prices['tier2_too_expensive'] || null,
-      tier3_good_value: state.prices['tier3_good_value'] || null,
-      tier3_too_expensive: state.prices['tier3_too_expensive'] || null,
-      tier_fit: state.answers['q9'],
-      team_size: state.answers['q10'],
-      open_feedback: state.answers['open_feedback'] || ''
-    };
-    fetch('https://app.groupbook.co.za/api/survey/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).catch(function(e) { console.error('Survey submit error:', e); });
     go('done');
   }
 
