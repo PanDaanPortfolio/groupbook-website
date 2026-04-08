@@ -810,7 +810,7 @@
            ================================================================ -->
       <div class="screen" id="sc-6">
         <div class="section-badge">Essential features -- automate your admin</div>
-        <p class="q-text">These are the essentials every group travel professional needs. What would you pay per month?</p>
+        <p class="q-text">These are the essentials every group travel professional needs. What would you pay?</p>
 
         <div class="feature-box feature-box-green">
           <strong>The essentials (ITC tier)</strong>
@@ -822,7 +822,7 @@
           &#10003; 1 user included. All AI costs absorbed -- never passed to you.
         </div>
 
-        <div class="price-hint">Think about a monthly subscription. Enter the Rand amount that feels right -- no wrong answers.</div>
+        <div class="price-hint">Enter a Rand amount per month that feels right for you -- no wrong answers.</div>
 
         <div class="price-grid">
           <div class="price-field">
@@ -853,7 +853,7 @@
            ================================================================ -->
       <div class="screen" id="sc-7">
         <div class="section-badge">Value-add features -- automate your guest management</div>
-        <p class="q-text">Now imagine adding full guest management on top of the essentials. What would you pay for the combined package?</p>
+        <p class="q-text">Now imagine adding full guest management on top of the essentials. What would you pay?</p>
 
         <div class="feature-box feature-box-blue">
           <strong>Value-adds (Agency tier)</strong>
@@ -868,7 +868,7 @@
           &#10003; Up to 3 users included
         </div>
 
-        <div class="price-hint">What would you pay per month for the essentials PLUS these value-adds combined?</div>
+        <div class="price-hint">Enter a Rand amount per month for the essentials PLUS these value-adds combined -- no wrong answers.</div>
 
         <div class="price-grid">
           <div class="price-field">
@@ -899,7 +899,7 @@
            ================================================================ -->
       <div class="screen" id="sc-8">
         <div class="section-badge">Nice-to-have features -- automate your travel management</div>
-        <p class="q-text">Finally -- the full travel management suite. Guests book and pay online, transfers run live, reconciliation is automated. What would you pay for the complete package?</p>
+        <p class="q-text">Finally -- the full travel management suite. Guests book and pay online, transfers run live, reconciliation is automated. What would you pay?</p>
 
         <div class="feature-box feature-box-purple">
           <strong>Nice-to-haves (TMC tier)</strong>
@@ -915,7 +915,7 @@
           &#10003; Up to 10 users included
         </div>
 
-        <div class="price-hint">What would you pay per month for the COMPLETE package -- essentials + value-adds + nice-to-haves combined?</div>
+        <div class="price-hint">Enter a Rand amount per month for the COMPLETE package -- essentials + value-adds + nice-to-haves combined -- no wrong answers.</div>
 
         <div class="price-grid">
           <div class="price-field">
@@ -998,16 +998,22 @@
            SCREEN 12 - Entry form
            ================================================================ -->
       <div class="screen" id="sc-12">
-        <div class="section-badge">Enter the draw</div>
-        <p class="q-text">One last step -- enter the lucky draw</p>
-        <p class="q-note" style="margin-bottom:1.25rem">5 winners will each receive 1 month GroupBook free at launch. You'll also be the first to hear when we go live.</p>
+        <div class="section-badge">Done -- thank you!</div>
+        <p class="q-text">Your responses have been recorded.</p>
+        <p class="q-note" style="margin-bottom:1.25rem">Optionally, leave your details below to enter the lucky draw and be the first to hear when GroupBook launches. Entirely optional -- your answers are submitted either way.</p>
+
+        <div style="background:var(--gold-light);border:1px solid var(--gold-mid);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;font-size:12px;color:var(--text-secondary);line-height:1.6;">
+          <strong style="color:var(--gold);font-size:11px;letter-spacing:.06em;text-transform:uppercase;">Lucky draw &mdash; 5 winners</strong><br>
+          5 respondents will each win 1 month GroupBook free at launch. Winners drawn 5 May 2026.
+        </div>
+
         <div class="entry-fields">
           <div>
-            <label class="field-label" for="inp-name">Your name</label>
+            <label class="field-label" for="inp-name">Your name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-hint)">(optional)</span></label>
             <input class="field-input" type="text" id="inp-name" placeholder="e.g. Thandi Nkosi" autocomplete="name">
           </div>
           <div>
-            <label class="field-label" for="inp-email">Email address</label>
+            <label class="field-label" for="inp-email">Email address <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-hint)">(optional)</span></label>
             <input class="field-input" type="email" id="inp-email" placeholder="you@youragency.co.za" autocomplete="email">
           </div>
           <div>
@@ -1015,11 +1021,14 @@
             <input class="field-input" type="text" id="inp-agency" placeholder="e.g. Sunshine Travel" autocomplete="organization">
           </div>
         </div>
-        <p class="popia-note">By submitting you consent to GroupBook storing your contact details in line with POPIA. We will never sell or share your details. You can unsubscribe at any time.</p>
-        <div class="err-msg" id="err-entry">Please enter your name and a valid email address.</div>
+        <p class="popia-note">If you leave your details, you consent to GroupBook storing them in line with POPIA. We will never sell or share your details. You can unsubscribe at any time.</p>
+        <div class="err-msg" id="err-entry">Please enter a valid email address to be entered into the draw.</div>
         <div class="nav">
           <button class="btn btn-back" onclick="go(11)">&larr; Back</button>
-          <button class="btn btn-gold" id="submit-btn" onclick="submitSurvey()">Submit &amp; enter draw &rarr;</button>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+            <button class="btn btn-gold" id="submit-btn" onclick="submitSurvey()">Submit &amp; enter draw &rarr;</button>
+            <button class="btn" style="background:transparent;color:var(--text-hint);font-size:12px;padding:4px 0;font-weight:400;border:none;cursor:pointer;" onclick="submitAnonymous()">Skip -- submit without entering the draw</button>
+          </div>
         </div>
       </div>
 
@@ -1305,7 +1314,8 @@
     var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     var err = document.getElementById('err-entry');
 
-    if (!name || !emailOk) {
+    // Only block if they typed something invalid -- blank is fine (anonymous)
+    if (email.length > 0 && !emailOk) {
       err.classList.add('visible');
       return;
     }
@@ -1317,9 +1327,9 @@
 
     var payload = {
       submitted_at: new Date().toISOString(),
-      name: name,
-      email: email,
-      agency: agency,
+      name: name || null,
+      email: email || null,
+      agency: agency || null,
       role: state.answers['q1'],
       rfp_volume: state.answers['q2'],
       self_reconciles: state.answers['q3'],
@@ -1350,6 +1360,38 @@
       console.error('Survey submit error:', e);
     });
 
+    go('done');
+  }
+
+  // Submit without entering contact details
+  function submitAnonymous() {
+    var submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) { submitBtn.disabled = true; }
+    var payload = {
+      submitted_at: new Date().toISOString(),
+      name: null,
+      email: null,
+      agency: null,
+      role: state.answers['q1'],
+      rfp_volume: state.answers['q2'],
+      self_reconciles: state.answers['q3'],
+      pain_points: state.answers['q4'],
+      concept_relevance: state.answers['q5'],
+      tier1_good_value: state.prices['tier1_good_value'] || null,
+      tier1_too_expensive: state.prices['tier1_too_expensive'] || null,
+      tier2_good_value: state.prices['tier2_good_value'] || null,
+      tier2_too_expensive: state.prices['tier2_too_expensive'] || null,
+      tier3_good_value: state.prices['tier3_good_value'] || null,
+      tier3_too_expensive: state.prices['tier3_too_expensive'] || null,
+      tier_fit: state.answers['q9'],
+      team_size: state.answers['q10'],
+      open_feedback: state.answers['open_feedback'] || ''
+    };
+    fetch('https://app.groupbook.co.za/api/survey/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(function(e) { console.error('Survey submit error:', e); });
     go('done');
   }
 
