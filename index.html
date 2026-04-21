@@ -1481,17 +1481,8 @@
 </nav>
 
 
-<!-- ═══════════════════════════════ SURVEY ANNOUNCEMENT BAR ══════════ -->
-<div id="survey-bar" style="background:#B88A44;padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;position:relative;margin-top:56px;z-index:90;">
-  <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.85);">Lucky Draw &#8212; 5 Winners</span>
-  <span style="color:rgba(255,255,255,0.4);font-size:0.85rem;">|</span>
-  <span style="font-size:0.85rem;color:#fff;">Help shape GroupBook&#39;s pricing &amp; win <strong>1 month free</strong> &#8212; takes 5 minutes</span>
-  <a href="/survey.html" style="background:#152742;color:#fff;font-size:0.78rem;font-weight:700;padding:6px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;letter-spacing:0.03em;flex-shrink:0;" onmouseover="this.style.opacity='0.82'" onmouseout="this.style.opacity='1'">Take the Survey &#8594;</a>
-  <button onclick="document.getElementById('survey-bar').style.display='none'" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.65);font-size:1.2rem;cursor:pointer;padding:4px 8px;line-height:1;" aria-label="Dismiss">&#215;</button>
-</div>
-
 <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
-<section class="hero" style="margin-top:0">
+<section class="hero" style="margin-top:56px">
   <div class="hero-inner">
     <div class="hero-content">
       <p class="hero-tagline">Automate the admin. Automate the travel management.</p>
@@ -1560,17 +1551,17 @@
                 <div class="module-card-desc">RFPs & hotel quotes</div>
                 <button class="module-card-btn">Open RFPs →</button>
               </div>
-              <div class="module-card" style="opacity:0.7">
-                <div class="module-card-header"><span class="module-card-icon">🏠</span><span class="badge-soon">● COMING SOON</span></div>
-                <div class="module-card-name">Booking Portals</div>
+              <div class="module-card">
+                <div class="module-card-header"><span class="module-card-icon">🏠</span><span class="badge-live">● LIVE</span></div>
+                <div class="module-card-name">Travel Management Portals</div>
                 <div class="module-card-desc">Accommodation, transfers & flights</div>
-                <button class="module-card-btn-ghost">Coming Q2 2026</button>
+                <button class="module-card-btn">Open Portals →</button>
               </div>
-              <div class="module-card" style="opacity:0.7">
-                <div class="module-card-header"><span class="module-card-icon">💳</span><span class="badge-soon">● COMING SOON</span></div>
+              <div class="module-card">
+                <div class="module-card-header"><span class="module-card-icon">💳</span><span class="badge-live">● LIVE</span></div>
                 <div class="module-card-name">Payments & Invoicing</div>
                 <div class="module-card-desc">Guest payments & tax invoices</div>
-                <button class="module-card-btn-ghost">Coming Q2 2026</button>
+                <button class="module-card-btn">Open Payments →</button>
               </div>
             </div>
           </div>
@@ -1690,9 +1681,9 @@
       </div>
     </div>
 
-    <!-- COMING SOON: TRAVEL MANAGEMENT PORTALS -->
+    <!-- TRAVEL MANAGEMENT PORTALS -->
     <div style="text-align:center;margin-bottom:40px;">
-      <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Coming Soon</p>
+      <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Now Live</p>
       <h2 class="section-title" style="max-width:640px;margin:0 auto 8px;">Travel Management Portals</h2>
       <p class="section-sub" style="max-width:580px;margin:0 auto;">Your guests book and pay online. Your transfers run live. Your flight inventory sells itself. GroupBook handles the travel management too &mdash; not just the admin.</p>
     </div>
@@ -1702,7 +1693,7 @@
       <div class="module-tile" style="border-top:3px solid #9C27B0;">
         <div class="module-tile-header">
           <div class="module-tile-icon">&#127968;</div>
-          <span class="badge badge-coming-full">COMING SOON</span>
+          <span class="badge badge-live-full">LIVE</span>
         </div>
         <h3>Accommodation Portal</h3>
         <div class="module-tile-sub">Guest Self-Service Booking</div>
@@ -1719,7 +1710,7 @@
       <div class="module-tile" style="border-top:3px solid #9C27B0;">
         <div class="module-tile-header">
           <div class="module-tile-icon">&#128663;</div>
-          <span class="badge badge-coming-full">COMING SOON</span>
+          <span class="badge badge-live-full">LIVE</span>
         </div>
         <h3>Transfers Portal</h3>
         <div class="module-tile-sub">Live Manifest &amp; Dispatch</div>
@@ -1736,7 +1727,7 @@
       <div class="module-tile" style="border-top:3px solid #9C27B0;">
         <div class="module-tile-header">
           <div class="module-tile-icon">&#9992;&#65039;</div>
-          <span class="badge badge-coming-full">COMING SOON</span>
+          <span class="badge badge-live-full">LIVE</span>
         </div>
         <h3>Flights Portal</h3>
         <div class="module-tile-sub">Seat Inventory &amp; Booking</div>
@@ -1871,58 +1862,80 @@
 <section class="section pricing-section" id="pricing">
   <div class="section-inner">
     <p class="section-label">Pricing</p>
-    <h2 class="section-title">You&#39;re Shaping Our Pricing</h2>
-    <p class="section-sub" style="max-width:600px;">We believe the people who use GroupBook every day should set the price &#8212; not us. We&#39;re running a short survey with SA travel professionals before we publish our final plans.</p>
+    <h2 class="section-title">Simple pricing. Massive time savings.</h2>
+    <p class="section-sub">Three tiers. Named after what you call yourself. Every plan includes the Smart Inbox AI engine and full access to our verified hotel database with 342+ SA properties.</p>
 
-    <div style="max-width:780px;margin:48px auto 0;background:var(--navy);border-radius:20px;padding:56px 48px;text-align:center;position:relative;overflow:hidden;">
-      <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(184,138,68,0.07);pointer-events:none;"></div>
-      <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(184,138,68,0.05);pointer-events:none;"></div>
+    <div class="pricing-grid">
 
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(184,138,68,0.15);border:1px solid rgba(184,138,68,0.3);border-radius:20px;padding:6px 16px;margin-bottom:28px;">
-        <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;"></span>
-        <span style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);">Pricing research in progress</span>
+      <!-- ITC -->
+      <div class="price-card">
+        <div class="price-tier">ITC</div>
+        <div style="font-size:0.78rem;color:var(--text-light);font-weight:600;margin:-6px 0 14px;letter-spacing:0.02em;">Automate your admin</div>
+        <div class="price-amount">R999<span class="price-period">/month</span></div>
+        <div class="price-desc">For solo ITCs, boutique consultants and 1-person operations.</div>
+        <div style="font-size:0.75rem;color:var(--text-light);margin-bottom:20px;">excl. VAT</div>
+        <ul class="price-features">
+          <li><span class="price-check">✓</span> 1 user (additional at R349/user)</li>
+          <li><span class="price-check">✓</span> 20 RFPs / 5 events per month</li>
+          <li><span class="price-check">✓</span> Full hotel database (342+ verified)</li>
+          <li><span class="price-check">✓</span> Client brief + Hotel RFP + Quote comparison</li>
+          <li><span class="price-check">✓</span> Smart Inbox — hotel reverts</li>
+          <li><span class="price-check">✓</span> Guest management (up to 20 guests)</li>
+          <li><span class="price-check">✓</span> GroupBook branding on RFPs</li>
+          <li><span class="price-check">✓</span> Email support (48hr)</li>
+        </ul>
+        <a href="#" onclick="openModal();return false;" class="btn-price btn-price-outline">Get Started</a>
       </div>
 
-      <h3 style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:16px;">
-        Pricing announced at launch.<br><em style="color:var(--gold);font-style:normal;">Help us get it right.</em>
-      </h3>
-
-      <p style="font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.75;max-width:520px;margin:0 auto 40px;">
-        We&#39;re surveying South African travel professionals on what they&#39;d pay for a platform like GroupBook. Your input directly determines our tier structure and pricing &#8212; and 5 respondents win 1 month free.
-      </p>
-
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;text-align:left;">
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
-          <div style="font-size:1.4rem;margin-bottom:10px;">&#9993;&#65039;</div>
-          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:4px;">Smart Inbox AI</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.6;">Included in every plan &#8212; forward any email and it&#39;s done.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
-          <div style="font-size:1.4rem;margin-bottom:10px;">&#127968;</div>
-          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:4px;">342+ SA Hotels</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.6;">Verified groups contacts. Every plan. No extra cost.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
-          <div style="font-size:1.4rem;margin-bottom:10px;">&#127873;</div>
-          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:4px;">Annual discount</div>
-          <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);line-height:1.6;">Pay annually and get 2 months free &#8212; confirmed.</div>
-        </div>
+      <!-- AGENCY (featured) -->
+      <div class="price-card featured">
+        <div class="popular-badge">Most Popular</div>
+        <div class="price-tier">Agency</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.55);font-weight:600;margin:-6px 0 14px;letter-spacing:0.02em;">Automate your guest management</div>
+        <div class="price-amount">R1,999<span class="price-period">/month</span></div>
+        <div class="price-desc">For boutique agencies, 2–5 person teams and regular group clients.</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.45);margin-bottom:20px;">excl. VAT</div>
+        <ul class="price-features">
+          <li><span class="price-check">✓</span> 3 users (additional at R299/user)</li>
+          <li><span class="price-check">✓</span> 50 RFPs / 20 events per month</li>
+          <li><span class="price-check">✓</span> All ITC features, plus:</li>
+          <li><span class="price-check">✓</span> Guest management (unlimited)</li>
+          <li><span class="price-check">✓</span> Aide Memoire (unlimited)</li>
+          <li><span class="price-check">✓</span> Guest portal + Event Pack export</li>
+          <li><span class="price-check">✓</span> Passport AI extraction</li>
+          <li><span class="price-check">✓</span> Full Smart Inbox (all doc types)</li>
+          <li><span class="price-check">✓</span> Custom agency branding</li>
+          <li><span class="price-check">✓</span> Priority email support (24hr)</li>
+        </ul>
+        <a href="#" onclick="openModal();return false;" class="btn-price btn-price-gold">Get Started →</a>
       </div>
 
-      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-        <a href="/survey.html" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#fff;font-size:1rem;font-weight:700;padding:15px 36px;border-radius:10px;text-decoration:none;" onmouseover="this.style.background='#C8A057'" onmouseout="this.style.background='#B88A44'">
-          Take the 5-minute survey &#8594;
-        </a>
-        <span style="font-size:0.8rem;color:rgba(255,255,255,0.4);">Lucky draw &#8212; 5 winners each get 1 month GroupBook free</span>
+      <!-- TMC -->
+      <div class="price-card">
+        <div class="price-tier">TMC</div>
+        <div style="font-size:0.78rem;color:var(--text-light);font-weight:600;margin:-6px 0 14px;letter-spacing:0.02em;">Automate your travel management</div>
+        <div class="price-amount">R4,999<span class="price-period">/month</span></div>
+        <div class="price-desc">For full TMCs, tournament organisers, 5+ staff and complex events.</div>
+        <div style="font-size:0.75rem;color:var(--text-light);margin-bottom:20px;">excl. VAT</div>
+        <ul class="price-features">
+          <li><span class="price-check">✓</span> 10 users (additional at R199/user)</li>
+          <li><span class="price-check">✓</span> Unlimited RFPs &amp; events</li>
+          <li><span class="price-check">✓</span> All Agency features, plus:</li>
+          <li><span class="price-check">✓</span> Accommodation booking portal</li>
+          <li><span class="price-check">✓</span> Transfers portal + driver dispatch</li>
+          <li><span class="price-check">✓</span> Flights portal + airline manifest</li>
+          <li><span class="price-check">✓</span> Netcash payment gateway</li>
+          <li><span class="price-check">✓</span> Proforma + tax invoice generation</li>
+          <li><span class="price-check">✓</span> Branded confirmation emails</li>
+          <li><span class="price-check">✓</span> Diners reconciliation + AutoReconcile</li>
+          <li><span class="price-check">✓</span> Per-event branding</li>
+          <li><span class="price-check">✓</span> Dedicated onboarding &amp; support</li>
+        </ul>
+        <a href="#" onclick="openModal();return false;" class="btn-price btn-price-outline">Get Started</a>
       </div>
+
     </div>
-
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:32px;margin-top:36px;">
-      <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-mid);"><span style="color:var(--gold);font-weight:700;">&#10003;</span> No credit card required at launch</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-mid);"><span style="color:var(--gold);font-weight:700;">&#10003;</span> POPIA compliant</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-mid);"><span style="color:var(--gold);font-weight:700;">&#10003;</span> Cancel anytime</div>
-      <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-mid);"><span style="color:var(--gold);font-weight:700;">&#10003;</span> Pricing announced before launch</div>
-    </div>
+    <p style="text-align:center;margin-top:28px;font-size:0.88rem;color:var(--text-mid);">Pay annually and get <strong style="color:var(--gold);">2 months free</strong> — that&#39;s a 17% saving.</p>
   </div>
 </section>
 
