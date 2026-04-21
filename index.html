@@ -710,7 +710,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
     }
 
     .module-tile-icon {
@@ -1360,6 +1360,10 @@
       .pillar-grid-3col {
         grid-template-columns: 1fr !important;
       }
+      /* 4-column pillar grid → 2 cols at tablet width */
+      .pillar-grid-4col {
+        grid-template-columns: 1fr 1fr !important;
+      }
       /* Core engine card → stack on mobile */
       .core-engine-card {
         grid-template-columns: 1fr !important;
@@ -1534,34 +1538,34 @@
                 <button class="module-card-btn">Open Inbox →</button>
               </div>
               <div class="module-card">
+                <div class="module-card-header"><span class="module-card-icon">📋</span><span class="badge-live">● LIVE</span></div>
+                <div class="module-card-name">Clients & Briefs</div>
+                <div class="module-card-desc">Capture travel requests</div>
+                <button class="module-card-btn">Open Briefs →</button>
+              </div>
+              <div class="module-card">
+                <div class="module-card-header"><span class="module-card-icon">🏨</span><span class="badge-live">● LIVE</span></div>
+                <div class="module-card-name">Hotel RFPs</div>
+                <div class="module-card-desc">RFPs & quote comparisons</div>
+                <button class="module-card-btn">Open RFPs →</button>
+              </div>
+              <div class="module-card">
                 <div class="module-card-header"><span class="module-card-icon">🎫</span><span class="badge-live">● LIVE</span></div>
-                <div class="module-card-name">Guest Mgmt</div>
-                <div class="module-card-desc">Itineraries & RSVP</div>
+                <div class="module-card-name">Events & Guests</div>
+                <div class="module-card-desc">RSVP & Aide Memoire</div>
                 <button class="module-card-btn">Open Guests →</button>
               </div>
               <div class="module-card">
                 <div class="module-card-header"><span class="module-card-icon">📊</span><span class="badge-live">● LIVE</span></div>
-                <div class="module-card-name">Client Mgmt</div>
-                <div class="module-card-desc">Recon & briefs</div>
+                <div class="module-card-name">Reconciliation</div>
+                <div class="module-card-desc">Diners matching & month-end</div>
                 <button class="module-card-btn">Open Recon →</button>
               </div>
               <div class="module-card">
-                <div class="module-card-header"><span class="module-card-icon">🏨</span><span class="badge-live">● LIVE</span></div>
-                <div class="module-card-name">Supplier Mgmt</div>
-                <div class="module-card-desc">RFPs & hotel quotes</div>
-                <button class="module-card-btn">Open RFPs →</button>
-              </div>
-              <div class="module-card">
                 <div class="module-card-header"><span class="module-card-icon">🏠</span><span class="badge-live">● LIVE</span></div>
-                <div class="module-card-name">Travel Management Portals</div>
-                <div class="module-card-desc">Accommodation, transfers & flights</div>
-                <button class="module-card-btn">Open Portals →</button>
-              </div>
-              <div class="module-card">
-                <div class="module-card-header"><span class="module-card-icon">💳</span><span class="badge-live">● LIVE</span></div>
-                <div class="module-card-name">Payments & Invoicing</div>
-                <div class="module-card-desc">Guest payments & tax invoices</div>
-                <button class="module-card-btn">Open Payments →</button>
+                <div class="module-card-name">Travel Logistics</div>
+                <div class="module-card-desc">Accommodation, flights & transfers</div>
+                <button class="module-card-btn">Open Logistics →</button>
               </div>
             </div>
           </div>
@@ -1621,122 +1625,160 @@
       </div>
     </div>
 
-    <!-- FEEDS THREE PILLARS -->
+    <!-- FEEDS EVERY MODULE -->
     <div style="text-align:center;margin-bottom:40px;">
-      <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Feeds Three Pillars</p>
-      <p style="font-size:1rem;color:var(--text-mid);">Every extracted data point routes automatically to the right module.</p>
+      <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Feeds Every Module</p>
+      <p style="font-size:1rem;color:var(--text-mid);max-width:580px;margin:0 auto;">Every extracted data point routes automatically to the right module — no manual re-entry, no switching screens.</p>
     </div>
 
-    <!-- THREE PILLAR CARDS — ALL LIVE -->
-    <div class="pillar-grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px;">
-      <!-- Pillar 1: Guest Management -->
-      <div class="module-tile live" style="border-top:3px solid #4CAF50;">
-        <div class="module-tile-header">
-          <div class="module-tile-icon">🎫</div>
-          <span class="badge badge-live-full">LIVE</span>
-        </div>
-        <h3>Guest Management</h3>
-        <div class="module-tile-sub">The Itinerary Tool</div>
-        <p>Guest lifecycle from invitation to mobile e-ticket. Forwarded bookings auto-populate itineraries — no typing, no templates.</p>
-        <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> RSVP & Invitations <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> Aide Memoire (e-ticket) <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> Guest Portal <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> Guest Upload & Import <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
-        </div>
-      </div>
+    <!-- FOUR MODULE CARDS — ALL LIVE, matching app dashboard -->
+    <div class="pillar-grid-4col" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:48px;">
 
-      <!-- Pillar 2: Client Management -->
+      <!-- Module 1: Clients & Briefs -->
       <div class="module-tile live" style="border-top:3px solid #2196F3;">
         <div class="module-tile-header">
-          <div class="module-tile-icon">📊</div>
+          <div class="module-tile-icon">📋</div>
           <span class="badge badge-live-full">LIVE</span>
         </div>
-        <h3>Client Management</h3>
-        <div class="module-tile-sub">The Matching Tool</div>
-        <p>From client brief through to financial reconciliation. Import Diners statements — AutoReconcile matches 90%+ automatically. You only review exceptions.</p>
+        <h3>Clients &amp; Briefs</h3>
+        <div class="module-tile-sub">The Intake Tool</div>
+        <p>Send a professional intake link. Your client fills in the brief online. You receive structured, complete requirements ready to action.</p>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
           <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> Client Brief (Ind + Group) <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> Diners Reconciliation <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> PO Registry & Budget <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> Client Finance Access <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> Client Branding &amp; Logos <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> Multi-Client Dashboard <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:0.8rem;"><span style="color:#2196F3;font-weight:600;">●</span> Travel Request Capture <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#1565C0;">LIVE</span></div>
         </div>
       </div>
 
-      <!-- Pillar 3: Supplier Management -->
+      <!-- Module 2: Hotel RFPs -->
       <div class="module-tile live" style="border-top:3px solid #FF9800;">
         <div class="module-tile-header">
           <div class="module-tile-icon">🏨</div>
           <span class="badge badge-live-full">LIVE</span>
         </div>
-        <h3>Supplier Management</h3>
+        <h3>Hotel RFPs</h3>
         <div class="module-tile-sub">The Proposal Tool</div>
-        <p>Match from 342+ verified SA hotels. Send branded RFPs simultaneously. Track responses. Supplier map builds itself from extracted data.</p>
+        <p>Match from 342+ verified SA hotels. Send branded RFPs simultaneously. Track responses. Compare quotes side-by-side.</p>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Hotel RFP & Quotes <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Supplier Map (Recon) <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Hotel RFP &amp; Sending <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
           <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Quote Comparison <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Curated Hotel Database <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Curated Hotel Database (342+) <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff8e1;border-radius:8px;font-size:0.8rem;"><span style="color:#FF9800;font-weight:600;">●</span> Branded Agency RFPs <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#E65100;">LIVE</span></div>
         </div>
       </div>
+
+      <!-- Module 3: Events & Guests -->
+      <div class="module-tile live" style="border-top:3px solid #4CAF50;">
+        <div class="module-tile-header">
+          <div class="module-tile-icon">🎫</div>
+          <span class="badge badge-live-full">LIVE</span>
+        </div>
+        <h3>Events &amp; Guests</h3>
+        <div class="module-tile-sub">The Itinerary Tool</div>
+        <p>Guest lifecycle from invitation to mobile e-ticket. Forwarded bookings auto-populate itineraries — no typing, no templates.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> RSVP &amp; Invitations <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> Aide Memoire (e-ticket) <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> Guest Portal <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:0.8rem;"><span style="color:#4CAF50;font-weight:600;">●</span> Guest Upload &amp; Import <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#065F46;">LIVE</span></div>
+        </div>
+      </div>
+
+      <!-- Module 4: Reconciliation -->
+      <div class="module-tile live" style="border-top:3px solid #0891B2;">
+        <div class="module-tile-header">
+          <div class="module-tile-icon">📊</div>
+          <span class="badge badge-live-full">LIVE</span>
+        </div>
+        <h3>Reconciliation</h3>
+        <div class="module-tile-sub">The Matching Tool</div>
+        <p>Import Diners statements — AutoReconcile matches 90%+ automatically. PO budgets tracked. You only review exceptions.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#ecfeff;border-radius:8px;font-size:0.8rem;"><span style="color:#0891B2;font-weight:600;">●</span> Diners Reconciliation <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#155E75;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#ecfeff;border-radius:8px;font-size:0.8rem;"><span style="color:#0891B2;font-weight:600;">●</span> AutoReconcile Engine <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#155E75;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#ecfeff;border-radius:8px;font-size:0.8rem;"><span style="color:#0891B2;font-weight:600;">●</span> PO Registry &amp; Budget <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#155E75;">LIVE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#ecfeff;border-radius:8px;font-size:0.8rem;"><span style="color:#0891B2;font-weight:600;">●</span> Supplier Map <span style="margin-left:auto;font-size:0.68rem;font-weight:700;color:#155E75;">LIVE</span></div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- TRAVEL MANAGEMENT PORTALS -->
-    <div style="text-align:center;margin-bottom:40px;">
-      <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Now Live</p>
-      <h2 class="section-title" style="max-width:640px;margin:0 auto 8px;">Travel Management Portals</h2>
-      <p class="section-sub" style="max-width:580px;margin:0 auto;">Your guests book and pay online. Your transfers run live. Your flight inventory sells itself. GroupBook handles the travel management too &mdash; not just the admin.</p>
+    <!-- BRIDGE TO TRAVEL LOGISTICS -->
+    <div style="text-align:center;margin:0 auto 60px;max-width:720px;padding:20px 24px;background:var(--cream);border-radius:12px;">
+      <p style="font-size:0.95rem;color:var(--text-mid);line-height:1.65;margin:0;">
+        These four modules handle your <strong style="color:var(--navy);">admin</strong>. For everything that happens on the <strong style="color:var(--navy);">ground</strong> — rooming lists, airline manifests, driver dispatch, live change tracking — GroupBook's Travel Logistics modules keep one source of truth across every supplier, every guest, every leg.
+      </p>
+    </div>
+
+    <!-- TRAVEL LOGISTICS -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <p style="font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Now Live · TMC Tier</p>
+      <h2 class="section-title" style="max-width:720px;margin:0 auto 12px;">Travel Logistics</h2>
+      <p class="section-sub" style="max-width:680px;margin:0 auto 16px;">Centralised manifests for every leg of every group trip. Build your rooming list, airline manifest and transfer schedule once — distribute to hotels, airlines and drivers automatically. Handle changes in one place and everyone stays in sync.</p>
+    </div>
+
+    <!-- GUEST PORTAL — VALUE ADD CALLOUT -->
+    <div style="max-width:720px;margin:0 auto 40px;padding:14px 20px;background:linear-gradient(135deg,rgba(156,39,176,0.06) 0%,rgba(156,39,176,0.03) 100%);border:1px solid rgba(156,39,176,0.18);border-radius:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <span style="font-size:1.1rem;">✨</span>
+      <span style="font-size:0.88rem;color:var(--text-mid);line-height:1.5;"><strong style="color:#7B1FA2;">Guest Portal — optional value-add.</strong> Toggle on per module when you want guests to self-book. Leave off for full agent control. Your call, every event.</span>
     </div>
 
     <div class="pillar-grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px;">
-      <!-- Portal 1: Accommodation -->
+      <!-- Travel Logistics 1: Accommodation -->
       <div class="module-tile" style="border-top:3px solid #9C27B0;">
         <div class="module-tile-header">
           <div class="module-tile-icon">&#127968;</div>
           <span class="badge badge-live-full">LIVE</span>
         </div>
-        <h3>Accommodation Portal</h3>
-        <div class="module-tile-sub">Guest Self-Service Booking</div>
-        <p>Load room inventory per event. Guests browse availability, select their room, and pay online. Rooming lists build themselves. Branded confirmations sent automatically after payment.</p>
+        <h3>Accommodation</h3>
+        <div class="module-tile-sub">Rooming List Builder</div>
+        <p>Load room blocks and rates per event. Allocate guests to rooms. Rooming list auto-generates per hotel, per night — no more manual Excel. Branded confirmations once paid.</p>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
           <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Room inventory &amp; rate cards</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Online booking + Netcash payments</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Branded confirmation + invoicing</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Per-hotel rooming list export</div>
           <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Staff night-by-night tracking</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Branded confirmation + invoicing</div>
+        </div>
+        <div style="margin-top:14px;padding:8px 12px;background:rgba(156,39,176,0.06);border:1px dashed rgba(156,39,176,0.3);border-radius:8px;font-size:0.72rem;color:#7B1FA2;display:flex;align-items:center;gap:8px;">
+          <span>✨</span><span><strong>Optional:</strong> guests browse &amp; self-book rooms with Netcash payment</span>
         </div>
       </div>
 
-      <!-- Portal 2: Transfers -->
-      <div class="module-tile" style="border-top:3px solid #9C27B0;">
-        <div class="module-tile-header">
-          <div class="module-tile-icon">&#128663;</div>
-          <span class="badge badge-live-full">LIVE</span>
-        </div>
-        <h3>Transfers Portal</h3>
-        <div class="module-tile-sub">Live Manifest &amp; Dispatch</div>
-        <p>No more Google Sheets and WhatsApp groups. Live transfer manifest with driver dispatch, change tracking, and per-team charge-back reporting. Everyone sees the same live data.</p>
-        <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Arrivals, departures &amp; ad-hoc</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Driver assignment &amp; dispatch</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Change tracking with audit trail</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Charge-back reports per team</div>
-        </div>
-      </div>
-
-      <!-- Portal 3: Flights -->
+      <!-- Travel Logistics 2: Flights (moved to position 2 per app order) -->
       <div class="module-tile" style="border-top:3px solid #9C27B0;">
         <div class="module-tile-header">
           <div class="module-tile-icon">&#9992;&#65039;</div>
           <span class="badge badge-live-full">LIVE</span>
         </div>
-        <h3>Flights Portal</h3>
-        <div class="module-tile-sub">Seat Inventory &amp; Booking</div>
-        <p>Load flight legs with seat inventory. Guests select flights, enter passport details, and pay. Generate airline manifests with configurable field ordering per airline.</p>
+        <h3>Flights</h3>
+        <div class="module-tile-sub">Airline Manifest Builder</div>
+        <p>Load flight legs with seat inventory. Capture passport details. Generate airline manifests in the exact field order each airline requires. One source of truth across the whole event.</p>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> One-way + return flight selection</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Flight legs &amp; seat inventory</div>
           <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Passport detail capture</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Real-time seat availability</div>
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Airline manifest export</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Airline manifest export (per airline fields)</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> One-way + return selection</div>
+        </div>
+        <div style="margin-top:14px;padding:8px 12px;background:rgba(156,39,176,0.06);border:1px dashed rgba(156,39,176,0.3);border-radius:8px;font-size:0.72rem;color:#7B1FA2;display:flex;align-items:center;gap:8px;">
+          <span>✨</span><span><strong>Optional:</strong> guests self-select flights &amp; submit passport details</span>
+        </div>
+      </div>
+
+      <!-- Travel Logistics 3: Transfers -->
+      <div class="module-tile" style="border-top:3px solid #9C27B0;">
+        <div class="module-tile-header">
+          <div class="module-tile-icon">&#128663;</div>
+          <span class="badge badge-live-full">LIVE</span>
+        </div>
+        <h3>Transfers</h3>
+        <div class="module-tile-sub">Live Manifest &amp; Driver Dispatch</div>
+        <p>No more Google Sheets and WhatsApp groups. Build transfer manifests with driver assignments. Track every change with audit trail. Per-team charge-back reporting built in.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:16px;">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Arrivals, departures &amp; ad-hoc</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Driver assignment &amp; dispatch</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Change tracking with audit trail</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f3e5f5;border-radius:8px;font-size:0.8rem;"><span style="color:#9C27B0;font-weight:600;">&#9675;</span> Charge-back reports per team</div>
         </div>
       </div>
     </div>
@@ -1921,9 +1963,10 @@
           <li><span class="price-check">✓</span> 10 users (additional at R199/user)</li>
           <li><span class="price-check">✓</span> Unlimited RFPs &amp; events</li>
           <li><span class="price-check">✓</span> All Agency features, plus:</li>
-          <li><span class="price-check">✓</span> Accommodation booking portal</li>
-          <li><span class="price-check">✓</span> Transfers portal + driver dispatch</li>
-          <li><span class="price-check">✓</span> Flights portal + airline manifest</li>
+          <li><span class="price-check">✓</span> Accommodation + rooming list builder</li>
+          <li><span class="price-check">✓</span> Flights + airline manifest export</li>
+          <li><span class="price-check">✓</span> Transfers + driver dispatch + change tracking</li>
+          <li><span class="price-check">✓</span> Optional guest self-service portals</li>
           <li><span class="price-check">✓</span> Netcash payment gateway</li>
           <li><span class="price-check">✓</span> Proforma + tax invoice generation</li>
           <li><span class="price-check">✓</span> Branded confirmation emails</li>
@@ -2005,9 +2048,11 @@
         <div class="footer-col-title">Platform</div>
         <ul class="footer-links">
           <li><a href="#platform">Smart Inbox (AI Core)</a></li>
-          <li><a href="#platform">Guest Management</a></li>
-          <li><a href="#platform">Client Management</a></li>
-          <li><a href="#platform">Supplier Management</a></li>
+          <li><a href="#platform">Clients &amp; Briefs</a></li>
+          <li><a href="#platform">Hotel RFPs</a></li>
+          <li><a href="#platform">Events &amp; Guests</a></li>
+          <li><a href="#platform">Reconciliation</a></li>
+          <li><a href="#platform">Travel Logistics</a></li>
         </ul>
       </div>
       <div>
@@ -2290,6 +2335,7 @@ footer {
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
   .form-row { grid-template-columns: 1fr; }
   .modal-box { padding: 28px 20px; }
+  .pillar-grid-4col { grid-template-columns: 1fr !important; }
 }
 </style>
 
