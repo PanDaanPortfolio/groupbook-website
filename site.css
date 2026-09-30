@@ -264,3 +264,5 @@ figure.waterfall figcaption{font-size:13.5px;color:var(--ink-2);margin-top:12px;
 .next div{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
 .next b{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:14px}
 .next p{font-size:13.5px;color:var(--ink-2)}
+.rung .setup{font-size:12.5px;color:var(--ink-2);background:var(--cream);border-radius:8px;padding:6px 10px}
+.rung .setup a{text-decoration:underline}

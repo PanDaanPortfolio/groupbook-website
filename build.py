@@ -158,9 +158,9 @@ INDEX = """
   <div class="wrap">
     <div class="eyebrow">Choose your path</div>
     <h2 style="margin-top:10px">Same platform, one price ladder. Start where the work is.</h2>
-    <p class="lede" style="margin-top:10px">Recommendations follow what you run, not what you are called.</p>
+    <p class="lede" style="margin-top:10px">Our recommendations follow what you run, not what you are called.</p>
     <div class="grid g4" style="margin-top:28px">
-      <div class="card"><h3>I run events for my company</h3><p>Briefs arrive from every department, quotes come back in every format, and the guest list changes until the day before.</p><p class="muted">Teams managing guest logistics usually start on <strong data-tier="practice">Practice</strong>. Scale, SSO or a service commitment point to <strong data-tier="enterprise">Enterprise</strong>.</p><a href="/pricing#practice">See the plan →</a></div>
+      <div class="card"><h3>I run events for my company</h3><p>Briefs arrive from every department, quotes come back in every format, and the guest list changes until the day before.</p><p class="muted">We recommend <strong data-tier="practice">Practice</strong> for teams running guest logistics. Scale, SSO or a service commitment point to <strong data-tier="enterprise">Enterprise</strong>.</p><a href="/pricing#practice">See the plan →</a></div>
       <div class="card"><h3>I'm an event agency</h3><p>Every event starts with the same phone calls to find the group desk, and the same spreadsheet rebuilt from scratch.</p><p class="muted">Sourcing-led work fits <strong data-tier="sourcing">Sourcing</strong>; add guest logistics on <strong data-tier="practice">Practice</strong>.</p><a href="/pricing#sourcing">See the plan →</a></div>
       <div class="card"><h3>I'm a MICE agency</h3><p>Multi-hotel, multi-city programmes with rooming lists, transfers and supplier packs that must agree with each other.</p><p class="muted">Several events in flight at once is <strong data-tier="practice">Practice</strong> or <strong data-tier="agency">Agency</strong>.</p><a href="/pricing#agency">See the plan →</a></div>
       <div class="card"><h3>I move groups</h3><p>Sports tours, incentive trips, conference delegations — the same group, many suppliers, one deadline.</p><p class="muted">Start on <strong data-tier="sourcing">Sourcing</strong>; add rooming, flights and transfers on <strong data-tier="practice">Practice</strong>.</p><a href="/pricing#sourcing">See the plan →</a></div>
@@ -212,7 +212,7 @@ INDEX = """
   <div class="wrap">
     <div class="eyebrow">What GroupBook covers</div>
     <h2 style="margin-top:10px">Two jobs: source it, then run it.</h2>
-    <p class="lede" style="margin-top:10px">Free sourcing tools stop when the quotes arrive. The work does not. GroupBook carries the same group from the first request to the last transfer.</p>
+    <p class="lede" style="margin-top:10px">The work continues after the quotes arrive. GroupBook keeps sourcing and guest travel coordination in the same workspace, from the first request to the last transfer.</p>
     <div class="jobs" style="margin-top:26px">
       <div class="jh"></div><div class="jh">Hotels</div><div class="jh">Venues</div><div class="jh">Flights</div><div class="jh">Transfers</div><div class="jh">Car hire</div><div class="jh">Other suppliers</div>
       <div class="jl"><strong>Source it</strong><small>brief → shortlist → request → compare → award</small></div>
@@ -299,9 +299,10 @@ INDEX = """
 """
 
 # ---------------------------------------------------------------- pricing
-def rung(key, name, price, sub, items, hi=False, badge=None, anchor=True):
+def rung(key, name, price, sub, items, hi=False, badge=None, anchor=True, setup=None):
     b = f'<div class="badge">{badge}</div>' if badge else ""
-    return f"""<div class="rung{' hi' if hi else ''}" id="{key}">{b}<div class="tier" data-tier="{key}">{name}</div><div class="price">{price}<small> /month</small></div><div class="annual">{sub}</div><ul>{"".join(f"<li>{i}</li>" for i in items)}</ul></div>"""
+    st = f'<div class="setup">+ {setup} once-off implementation · <a href="#implementation">what it covers</a></div>' if setup else ""
+    return f"""<div class="rung{' hi' if hi else ''}" id="{key}">{b}<div class="tier" data-tier="{key}">{name}</div><div class="price">{price}<small> /month</small></div><div class="annual">{sub}</div>{st}<ul>{"".join(f"<li>{i}</li>" for i in items)}</ul></div>"""
 
 PRICING = """
 <section class="band-white" style="padding-bottom:28px">
@@ -315,10 +316,10 @@ PRICING = """
   <div class="wrap">
     <div class="ladder four">
 """ + \
-rung("sourcing","Sourcing","R1,950","<span data-annual-of='sourcing'>R19,500</span> a year (two months free)",["2 named users · extra user R395","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","400 request recipients a month · 200 contacts a month · ≈ 60% a year","100 AI-read documents a month","60 minutes of assistance a month · Sev 1 answered within 2 business hours"]) + \
-rung("practice","Practice","R4,950","<span data-annual-of='practice'>R49,500</span> a year (two months free)",["5 named users · extra user R395","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, supplier packs","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","1,200 recipients a month · 300 contacts a month · ≈ 90% a year","300 AI-read documents a month","120 minutes of assistance a month · 2 Event Window days a year"], hi=True, badge="Teams running events") + \
-rung("agency","Agency","R9,950","<span data-annual-of='agency'>R99,500</span> a year (two months free)",["10 named users · extra user R395","Everything in Practice","Many events in flight, across teams and clients","Card-statement import and reconciliation workspace","Automatic reconciliation matching <span class='tag'>Coming Q4 2026</span>","3,000 recipients a month · 500 contacts a month · no annual cap, usage monitored","750 AI-read documents a month","240 minutes of assistance a month · 6 Event Window days a year"]) + \
-rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, allowances and service levels by order form","SSO, data residency and security review","Named support contact and agreed response targets","Everything in Agency"]) + """
+rung("sourcing","Sourcing","R1,950","<span data-annual-of='sourcing'>R19,500</span> a year (two months free)",["2 named users · extra user R395","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","400 request recipients a month · 200 contacts a month · ≈ 60% a year","100 AI-read documents a month","60 minutes of assistance a month · Sev 1 answered within 2 business hours"], setup="R7,500") + \
+rung("practice","Practice","R4,950","<span data-annual-of='practice'>R49,500</span> a year (two months free)",["5 named users · extra user R395","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, supplier packs","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","1,200 recipients a month · 300 contacts a month · ≈ 90% a year","300 AI-read documents a month","120 minutes of assistance a month · 2 Event Window days a year"], hi=True, badge="Recommended for teams running events", setup="R15,000") + \
+rung("agency","Agency","R9,950","<span data-annual-of='agency'>R99,500</span> a year (two months free)",["10 named users · extra user R395","Everything in Practice","Many events in flight, across teams and clients","Card-statement import and reconciliation workspace","Automatic reconciliation matching <span class='tag'>Coming Q4 2026</span>","3,000 recipients a month · 500 contacts a month · no annual cap, usage monitored","750 AI-read documents a month","240 minutes of assistance a month · 6 Event Window days a year"], setup="R35,000") + \
+rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, allowances and service levels by order form","SSO and data residency <span class='tag'>By agreed scope</span>","Security review, named support contact, agreed response targets","Everything in Agency"], setup="R110,000") + """
     </div>
     <p class="note" style="margin-top:14px">Fair use applies to every plan — the envelope and its definitions are on the <a href="/fair-use">fair-use page</a>. Contact reveals are counted once per property per 90 days, across your whole organisation. Quantities are never “unlimited”.</p>
   </div>
@@ -329,24 +330,24 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
     <h2>How the plans stack</h2>
     <p class="lede" style="margin-top:10px">Each rung adds a layer of work to everything below it. Pick the highest layer you actually do.</p>
     <div class="stacks" style="margin-top:22px">
-<div class="stack" id="stack-sourcing"><div class="sh"><span class="tier" data-tier="sourcing">Sourcing</span><span class="pr">R1,950 /mo</span><span class="us">2 users</span></div><div class="lbl">Source it</div><div class="own"><span class="chip">Directory search</span><span class="chip">Client brief &amp; intake link</span><span class="chip">Branded requests</span><span class="chip">Side-by-side comparison</span><span class="chip">Award &amp; decline</span><span class="chip">Smart Inbox: brief, quote</span></div></div><div class="stack" id="stack-practice"><div class="sh"><span class="tier" data-tier="practice">Practice</span><span class="pr">R4,950 /mo</span><span class="us">5 users</span></div><div class="lbl">Run it</div><div class="own"><span class="chip">Guest list &amp; entitlements</span><span class="chip">Aide Mémoire itinerary</span><span class="chip">Room blocks &amp; rooming lists</span><span class="chip">Flights &amp; manifests</span><span class="chip">Transfers &amp; car hire</span><span class="chip">Supplier packs</span><span class="chip">Smart Inbox: confirmations</span><span class="chip">Guest portal &amp; RSVP <span class="tag">In UAT</span></span></div><div class="inh"><small>Everything in Sourcing</small></div></div><div class="stack" id="stack-agency"><div class="sh"><span class="tier" data-tier="agency">Agency</span><span class="pr">R9,950 /mo</span><span class="us">10 users</span></div><div class="lbl">Settle it, at scale</div><div class="own"><span class="chip">Many events, many teams</span><span class="chip">Card-statement import</span><span class="chip">PO registry &amp; budgets</span><span class="chip">Invoices read into recon</span><span class="chip">Smart Inbox: invoices</span><span class="chip">Auto-matching <span class="tag">Q4 2026</span></span></div><div class="inh"><small>Everything in Practice</small></div><div class="inh"><small>Everything in Sourcing</small></div></div><div class="stack" id="stack-enterprise"><div class="sh"><span class="tier" data-tier="enterprise">Enterprise</span><span class="pr">from R19,500 /mo</span><span class="us">By order form</span></div><div class="lbl">Governed</div><div class="own"><span class="chip">SSO</span><span class="chip">Data residency</span><span class="chip">Security review</span><span class="chip">Named support contact</span><span class="chip">Agreed response targets</span></div><div class="inh"><small>Everything in Agency</small></div><div class="inh"><small>Everything in Practice</small></div><div class="inh"><small>Everything in Sourcing</small></div></div>
+<div class="stack" id="stack-sourcing"><div class="sh"><span class="tier" data-tier="sourcing">Sourcing</span><span class="pr">R1,950 /mo</span><span class="us">2 users</span></div><div class="lbl">Source it</div><div class="own"><span class="chip">Directory search</span><span class="chip">Client brief &amp; intake link</span><span class="chip">Branded requests</span><span class="chip">Side-by-side comparison</span><span class="chip">Award &amp; decline</span><span class="chip">Smart Inbox: brief, quote</span></div></div><div class="stack" id="stack-practice"><div class="sh"><span class="tier" data-tier="practice">Practice</span><span class="pr">R4,950 /mo</span><span class="us">5 users</span></div><div class="lbl">Run it</div><div class="own"><span class="chip">Guest list &amp; entitlements</span><span class="chip">Aide Mémoire itinerary</span><span class="chip">Room blocks &amp; rooming lists</span><span class="chip">Flights &amp; manifests</span><span class="chip">Transfers &amp; car hire</span><span class="chip">Supplier packs</span><span class="chip">Smart Inbox: confirmations</span><span class="chip">Guest portal &amp; RSVP <span class="tag">In UAT</span></span></div><div class="inh"><small>Everything in Sourcing</small></div></div><div class="stack" id="stack-agency"><div class="sh"><span class="tier" data-tier="agency">Agency</span><span class="pr">R9,950 /mo</span><span class="us">10 users</span></div><div class="lbl">Settle it, at scale</div><div class="own"><span class="chip">Many events, many teams</span><span class="chip">Card-statement import</span><span class="chip">PO registry &amp; budgets</span><span class="chip">Invoices read into recon</span><span class="chip">Smart Inbox: invoices</span><span class="chip">Auto-matching <span class="tag">Q4 2026</span></span></div><div class="inh"><small>Everything in Practice</small></div><div class="inh"><small>Everything in Sourcing</small></div></div><div class="stack" id="stack-enterprise"><div class="sh"><span class="tier" data-tier="enterprise">Enterprise</span><span class="pr">from R19,500 /mo</span><span class="us">By order form</span></div><div class="lbl">Governed</div><div class="own"><span class="chip">SSO <span class="tag">By scope</span></span><span class="chip">Data residency <span class="tag">By scope</span></span><span class="chip">Security review</span><span class="chip">Named support contact</span><span class="chip">Agreed response targets</span></div><div class="inh"><small>Everything in Agency</small></div><div class="inh"><small>Everything in Practice</small></div><div class="inh"><small>Everything in Sourcing</small></div></div>
     </div>
-    <p class="note" style="margin-top:12px">No tag means it runs in production today. <span class="tag">In UAT</span> is live for one customer and being hardened; <span class="tag">Q4 2026</span> is being built and is not charged for until it ships.</p>
+    <p class="note" style="margin-top:12px">No tag means it runs in production today. <span class="tag">In UAT</span> is live for one customer and being hardened; <span class="tag">Q4 2026</span> is being built and is not charged for until it ships; <span class="tag">By scope</span> is delivered under an Enterprise order form, not off the shelf.</p>
   </div>
 </section>
 
 <section class="band-cream" style="padding-top:44px">
   <div class="wrap">
-    <h2>Where teams like yours land</h2>
-    <p class="lede" style="margin-top:10px">Entry rung, the rung most teams settle on, and where it grows — by the work, not the job title. Indicative annual figures are the two-months-free price.</p>
+    <h2>Our recommended starting rung, by the work you run</h2>
+    <p class="lede" style="margin-top:10px">Where we suggest you start, which rung we recommend for the full job, and where it grows. Indicative annual figures are the two-months-free price.</p>
     <div class="segrid" style="margin-top:22px">
       <div class="gh"></div><div class="gh"><span data-tier="sourcing">Sourcing</span><small>R19,500 / yr</small></div><div class="gh"><span data-tier="practice">Practice</span><small>R49,500 / yr</small></div><div class="gh"><span data-tier="agency">Agency</span><small>R99,500 / yr</small></div><div class="gh"><span data-tier="enterprise">Enterprise</span><small>from R195,000 / yr</small></div>
-      <div class="gl"><strong>Corporate event team</strong><small>Briefs from every department; the guest list moves until the day before</small></div><div class="gc entry" data-t="Sourcing"><b>Entry</b><small>One department, sourcing only</small></div><div class="gc now" data-t="Practice"><b>Lands here</b><small>Guest logistics from day one</small></div><div class="gc " data-t="Agency"></div><div class="gc grow" data-t="Enterprise"><b>Grows to</b><small>SSO, residency or a service commitment</small></div>
-      <div class="gl"><strong>Event agency</strong><small>Every event starts with the same calls to find the group desk</small></div><div class="gc now" data-t="Sourcing"><b>Lands here</b><small>Pays for itself on the first brief</small></div><div class="gc grow" data-t="Practice"><b>Grows to</b><small>When you run the guests too</small></div><div class="gc grow" data-t="Agency"><b>Grows to</b><small>Several clients in flight</small></div><div class="gc " data-t="Enterprise"></div>
-      <div class="gl"><strong>MICE agency</strong><small>Multi-hotel, multi-city programmes that must agree with each other</small></div><div class="gc " data-t="Sourcing"></div><div class="gc entry" data-t="Practice"><b>Entry</b><small>One programme at a time</small></div><div class="gc now" data-t="Agency"><b>Lands here</b><small>Many programmes, reconciliation</small></div><div class="gc grow" data-t="Enterprise"><b>Grows to</b><small>Group-wide rollout</small></div>
-      <div class="gl"><strong>Group travel specialist</strong><small>Sports tours, incentives, delegations: one group, many suppliers</small></div><div class="gc now" data-t="Sourcing"><b>Lands here</b><small>Requests, replies, comparison</small></div><div class="gc grow" data-t="Practice"><b>Grows to</b><small>Rooming, flights, transfers</small></div><div class="gc grow" data-t="Agency"><b>Grows to</b><small>Several groups at once</small></div><div class="gc " data-t="Enterprise"></div>
+      <div class="gl"><strong>Corporate event team</strong><small>Briefs from every department; the guest list moves until the day before</small></div><div class="gc entry" data-t="Sourcing"><b>Start here</b><small>One department, sourcing only</small></div><div class="gc now" data-t="Practice"><b>Recommended</b><small>Guest logistics on the same record</small></div><div class="gc " data-t="Agency"></div><div class="gc grow" data-t="Enterprise"><b>Grows to</b><small>SSO, residency or a service commitment</small></div>
+      <div class="gl"><strong>Event agency</strong><small>Every event starts with the same calls to find the group desk</small></div><div class="gc now" data-t="Sourcing"><b>Recommended</b><small>Requests, replies and comparison</small></div><div class="gc grow" data-t="Practice"><b>Grows to</b><small>When you run the guests too</small></div><div class="gc grow" data-t="Agency"><b>Grows to</b><small>Several clients in flight</small></div><div class="gc " data-t="Enterprise"></div>
+      <div class="gl"><strong>MICE agency</strong><small>Multi-hotel, multi-city programmes that must agree with each other</small></div><div class="gc " data-t="Sourcing"></div><div class="gc entry" data-t="Practice"><b>Start here</b><small>One programme at a time</small></div><div class="gc now" data-t="Agency"><b>Recommended</b><small>Many programmes, reconciliation</small></div><div class="gc grow" data-t="Enterprise"><b>Grows to</b><small>Group-wide rollout</small></div>
+      <div class="gl"><strong>Group travel specialist</strong><small>Sports tours, incentives, delegations: one group, many suppliers</small></div><div class="gc now" data-t="Sourcing"><b>Recommended</b><small>Requests, replies, comparison</small></div><div class="gc grow" data-t="Practice"><b>Grows to</b><small>Rooming, flights, transfers</small></div><div class="gc grow" data-t="Agency"><b>Grows to</b><small>Several groups at once</small></div><div class="gc " data-t="Enterprise"></div>
     </div>
-    <div class="legend" style="margin-top:12px"><span class="l-entry">Entry rung</span><span class="l-now">Where most teams land</span><span class="l-grow">Grows to</span></div>
+    <div class="legend" style="margin-top:12px"><span class="l-entry">Start here</span><span class="l-now">Recommended for the full job</span><span class="l-grow">Grows to</span></div>
     <p class="note" style="margin-top:10px">Not sure? Tell us what you run on the <a href="/contact">walkthrough request</a> and we will point at a rung — and say so if a lower one fits.</p>
   </div>
 </section>
@@ -383,7 +384,7 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
 <tr><td class="lbl">Multi-client dashboard</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">Many events in flight, across teams and clients</td><td class="no">—</td><td class="no">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">Client branding on every document; agency branding on requests</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
-<tr><td class="lbl">SSO, data residency, security review</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="tick">✓</td></tr>
+<tr><td class="lbl">SSO and data residency <span class="tag">By agreed scope</span>; security review</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="tick">✓</td></tr>
 <tr class="grp"><td colspan="5">Support</td></tr>
 <tr><td class="lbl">Our defects fixed free, at any hour</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">Sev 1 first response within 2 business hours</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
@@ -396,7 +397,7 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
   </div>
 </section>
 
-<section class="band-white">
+<section class="band-white" id="implementation">
   <div class="wrap">
     <h2>Implementation, by what you get — not by the hour</h2>
     <p class="lede" style="margin-top:10px">A one-off fee so your first live brief runs with us in the room.</p>
@@ -446,7 +447,7 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
       <h3>What the roadmap lines mean</h3>
       <p><span class="tag">In UAT with a launch customer</span> is live for one customer today and being hardened before general release. It is included in the plan shown, at no extra cost, when it releases.</p>
       <p><span class="tag">Coming Q4 2026</span> is being built now. Nothing on this page with that tag is charged for until it ships.</p>
-      <p>Anything without a tag runs in production today.</p>
+      <p><span class="tag">By agreed scope</span> means an Enterprise capability delivered under the order form, not switched on off the shelf. Anything without a tag runs in production today.</p>
       <h3 style="margin-top:8px">Not sure which plan?</h3>
       <p>Tell us what you run and we will point at a rung — and say so if a lower one fits.</p>
       <a class="btn btn-primary" href="/contact" style="justify-self:start">Request a walkthrough</a>
@@ -736,7 +737,7 @@ CONTACT = """
       <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Forty minutes, on one of your briefs.</h1>
       <p class="lede" style="margin-top:12px">Bring a real requirement — a room block, a conference, a group trip — and we run it through GroupBook with you, from shortlist to comparison. If a lower plan fits, we will say so.</p>
       <ul class="list" style="margin-top:18px">
-        <li>Video call, screen shared; no slides.</li>
+        <li>Video call, screen shared; no slides. Bring a real brief, or we run it on a sample one — forty minutes, or a shorter first look if you are still exploring.</li>
         <li>We reply by email to set a time, usually within one business day.</li>
         <li>Existing customers: email <a href="mailto:support@groupbook.co.za">support@groupbook.co.za</a> or press Log a call in the app.</li>
         <li>Hotels and venues: <a href="mailto:support@groupbook.co.za">support@groupbook.co.za</a>.</li>
@@ -764,7 +765,7 @@ CONTACT = """
     </form>
     <div class="next" style="margin-top:28px">
       <div><b>1</b><p>We reply by email to agree a time, usually within one business day.</p></div>
-      <div><b>2</b><p>Bring one real brief. The walkthrough runs on it, not on a demo script.</p></div>
+      <div><b>2</b><p>Bring a real brief if you have one; otherwise we run a sample. No demo script.</p></div>
       <div><b>3</b><p>You leave with a rung recommendation — and we say so if a lower one fits.</p></div>
     </div>
   </div>
