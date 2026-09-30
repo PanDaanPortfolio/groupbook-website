@@ -6,13 +6,14 @@ OUT = os.path.dirname(os.path.abspath(__file__))
 
 NAV = [("how-it-works", "How it works"), ("pricing", "Pricing"), ("for-hotels", "For hotels"), ("support", "Support")]
 
-def head(title, desc, path):
+def head(title, desc, path, jsonld=""):
     canon = "https://www.groupbook.co.za/" + ("" if path == "index" else path)
     return f"""<!doctype html>
 <html lang="en-ZA">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#152742">
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canon}">
@@ -29,8 +30,11 @@ def head(title, desc, path):
 <link rel="stylesheet" href="/site.css">
 <script src="/site-config.js" defer></script>
 <script src="/site.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>
+{jsonld}
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <header class="site">
   <div class="wrap">
     <a class="logo" href="/" aria-label="GroupBook home"><img src="/groupbook-logo-web-white.png" alt="GroupBook"></a>
@@ -42,10 +46,11 @@ def head(title, desc, path):
     </nav>
   </div>
 </header>
-<main>
+<main id="main">
 """
 
 FOOT = """</main>
+<div class="sticky-cta" aria-hidden="true"><a class="btn btn-primary" href="/contact">Request a walkthrough</a></div>
 <footer class="site">
   <div class="wrap">
     <div class="cols">
@@ -68,9 +73,24 @@ FOOT = """</main>
 </html>
 """
 
+ORG = {"@type":"Organization","name":"GroupBook","legalName":"PanDaan (Pty) Ltd","url":"https://www.groupbook.co.za/","logo":"https://www.groupbook.co.za/groupbook-logo.png","email":"support@groupbook.co.za","areaServed":"ZA"}
+APP = {"@type":"SoftwareApplication","name":"GroupBook","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://www.groupbook.co.za/","description":"Source hotels and venues, compare quotes and coordinate group travel for South African group travel professionals.","publisher":{"@type":"Organization","name":"PanDaan (Pty) Ltd"},
+       "offers":[{"@type":"Offer","name":n,"price":p,"priceCurrency":"ZAR","url":"https://www.groupbook.co.za/pricing#"+k} for k,n,p in [("sourcing","Sourcing",1950),("practice","Practice",4950),("agency","Agency",9950),("enterprise","Enterprise",19500)]]}
+
+def faq_ld(body):
+    qs = re.findall(r'<details class="faq"><summary>(.*?)</summary><p>(.*?)</p></details>', body, re.S)
+    strip = lambda t: re.sub(r'<[^>]+>', '', t).replace('&amp;','&').strip()
+    if not qs: return None
+    return {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":strip(q),"acceptedAnswer":{"@type":"Answer","text":strip(a)}} for q,a in qs]}
+
 def page(name, title, desc, body):
+    graph = [ORG] if name == "index" else []
+    if name == "index": graph.append(APP)
+    f_ld = faq_ld(body)
+    if f_ld: graph.append(f_ld)
+    ld = '<script type="application/ld+json">' + json.dumps({"@context":"https://schema.org","@graph":graph}, ensure_ascii=False) + '</script>' if graph else ''
     with open(os.path.join(OUT, name + ".html"), "w", encoding="utf-8") as f:
-        f.write(head(title, desc, name) + body + FOOT)
+        f.write(head(title, desc, name, ld) + body + FOOT)
     print("wrote", name + ".html")
 
 T = lambda k, n: f'<span data-tier="{k}">{n}</span>'
@@ -89,7 +109,7 @@ INDEX = """
       </div>
       <p class="muted" style="margin-top:18px;color:#B9C3CC">For corporate event teams, event and MICE agencies, and group travel specialists.</p>
     </div>
-    <div class="shot"><img src="/screen-compare.png" alt="Comparing hotel responses to one brief in GroupBook"></div>
+    <div class="shot"><img src="/screen-compare.png" width="1856" height="1037" fetchpriority="high" alt="Comparing hotel responses to one brief in GroupBook"></div>
   </div>
 </section>
 
@@ -108,11 +128,11 @@ INDEX = """
     <h2 style="margin-top:10px">Six modules. One record of the group, from brief to arrival.</h2>
     <p class="lede" style="margin-top:10px">Everything below runs in production for our launch customer today, except where a line says otherwise.</p>
     <div class="grid" style="margin-top:28px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
-      <div class="tile"><img src="/screen-dashboard.png" alt="GroupBook dashboard"><div class="body"><h3>Clients &amp; briefs</h3><p>Send a client an intake link, or forward their email to your Smart Inbox. You get a structured brief — dates, numbers, rooms, meeting space, budget — ready to action.</p><ul><li>Client brief form, individual and group</li><li>Client branding on every document</li><li>Multi-client dashboard</li></ul></div></div>
-      <div class="tile"><img src="/screen-smartmatch.png" alt="Matching hotels to a brief"><div class="body"><h3>Hotel &amp; venue sourcing</h3><p>Match from the directory by town, capacity, layout and distance. Send one branded request to the shortlist; replies file themselves against the brief.</p><ul><li>Group-desk contact on every listed hotel</li><li>Width cap so hotels take the request seriously</li><li>Award and decline in one click; everyone hears back</li></ul></div></div>
-      <div class="tile"><img src="/screen-compare.png" alt="Quote comparison"><div class="body"><h3>Quote comparison</h3><p>Quotes are read into a side-by-side comparison — rates, totals, availability, conditions and attachments. A revised quote updates its own column.</p><ul><li>PDF and email quotes read by AI</li><li>Sort by price, stars, name</li><li>Export the comparison for the client</li></ul></div></div>
-      <div class="tile"><img src="/shot-guests.jpg" alt="Event dashboard: guests, rooms, flights and transfers at a glance"><div class="body"><h3>Guests &amp; events</h3><p>Import the guest list once. Entitlements, dietary and special requirements, sub-events and a personalised itinerary (Aide Mémoire) for each guest.</p><ul><li>Guest import and entitlements</li><li>Aide Mémoire — a branded mobile itinerary</li><li>Guest portal and RSVP <span class="tag">In UAT with a launch customer</span></li></ul></div></div>
-      <div class="tile"><img src="/shot-logistics.jpg" alt="Sending rooming lists to hotels from the event record"><div class="body"><h3>Travel logistics</h3><p>Accommodation, flights, transfers and car hire from the same guest list. Rooming lists, airline manifests and transfer schedules regenerate when the list changes.</p><ul><li>Room blocks, auto-assign, per-hotel rooming lists</li><li>Flight legs, passport capture, per-airline manifests</li><li>Transfer manifests with driver assignment and change tracking</li></ul></div></div>
+      <div class="tile"><img src="/tile-briefs.jpg" width="1120" height="630" loading="lazy" alt="The GroupBook command centre: Smart Inbox, event playbook and client brief intake"><div class="body"><h3>Clients &amp; briefs</h3><p>Send a client an intake link, or forward their email to your Smart Inbox. You get a structured brief — dates, numbers, rooms, meeting space, budget — ready to action.</p><ul><li>Client brief form, individual and group</li><li>Client branding on every document</li><li>Multi-client dashboard</li></ul></div></div>
+      <div class="tile"><img src="/tile-sourcing.jpg" width="1120" height="630" loading="lazy" alt="A hotel request: shortlisted properties with send, resend, accept and decline actions"><div class="body"><h3>Hotel &amp; venue sourcing</h3><p>Match from the directory by town, capacity, layout and distance. Send one branded request to the shortlist; replies file themselves against the brief.</p><ul><li>Group-desk contact on every listed hotel</li><li>Width cap so hotels take the request seriously</li><li>Award and decline in one click; everyone hears back</li></ul></div></div>
+      <div class="tile"><img src="/tile-compare.jpg" width="1120" height="630" loading="lazy" alt="Quotes ranked side by side with accommodation, conference and grand totals"><div class="body"><h3>Quote comparison</h3><p>Quotes are read into a side-by-side comparison — rates, totals, availability, conditions and attachments. A revised quote updates its own column.</p><ul><li>PDF and email quotes read by AI</li><li>Sort by price, stars, name</li><li>Export the comparison for the client</li></ul></div></div>
+      <div class="tile"><img src="/tile-guests.jpg" width="1120" height="630" loading="lazy" alt="Event dashboard: guests, RSVP, rooms, flights and transfers at a glance"><div class="body"><h3>Guests &amp; events</h3><p>Import the guest list once. Entitlements, dietary and special requirements, sub-events and a personalised itinerary (Aide Mémoire) for each guest.</p><ul><li>Guest import and entitlements</li><li>Aide Mémoire — a branded mobile itinerary</li><li>Guest portal and RSVP <span class="tag">In UAT with a launch customer</span></li></ul></div></div>
+      <div class="tile"><img src="/tile-logistics.jpg" width="1120" height="630" loading="lazy" alt="Rooming lists, one per property, sent to hotels from the event record"><div class="body"><h3>Travel logistics</h3><p>Accommodation, flights, transfers and car hire from the same guest list. Rooming lists, airline manifests and transfer schedules regenerate when the list changes.</p><ul><li>Room blocks, auto-assign, per-hotel rooming lists</li><li>Flight legs, passport capture, per-airline manifests</li><li>Transfer manifests with driver assignment and change tracking</li></ul></div></div>
       <div class="tile"><div class="glyphband">📊</div><div class="body"><h3>Reconciliation</h3><p>Import card statements and match them to the event's bookings and purchase orders in one workspace, so month-end is a review of exceptions rather than a rebuild.</p><ul><li>Card-statement import</li><li>PO registry and budget tracking</li><li>Automatic matching engine <span class="tag">Coming Q4 2026</span></li></ul></div></div>
     </div>
   </div>
@@ -192,15 +212,15 @@ INDEX = """
   <div class="wrap">
     <div class="eyebrow">What GroupBook covers</div>
     <h2 style="margin-top:10px">Two jobs: source it, then run it.</h2>
-    <p class="lede" style="margin-top:10px">Free sourcing tools stop when the quotes arrive. The work does not.</p>
-    <div class="table-scroll" style="margin-top:24px"><table>
-      <thead><tr><th></th><th>Hotels</th><th>Venues</th><th>Flights</th><th>Transfers</th><th>Car hire</th><th>Other suppliers</th></tr></thead>
-      <tbody>
-        <tr><td class="lbl"><strong>Source it</strong><br><span class="muted">brief → shortlist → request → compare → award</span></td><td class="tick">✓</td><td class="tick">✓</td><td>brief + request</td><td>brief + request</td><td>brief + request</td><td>request any supplier</td></tr>
-        <tr><td class="lbl"><strong>Run it</strong><br><span class="muted">import → assign → guest output → supplier pack</span></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td>—</td></tr>
-      </tbody>
-    </table></div>
-    <p class="note" style="margin-top:10px">Structured matching and comparison run for hotels and venues today; any other supplier can receive the same branded request and be coordinated from the event record.</p>
+    <p class="lede" style="margin-top:10px">Free sourcing tools stop when the quotes arrive. The work does not. GroupBook carries the same group from the first request to the last transfer.</p>
+    <div class="jobs" style="margin-top:26px">
+      <div class="jh"></div><div class="jh">Hotels</div><div class="jh">Venues</div><div class="jh">Flights</div><div class="jh">Transfers</div><div class="jh">Car hire</div><div class="jh">Other suppliers</div>
+      <div class="jl"><strong>Source it</strong><small>brief → shortlist → request → compare → award</small></div>
+      <div class="jc full" data-h="Hotels: ">Match, request, compare</div><div class="jc full" data-h="Venues: ">Match, request, compare</div><div class="jc part" data-h="Flights: ">Brief and request</div><div class="jc part" data-h="Transfers: ">Brief and request</div><div class="jc part" data-h="Car hire: ">Brief and request</div><div class="jc part" data-h="Other suppliers: ">Request any supplier</div>
+      <div class="jl"><strong>Run it</strong><small>import → assign → guest output → supplier pack</small></div>
+      <div class="jc full" data-h="Hotels: ">Room blocks, rooming lists</div><div class="jc full" data-h="Venues: ">Sessions, capacity</div><div class="jc full" data-h="Flights: ">Legs, manifests, passports</div><div class="jc full" data-h="Transfers: ">Manifests, drivers</div><div class="jc full" data-h="Car hire: ">Bookings, drivers</div><div class="jc none" data-h="Other suppliers: ">—</div>
+    </div>
+    <div class="legend" style="margin-top:12px"><span class="l-full">Structured matching and side-by-side comparison</span><span class="l-part">Captured on the brief and sent the same branded request</span></div>
   </div>
 </section>
 
@@ -256,6 +276,19 @@ INDEX = """
   </div>
 </section>
 
+<section class="band-cream tight">
+  <div class="wrap">
+    <div class="eyebrow">Your data</div>
+    <h2 style="margin-top:8px;font-size:clamp(22px,2.6vw,28px)">Built for South African operators, hosted with named providers.</h2>
+    <div class="trust" style="margin-top:18px">
+      <div><strong>Tenancy isolation</strong><p>Your briefs, clients, guests and quotes are visible to your organisation only. The directory is shared; its contacts are used to send your requests, never exported or listed.</p></div>
+      <div><strong>Named subprocessors</strong><p>Application and database on Supabase and Vercel; transactional email through Resend; document reading through Anthropic. A POPIA operator agreement is part of every plan.</p></div>
+      <div><strong>Versioned terms</strong><p>Privacy policy and terms are the versioned documents inside the app — the ones your organisation actually accepts — not a marketing copy that can drift.</p></div>
+      <div><strong>Defects fixed free</strong><p>A fault in GroupBook is ours to fix, at any hour, on every plan. Support carries a reference number and a published response target.</p></div>
+    </div>
+  </div>
+</section>
+
 <section class="band-white">
   <div class="wrap" style="text-align:center">
     <h2>See it on one of your own briefs.</h2>
@@ -280,7 +313,7 @@ PRICING = """
 </section>
 <section class="band-cream" style="padding-top:36px">
   <div class="wrap">
-    <div class="ladder" style="grid-template-columns:repeat(4,minmax(200px,1fr))">
+    <div class="ladder four">
 """ + \
 rung("sourcing","Sourcing","R1,950","<span data-annual-of='sourcing'>R19,500</span> a year (two months free)",["2 named users · extra user R395","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","400 request recipients a month · 200 contacts a month · ≈ 60% a year","100 AI-read documents a month","60 minutes of assistance a month · Sev 1 answered within 2 business hours"]) + \
 rung("practice","Practice","R4,950","<span data-annual-of='practice'>R49,500</span> a year (two months free)",["5 named users · extra user R395","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, supplier packs","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","1,200 recipients a month · 300 contacts a month · ≈ 90% a year","300 AI-read documents a month","120 minutes of assistance a month · 2 Event Window days a year"], hi=True, badge="Teams running events") + \
@@ -293,14 +326,28 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
 
 <section class="band-white" style="padding-top:0">
   <div class="wrap">
-    <h2>Where teams like yours land</h2>
-    <p class="lede" style="margin-top:10px">Start rung, typical rung, and where it grows — by the work, not the job title.</p>
-    <div class="land" style="margin-top:20px">
-      <div class="seg"><h3>Corporate event team</h3><div class="rungs"><span>Sourcing</span><i>→</i><span class="now">Practice</span><i>→</i><span>Enterprise</span></div><p class="note">Guest logistics from day one; Enterprise when SSO, residency or a service commitment is required.</p></div>
-      <div class="seg"><h3>Event agency</h3><div class="rungs"><span class="now">Sourcing</span><i>→</i><span>Practice</span><i>→</i><span>Agency</span></div><p class="note">Sourcing pays for itself on the first brief; Practice when you run the guests too.</p></div>
-      <div class="seg"><h3>MICE agency</h3><div class="rungs"><span>Practice</span><i>→</i><span class="now">Agency</span><i>→</i><span>Enterprise</span></div><p class="note">Several programmes in flight, across teams and clients, with reconciliation.</p></div>
-      <div class="seg"><h3>Group travel specialist</h3><div class="rungs"><span class="now">Sourcing</span><i>→</i><span>Practice</span><i>→</i><span>Agency</span></div><p class="note">The same group, many suppliers, one deadline: rooming, flights and transfers on Practice.</p></div>
+    <h2>How the plans stack</h2>
+    <p class="lede" style="margin-top:10px">Each rung adds a layer of work to everything below it. Pick the highest layer you actually do.</p>
+    <div class="stacks" style="margin-top:22px">
+<div class="stack" id="stack-sourcing"><div class="sh"><span class="tier" data-tier="sourcing">Sourcing</span><span class="pr">R1,950 /mo</span><span class="us">2 users</span></div><div class="lbl">Source it</div><div class="own"><span class="chip">Directory search</span><span class="chip">Client brief &amp; intake link</span><span class="chip">Branded requests</span><span class="chip">Side-by-side comparison</span><span class="chip">Award &amp; decline</span><span class="chip">Smart Inbox: brief, quote</span></div></div><div class="stack" id="stack-practice"><div class="sh"><span class="tier" data-tier="practice">Practice</span><span class="pr">R4,950 /mo</span><span class="us">5 users</span></div><div class="lbl">Run it</div><div class="own"><span class="chip">Guest list &amp; entitlements</span><span class="chip">Aide Mémoire itinerary</span><span class="chip">Room blocks &amp; rooming lists</span><span class="chip">Flights &amp; manifests</span><span class="chip">Transfers &amp; car hire</span><span class="chip">Supplier packs</span><span class="chip">Smart Inbox: confirmations</span><span class="chip">Guest portal &amp; RSVP <span class="tag">In UAT</span></span></div><div class="inh"><small>Everything in Sourcing</small></div></div><div class="stack" id="stack-agency"><div class="sh"><span class="tier" data-tier="agency">Agency</span><span class="pr">R9,950 /mo</span><span class="us">10 users</span></div><div class="lbl">Settle it, at scale</div><div class="own"><span class="chip">Many events, many teams</span><span class="chip">Card-statement import</span><span class="chip">PO registry &amp; budgets</span><span class="chip">Invoices read into recon</span><span class="chip">Smart Inbox: invoices</span><span class="chip">Auto-matching <span class="tag">Q4 2026</span></span></div><div class="inh"><small>Everything in Practice</small></div><div class="inh"><small>Everything in Sourcing</small></div></div><div class="stack" id="stack-enterprise"><div class="sh"><span class="tier" data-tier="enterprise">Enterprise</span><span class="pr">from R19,500 /mo</span><span class="us">By order form</span></div><div class="lbl">Governed</div><div class="own"><span class="chip">SSO</span><span class="chip">Data residency</span><span class="chip">Security review</span><span class="chip">Named support contact</span><span class="chip">Agreed response targets</span></div><div class="inh"><small>Everything in Agency</small></div><div class="inh"><small>Everything in Practice</small></div><div class="inh"><small>Everything in Sourcing</small></div></div>
     </div>
+    <p class="note" style="margin-top:12px">No tag means it runs in production today. <span class="tag">In UAT</span> is live for one customer and being hardened; <span class="tag">Q4 2026</span> is being built and is not charged for until it ships.</p>
+  </div>
+</section>
+
+<section class="band-cream" style="padding-top:44px">
+  <div class="wrap">
+    <h2>Where teams like yours land</h2>
+    <p class="lede" style="margin-top:10px">Entry rung, the rung most teams settle on, and where it grows — by the work, not the job title. Indicative annual figures are the two-months-free price.</p>
+    <div class="segrid" style="margin-top:22px">
+      <div class="gh"></div><div class="gh"><span data-tier="sourcing">Sourcing</span><small>R19,500 / yr</small></div><div class="gh"><span data-tier="practice">Practice</span><small>R49,500 / yr</small></div><div class="gh"><span data-tier="agency">Agency</span><small>R99,500 / yr</small></div><div class="gh"><span data-tier="enterprise">Enterprise</span><small>from R195,000 / yr</small></div>
+      <div class="gl"><strong>Corporate event team</strong><small>Briefs from every department; the guest list moves until the day before</small></div><div class="gc entry" data-t="Sourcing"><b>Entry</b><small>One department, sourcing only</small></div><div class="gc now" data-t="Practice"><b>Lands here</b><small>Guest logistics from day one</small></div><div class="gc " data-t="Agency"></div><div class="gc grow" data-t="Enterprise"><b>Grows to</b><small>SSO, residency or a service commitment</small></div>
+      <div class="gl"><strong>Event agency</strong><small>Every event starts with the same calls to find the group desk</small></div><div class="gc now" data-t="Sourcing"><b>Lands here</b><small>Pays for itself on the first brief</small></div><div class="gc grow" data-t="Practice"><b>Grows to</b><small>When you run the guests too</small></div><div class="gc grow" data-t="Agency"><b>Grows to</b><small>Several clients in flight</small></div><div class="gc " data-t="Enterprise"></div>
+      <div class="gl"><strong>MICE agency</strong><small>Multi-hotel, multi-city programmes that must agree with each other</small></div><div class="gc " data-t="Sourcing"></div><div class="gc entry" data-t="Practice"><b>Entry</b><small>One programme at a time</small></div><div class="gc now" data-t="Agency"><b>Lands here</b><small>Many programmes, reconciliation</small></div><div class="gc grow" data-t="Enterprise"><b>Grows to</b><small>Group-wide rollout</small></div>
+      <div class="gl"><strong>Group travel specialist</strong><small>Sports tours, incentives, delegations: one group, many suppliers</small></div><div class="gc now" data-t="Sourcing"><b>Lands here</b><small>Requests, replies, comparison</small></div><div class="gc grow" data-t="Practice"><b>Grows to</b><small>Rooming, flights, transfers</small></div><div class="gc grow" data-t="Agency"><b>Grows to</b><small>Several groups at once</small></div><div class="gc " data-t="Enterprise"></div>
+    </div>
+    <div class="legend" style="margin-top:12px"><span class="l-entry">Entry rung</span><span class="l-now">Where most teams land</span><span class="l-grow">Grows to</span></div>
+    <p class="note" style="margin-top:10px">Not sure? Tell us what you run on the <a href="/contact">walkthrough request</a> and we will point at a rung — and say so if a lower one fits.</p>
   </div>
 </section>
 
@@ -362,6 +409,20 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
         <tr><td><span data-tier="enterprise">Enterprise</span></td><td>R110,000</td><td>Scoped with you: integrations, residency, security review, rollout across teams.</td></tr>
       </tbody>
     </table></div>
+  </div>
+</section>
+
+<section class="band-white" style="padding-top:0">
+  <div class="wrap">
+    <h2 style="margin-bottom:18px">Before you choose</h2>
+    <div class="grid" style="gap:10px">
+      <details class="faq"><summary>Is there a contract?</summary><p>No. Monthly plans run on a debit order and can be cancelled in any month. Annual plans are invoiced once at ten months' price for twelve months' use.</p></details>
+      <details class="faq"><summary>Is the implementation fee compulsory?</summary><p>It is how every plan starts: your registry configured, branding applied and one live brief run with you, so the first request that leaves GroupBook is a real one. What each fee delivers is listed above.</p></details>
+      <details class="faq"><summary>What counts as a user?</summary><p>A named login. Each plan includes its users; a further named user is R395 a month on any plan below Enterprise. Clients, guests and hotels are never users — they use links, portals and email.</p></details>
+      <details class="faq"><summary>What if we exceed an allowance?</summary><p>You see a notice at 80%. At 100% you can go 20% over once in that month. If it keeps happening we suggest the next plan. Overage is never billed without agreeing it first, and your guests' existing arrangements are never switched off for a commercial limit.</p></details>
+      <details class="faq"><summary>Do hotels pay to be listed or to reply?</summary><p>No. Hotels and venues are listed and receive requests at no charge. The only thing we ask of them is a current group-desk contact.</p></details>
+      <details class="faq"><summary>Why is there no VAT on the price?</summary><p>PanDaan (Pty) Ltd is not a registered VAT vendor, so no VAT is charged on any GroupBook invoice. The price shown is the amount invoiced.</p></details>
+    </div>
   </div>
 </section>
 
@@ -701,6 +762,11 @@ CONTACT = """
       <button class="btn btn-primary" type="submit">Request a walkthrough</button>
       <p class="note">We use these details only to arrange the walkthrough. See our <a href="/privacy">privacy policy</a>.</p>
     </form>
+    <div class="next" style="margin-top:28px">
+      <div><b>1</b><p>We reply by email to agree a time, usually within one business day.</p></div>
+      <div><b>2</b><p>Bring one real brief. The walkthrough runs on it, not on a demo script.</p></div>
+      <div><b>3</b><p>You leave with a rung recommendation — and we say so if a lower one fits.</p></div>
+    </div>
   </div>
 </section>
 """
