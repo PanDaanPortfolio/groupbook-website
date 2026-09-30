@@ -30,8 +30,9 @@ def head(title, desc, path, jsonld=""):
 <meta property="og:image" content="https://www.groupbook.co.za/groupbook-og-image.png">
 <meta property="og:url" content="{canon}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="/GroupBook_Favicon.png">
-<link rel="apple-touch-icon" href="/GroupBook_Favicon.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -45,7 +46,7 @@ def head(title, desc, path, jsonld=""):
 <a class="skip" href="#main">Skip to content</a>
 <header class="site">
   <div class="wrap">
-    <a class="logo" href="/" aria-label="GroupBook home"><img src="/groupbook-logo-web-white.png" alt="GroupBook"></a>
+    <a class="logo" href="/" aria-label="GroupBook home"><img src="/logo-on-navy.png" width="800" height="176" alt="GroupBook"></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="main" id="nav" aria-label="Main">
       {nav_links(path)}
@@ -82,7 +83,7 @@ FOOT = """</main>
 </html>
 """
 
-ORG = {"@type":"Organization","name":"GroupBook","legalName":"PanDaan (Pty) Ltd","url":"https://www.groupbook.co.za/","logo":"https://www.groupbook.co.za/groupbook-logo.png","email":"support@groupbook.co.za","areaServed":"ZA"}
+ORG = {"@type":"Organization","name":"GroupBook","legalName":"PanDaan (Pty) Ltd","url":"https://www.groupbook.co.za/","logo":"https://www.groupbook.co.za/logo-on-light.png","email":"support@groupbook.co.za","areaServed":"ZA"}
 APP = {"@type":"SoftwareApplication","name":"GroupBook","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://www.groupbook.co.za/","description":"Source hotels and venues, compare quotes and coordinate group travel for South African group travel professionals.","publisher":{"@type":"Organization","name":"PanDaan (Pty) Ltd"},
        "offers":[{"@type":"Offer","name":n,"price":p,"priceCurrency":"ZAR","url":"https://www.groupbook.co.za/pricing#"+k} for k,n,p in [("sourcing","Sourcing",1950),("practice","Practice",4950),("agency","Agency",9950),("enterprise","Enterprise",19500)]]}
 
@@ -273,7 +274,7 @@ INDEX = """
       <details class="faq"><summary>How current is the hotel directory?</summary><p>Every listed hotel has a group-desk contact on file, with the date it was last checked. A person maintains it: phoning, checking the property's own pages, and recording where each address came from. The number confirmed directly with the property is published on this page and grows weekly. Bounced addresses are flagged for re-checking before the next request goes out.</p></details>
       <details class="faq"><summary>We already use an RSVP tool. Does GroupBook replace it?</summary><p>For most events, the guest module covers invitations, entitlements, dietary and special requirements, sub-events and a personalised itinerary per guest, with the guest portal and RSVP in UAT with our launch customer. Where a specialist RSVP tool is already embedded, GroupBook imports the confirmed list and runs the travel from there.</p></details>
       <details class="faq"><summary>What happens if I go over my plan's allowances?</summary><p>You see a notice at 80%. At 100% you can go 20% over once in that month. If it keeps happening we suggest the next plan. We never bill overage without agreeing it first, and your guests' existing arrangements are never switched off for a commercial limit. The envelope is on the <a href="/fair-use">fair-use page</a>.</p></details>
-      <details class="faq"><summary>What does support cost?</summary><p>Our defects are fixed free, at any hour. Help using GroupBook is included. Work on your own data, set-up or training comes from a monthly allowance of minutes, and anything bigger is quoted at R699 an hour and approved by you first. Details, response targets and the Event Window offer are on the <a href="/support">support page</a>.</p></details>
+      <details class="faq"><summary>What does support cost?</summary><p>Our defects are fixed at no charge, whenever they occur; response follows the published business-hours targets. Help using GroupBook is included. Work on your own data, set-up or training comes from a monthly allowance of minutes, and anything bigger is quoted at R699 an hour and approved by you first. Details, response targets and the Event Window offer are on the <a href="/support">support page</a>.</p></details>
     </div>
   </div>
 </section>
@@ -293,7 +294,7 @@ INDEX = """
       <div><strong>Tenancy isolation</strong><p>Your briefs, clients, guests and quotes are visible to your organisation only. The directory is shared; its contacts are used to send your requests, never exported or listed.</p></div>
       <div><strong>Named subprocessors</strong><p>Application and database on Supabase and Vercel; transactional email through Resend; document reading through Anthropic. A POPIA operator agreement is part of every plan.</p></div>
       <div><strong>Versioned terms</strong><p>Privacy policy and terms are the versioned documents inside the app — the ones your organisation actually accepts — not a marketing copy that can drift.</p></div>
-      <div><strong>Defects fixed free</strong><p>A fault in GroupBook is ours to fix, at any hour, on every plan. Support carries a reference number and a published response target.</p></div>
+      <div><strong>Defects fixed at no charge</strong><p>A fault in GroupBook is ours to fix, whenever it occurs, on every plan; response follows the published business-hours targets. Support carries a reference number and a published response target.</p></div>
     </div>
   </div>
 </section>
@@ -308,7 +309,7 @@ INDEX = """
 """
 
 # ---------------------------------------------------------------- pricing
-def rung(key, name, price, sub, items, hi=False, badge=None, anchor=True, setup=None):
+def rung(key, name, price, sub, items, hi=False, badge=None, anchor=True, setup=None):  # setup unused since 30 Sep: onboarding included
     b = f'<div class="badge">{badge}</div>' if badge else ""
     st = f'<div class="setup">+ {setup} once-off implementation · <a href="#implementation">what it covers</a></div>' if setup else ""
     return f"""<div class="rung{' hi' if hi else ''}" id="{key}">{b}<div class="tier" data-tier="{key}">{name}</div><div class="price">{price}<small> /month</small></div><div class="annual">{sub}</div>{st}<ul>{"".join(f"<li>{i}</li>" for i in items)}</ul></div>"""
@@ -325,10 +326,10 @@ PRICING = """
   <div class="wrap">
     <div class="ladder four">
 """ + \
-rung("sourcing","Sourcing","R1,950","<span data-annual-of='sourcing'>R19,500</span> a year (two months free)",["2 named users · extra user R395","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","400 request recipients a month · 200 contacts a month · ≈ 60% a year","100 AI-read documents a month","60 minutes of assistance a month · Sev 1 answered within 2 business hours"], setup="R7,500") + \
-rung("practice","Practice","R4,950","<span data-annual-of='practice'>R49,500</span> a year (two months free)",["5 named users · extra user R395","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, supplier packs","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","1,200 recipients a month · 300 contacts a month · ≈ 90% a year","300 AI-read documents a month","120 minutes of assistance a month · 2 Event Window days a year"], hi=True, badge="Recommended for teams running events", setup="R15,000") + \
-rung("agency","Agency","R9,950","<span data-annual-of='agency'>R99,500</span> a year (two months free)",["10 named users · extra user R395","Everything in Practice","Many events in flight, across teams and clients","Card-statement import and reconciliation workspace","Automatic reconciliation matching <span class='tag'>Coming Q4 2026</span>","3,000 recipients a month · 500 contacts a month · no annual cap, usage monitored","750 AI-read documents a month","240 minutes of assistance a month · 6 Event Window days a year"], setup="R35,000") + \
-rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, allowances and service levels by order form","SSO and data residency <span class='tag'>By agreed scope</span>","Security review, named support contact, agreed response targets","Everything in Agency"], setup="R110,000") + """
+rung("sourcing","Sourcing","R1,950","<span data-annual-of='sourcing'>R19,500</span> a year (two months free)",["2 named users · extra user R395","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","400 request recipients a month · 200 contacts a month · ≈ 60% a year","100 AI-read documents a month","60 minutes of assistance a month · Sev 1 answered within 2 business hours"]) + \
+rung("practice","Practice","R4,950","<span data-annual-of='practice'>R49,500</span> a year (two months free)",["5 named users · extra user R395","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, supplier packs","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","1,200 recipients a month · 300 contacts a month · ≈ 90% a year","300 AI-read documents a month","120 minutes of assistance a month · Event Window days bookable"], hi=True, badge="Recommended for teams running events") + \
+rung("agency","Agency","R9,950","<span data-annual-of='agency'>R99,500</span> a year (two months free)",["10 named users · extra user R395","Everything in Practice","Many events in flight, across teams and clients","Card-statement import and reconciliation workspace","Automatic reconciliation matching <span class='tag'>Coming Q4 2026</span>","3,000 recipients a month · 500 contacts a month · no annual cap, usage monitored","750 AI-read documents a month","240 minutes of assistance a month · Event Window days bookable"]) + \
+rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, allowances and service levels by order form","SSO and data residency <span class='tag'>By agreed scope</span>","Security review, named support contact, agreed response targets","Everything in Agency"]) + """
     </div>
     <p class="note" style="margin-top:14px">Fair use applies to every plan — the envelope and its definitions are on the <a href="/fair-use">fair-use page</a>. Contact reveals are counted once per property per 90 days, across your whole organisation. Quantities are never “unlimited”.</p>
   </div>
@@ -395,10 +396,11 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
 <tr><td class="lbl">Client branding on every document; agency branding on requests</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">SSO and data residency <span class="tag">By agreed scope</span>; security review</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="tick">✓</td></tr>
 <tr class="grp"><td colspan="5">Support</td></tr>
-<tr><td class="lbl">Our defects fixed free, at any hour</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+<tr><td class="lbl">Our defects fixed at no charge, whenever they occur</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">Sev 1 first response within 2 business hours</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">Assistance minutes each month (60 · 120 · 240 · as agreed)</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
-<tr><td class="lbl">Event Window days each year (— · 2 · 6 · as agreed)</td><td class="no">—</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+<tr><td class="lbl">Event Window: priority cover on named event days, R1,950 a day, booked in advance</td><td class="no">—</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+<tr><td class="lbl">Remote onboarding: workspace set-up and one 60-minute administrator session</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
 <tr><td class="lbl">Named support contact and agreed response targets</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="tick">✓</td></tr>
       </tbody>
     </table></div>
@@ -406,19 +408,22 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
   </div>
 </section>
 
-<section class="band-white" id="implementation">
-  <div class="wrap">
-    <h2>Implementation, by what you get — not by the hour</h2>
-    <p class="lede" style="margin-top:10px">A one-off fee so your first live brief runs with us in the room.</p>
-    <div class="table-scroll" style="margin-top:22px"><table>
-      <thead><tr><th>Plan</th><th>Fee</th><th>What is delivered</th></tr></thead>
-      <tbody>
-        <tr><td><span data-tier="sourcing">Sourcing</span></td><td>R7,500</td><td>Your registry configured, branding applied, and one live brief run with you end to end.</td></tr>
-        <tr><td><span data-tier="practice">Practice</span></td><td>R15,000</td><td>Plus a historical data load, one event set up end to end, and a team session.</td></tr>
-        <tr><td><span data-tier="agency">Agency</span></td><td>R35,000</td><td>Plus card-programme mapping and reconciliation UAT with your finance lead.</td></tr>
-        <tr><td><span data-tier="enterprise">Enterprise</span></td><td>R110,000</td><td>Scoped with you: integrations, residency, security review, rollout across teams.</td></tr>
-      </tbody>
-    </table></div>
+<section class="band-white" id="onboarding">
+  <div class="wrap two">
+    <div>
+      <h2>Getting started with GroupBook</h2>
+      <p class="lede" style="margin-top:10px">Onboarding is delivered remotely and is included with every plan.</p>
+      <ul class="list" style="margin-top:16px">
+        <li>Your organisation, branding and initial users set up.</li>
+        <li>One 60-minute session with your nominated administrator, working through an example brief.</li>
+        <li>A set-up checklist and next steps for your team.</li>
+      </ul>
+    </div>
+    <div class="card" style="gap:10px">
+      <h3>Scoped and quoted before work begins</h3>
+      <p>Additional training sessions, historical data migration and complex set-up are quoted on a reviewed sample of your data and requirements, at the published assistance rate of R699 an hour, and approved by you before any work starts.</p>
+      <p>There is no on-site offer. Running your event, chasing suppliers and cleaning years of records are separate from onboarding, which teaches your team to use GroupBook.</p>
+    </div>
   </div>
 </section>
 
@@ -427,7 +432,7 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
     <h2 style="margin-bottom:18px">Before you choose</h2>
     <div class="grid" style="gap:10px">
       <details class="faq"><summary>Is there a contract?</summary><p>No. Monthly plans run on a debit order and can be cancelled in any month. Annual plans are invoiced once at ten months' price for twelve months' use.</p></details>
-      <details class="faq"><summary>Is the implementation fee compulsory?</summary><p>It is how every plan starts: your registry configured, branding applied and one live brief run with you, so the first request that leaves GroupBook is a real one. What each fee delivers is listed above.</p></details>
+      <details class="faq"><summary>Is there a set-up or implementation fee?</summary><p>No. Remote onboarding — workspace set-up and one 60-minute session with your administrator — is included with every plan. Data migration, extra training and complex set-up are quoted first and approved by you before work begins.</p></details>
       <details class="faq"><summary>What counts as a user?</summary><p>A named login. Each plan includes its users; a further named user is R395 a month on any plan below Enterprise. Clients, guests and hotels are never users — they use links, portals and email.</p></details>
       <details class="faq"><summary>What if we exceed an allowance?</summary><p>You see a notice at 80%. At 100% you can go 20% over once in that month. If it keeps happening we suggest the next plan. Overage is never billed without agreeing it first, and your guests' existing arrangements are never switched off for a commercial limit.</p></details>
       <details class="faq"><summary>Do hotels pay to be listed or to reply?</summary><p>No. Hotels and venues are listed and receive requests at no charge. The only thing we ask of them is a current group-desk contact.</p></details>
@@ -448,7 +453,7 @@ rung("enterprise","Enterprise","from R19,500","Annual · talk to us",["Users, al
       <ul class="list" style="margin-top:14px">
         <li>POPIA operator agreement and the same security safeguards, whatever the plan.</li>
         <li>Tenancy isolation: your briefs, clients and guests are yours; the directory is shared, its contacts are not.</li>
-        <li>Support by email or in-app, with a reference number and a business-hours response target. Our defects are fixed free at any hour.</li>
+        <li>Support by email or in-app, with a reference number and a business-hours response target. Our defects are fixed at no charge, whenever they occur.</li>
         <li>No VAT is charged while PanDaan (Pty) Ltd is not a registered VAT vendor.</li>
       </ul>
     </div>
@@ -536,7 +541,7 @@ SUPPORT = """
     <div class="eyebrow">Support</div>
     <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Support, in three sentences.</h1>
     <div class="grid g3" style="margin-top:26px">
-      <div class="card"><div class="k">1</div><h3>Our mistakes are free.</h3><p>If GroupBook got something wrong, we find it and fix it, including any data it damaged, at no charge, at any hour and any severity.</p></div>
+      <div class="card"><div class="k">1</div><h3>Our mistakes are free.</h3><p>If GroupBook got something wrong, we find it and fix it, including any data it damaged, at no charge, whatever the severity and whenever it occurs. Response follows the business-hours targets unless an Event Window is booked.</p></div>
       <div class="card"><div class="k">2</div><h3>Help using GroupBook is included.</h3><p>How-do-I questions, your users and settings, and anything about your allowances are part of your plan. Email support@ or press Log a call; you get a reference number and one confirmation.</p></div>
       <div class="card"><div class="k">3</div><h3>Work on your data, set-up or training comes from a monthly allowance; anything bigger is quoted first.</h3><p>Small jobs use the minutes in your plan. Planned work, and anything you ask for after hours, is quoted at R699 an hour and never starts without your approval.</p></div>
     </div>
@@ -571,9 +576,9 @@ SUPPORT = """
         <tr><td class="lbl">Sev 3 — wrong, with a workaround</td><td colspan="3">16 business hours</td><td>As agreed</td></tr>
         <tr><td class="lbl">Sev 4 — a question or request</td><td colspan="3">40 business hours</td><td>As agreed</td></tr>
         <tr><td class="lbl">Assistance minutes each month</td><td>60</td><td>120</td><td>240</td><td>As agreed</td></tr>
-        <tr><td class="lbl">Event Window days each year</td><td>—</td><td>2</td><td>6</td><td>As agreed</td></tr>
+        <tr><td class="lbl">Event Window (bookable, R1,950 a day)</td><td>—</td><td>Yes</td><td>Yes</td><td>As agreed</td></tr>
         <tr><td class="lbl">Outside business hours</td><td>Best effort</td><td>Best effort, or book an Event Window</td><td>Best effort, or book an Event Window</td><td>As agreed</td></tr>
-        <tr><td class="lbl">Onboarding (in the set-up fee)</td><td>One live brief run with you</td><td>+ one event set up end to end, team session</td><td>+ card-programme mapping, reconciliation walkthrough</td><td>Scoped</td></tr>
+        <tr><td class="lbl">Onboarding (included, remote)</td><td colspan="3">Workspace set-up and one 60-minute administrator session on an example brief</td><td>Scoped</td></tr>
       </tbody>
     </table></div>
     <p class="note" style="margin-top:10px">Business hours are Monday to Friday 08:00–17:00 SAST, excluding South African public holidays. Targets are for first response; a defect is worked until it is fixed. Allowance minutes reset on the 1st and do not carry over.</p>
@@ -611,7 +616,7 @@ SUPPORT = """
         <text x="420" y="52" text-anchor="middle" fill="#2E7D4F" font-size="11.5" font-weight="600">defect / included</text>
         <text x="460" y="142" text-anchor="middle" fill="#B8860B" font-size="11.5" font-weight="600">assistance</text>
         <text x="602" y="55" text-anchor="middle" font-weight="600" fill="#2E7D4F">No charge</text>
-        <text x="602" y="72" text-anchor="middle" font-size="11.5" fill="#2E7D4F">any hour, any severity</text>
+        <text x="602" y="72" text-anchor="middle" font-size="11.5" fill="#2E7D4F">any severity, no charge</text>
         <text x="612" y="145" text-anchor="middle" font-weight="600" fill="#B8860B">1 · Monthly allowance</text>
         <text x="612" y="162" text-anchor="middle" font-size="11.5" fill="#B8860B">60 / 120 / 240 min a month</text>
         <text x="830" y="145" text-anchor="middle" font-weight="600" fill="#2B5EA7">2 · Prepaid credit</text>
@@ -644,7 +649,7 @@ SUPPORT = """
     <h2 style="margin-top:10px">Book an Event Window when it really matters</h2>
     <p class="lede" style="margin-top:10px">Priority cover for named event days. Once we accept a window, a 30-minute Sev 1 response by a person, 06:00–22:00, is a commitment — not best effort. If we cannot commit to those dates we say so and decline.</p>
     <div class="timeline" style="margin-top:22px">
-      <div class="tl"><div class="when">≥ 5 business days before</div><h3>Request</h3><p>From the event page. Dates default to the day before your event through the day after. Included days are drawn first; extra days are R1,950 each.</p></div>
+      <div class="tl"><div class="when">≥ 5 business days before</div><h3>Request</h3><p>From the event page. Dates default to the day before your event through the day after. Each day is R1,950, drawn from prepaid credit or invoiced.</p></div>
       <div class="tl"><div class="when">Within 1 business day</div><h3>Accepted</h3><p>We check capacity and confirm in writing. Free to cancel or reschedule up to 2 business days before.</p></div>
       <div class="tl"><div class="when">Window days · 06:00–22:00</div><h3>Covered</h3><p>Sev 1 first response within 30 minutes by a person, seven days, with a direct number for the named event. Sev 2 and below keep their normal targets.</p></div>
       <div class="tl"><div class="when">Day after</div><h3>Closed out</h3><p>Our defects: free. Work we did for you on your data or set-up: assistance, approved on the call. All of it on the statement.</p></div>

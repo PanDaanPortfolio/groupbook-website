@@ -25,11 +25,11 @@ window.GB = {
     confirmedDirect: 117, // group-desk address confirmed directly with the property
   },
   tiers: [
-    { key: "directory",  name: "Directory",  published: false, monthly: 750,   users: 1,  sends: null, contactsMonth: 100, contactsYear: "≈ 40% of the directory", ai: null, daily: null, setup: 0,      setupWhat: "Self-serve" },
-    { key: "sourcing",   name: "Sourcing",   monthly: 1950,  users: 2,  sends: 400,  contactsMonth: 200, contactsYear: "≈ 60%",                 ai: 100,  daily: 60,   setup: 7500,   setupWhat: "Registry configured, branding applied, one live brief run with you" },
-    { key: "practice",   name: "Practice",   monthly: 4950,  users: 5,  sends: 1200, contactsMonth: 300, contactsYear: "≈ 90%",                 ai: 300,  daily: 150,  setup: 15000,  setupWhat: "Plus historical data load, one event set up end to end, team session" },
-    { key: "agency",     name: "Agency",     monthly: 9950,  users: 10, sends: 3000, contactsMonth: 500, contactsYear: "No annual cap — monitored", ai: 750, daily: 300, setup: 35000,  setupWhat: "Plus card-programme mapping and reconciliation UAT with your finance lead" },
-    { key: "enterprise", name: "Enterprise", monthly: 19500, users: null, sends: null, contactsMonth: null, contactsYear: null, ai: null, daily: null, setup: 110000, setupWhat: "Scoped" },
+    { key: "directory",  name: "Directory",  published: false, monthly: 750,   users: 1,  sends: null, contactsMonth: 100, contactsYear: "≈ 40% of the directory", ai: null, daily: null, setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "sourcing",   name: "Sourcing",   monthly: 1950,  users: 2,  sends: 400,  contactsMonth: 200, contactsYear: "≈ 60%",                 ai: 100,  daily: 60,   setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "practice",   name: "Practice",   monthly: 4950,  users: 5,  sends: 1200, contactsMonth: 300, contactsYear: "≈ 90%",                 ai: 300,  daily: 150,  setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "agency",     name: "Agency",     monthly: 9950,  users: 10, sends: 3000, contactsMonth: 500, contactsYear: "No annual cap — monitored", ai: 750, daily: 300, setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "enterprise", name: "Enterprise", monthly: 19500, users: null, sends: null, contactsMonth: null, contactsYear: null, ai: null, daily: null, setup: 0, setupWhat: "Remote onboarding included" },
   ],
   extraUser: 395,
   annualMultiplier: 10, // annual = 10 × monthly (two months free)
@@ -40,7 +40,7 @@ window.GB = {
     eventWindowDay: 1950,
     minutesPool: { directory: null, sourcing: 60, practice: 120, agency: 240 },
     sev1: { directory: "4 business hours", sourcing: "2 business hours", practice: "2 business hours", agency: "2 business hours", enterprise: "As agreed" },
-    eventWindowDays: { directory: null, sourcing: null, practice: 2, agency: 6 },
+    eventWindowDays: { directory: null, sourcing: null, practice: 0, agency: 0 }, // 30 Sep: no included days; bookable at eventWindowDay
   },
   demoEndpoint: "https://app.groupbook.co.za/api/demo-request",
   appUrl: "https://app.groupbook.co.za",
