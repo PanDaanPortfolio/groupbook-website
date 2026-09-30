@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.groupbook.co.za/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://www.groupbook.co.za/</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://www.groupbook.co.za/how-it-works</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://www.groupbook.co.za/pricing</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://www.groupbook.co.za/for-hotels</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://www.groupbook.co.za/support</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://www.groupbook.co.za/fair-use</loc><lastmod>2026-09-30</lastmod></url>
+  <url><loc>https://www.groupbook.co.za/contact</loc><lastmod>2026-09-30</lastmod></url>
 </urlset>
