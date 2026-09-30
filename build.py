@@ -4,7 +4,15 @@ Shared header/footer live here so every page carries the same nav and legal band
 import os, json, re
 OUT = os.path.dirname(os.path.abspath(__file__))
 
-NAV = [("how-it-works", "How it works"), ("pricing", "Pricing"), ("for-hotels", "For hotels"), ("support", "Support")]
+NAV = [("index", "Home"), ("how-it-works", "How it works"), ("pricing", "Pricing"), ("for-hotels", "For hotels"), ("support", "Support")]
+
+def nav_links(path):
+    out = []
+    for p, l in NAV:
+        href = "/" if p == "index" else "/" + p
+        cur = ' aria-current="page"' if p == path else ""
+        out.append('<a href="%s"%s>%s</a>' % (href, cur, l))
+    return "".join(out)
 
 def head(title, desc, path, jsonld=""):
     canon = "https://www.groupbook.co.za/" + ("" if path == "index" else path)
@@ -40,8 +48,9 @@ def head(title, desc, path, jsonld=""):
     <a class="logo" href="/" aria-label="GroupBook home"><img src="/groupbook-logo-web-white.png" alt="GroupBook"></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="main" id="nav" aria-label="Main">
-      {"".join(f'<a href="/{p}">{l}</a>' for p, l in NAV)}
-      <a href="https://app.groupbook.co.za/login">Sign in</a>
+      {nav_links(path)}
+      <span class="sep" aria-hidden="true"></span>
+      <a class="signin" href="https://app.groupbook.co.za/login">Sign in</a>
       <a class="cta" href="/contact">Request a walkthrough</a>
     </nav>
   </div>
