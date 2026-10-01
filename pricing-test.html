@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" href="https://www.groupbook.co.za/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+<style>button{touch-action:manipulation}
 :root{--navy:#152742;--gold:#B88A44;--gold2:#D3B07A;--cream:#F0F0E6;--ink:#1B2530;--ink2:#4C5A67;--ink3:#76838E;--line:#DED9CC;--white:#fff;--ok:#2E7D4F}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#FBFAF6;color:var(--ink);font:16px/1.55 "DM Sans","Segoe UI",Helvetica,Arial,sans-serif}
@@ -202,15 +202,17 @@ var SCREENS = [
  ask('price_how','How would they rather have paid?',[['monthly','Monthly, cancel any time'],['annual','Once a year, two months free'],['perevent','Per event, not a subscription'],['unsure','Not sure']])+
  txt('price_compare','What would you compare this price to? (A supplier you paid, a tool you used, a person\'s time?)'); } },
 
-{ title:'The limits', body:function(){ return '<p class="lede">Every plan has limits, so that one customer cannot use so much that the service suffers for everyone. We want to know whether any of them would have stopped you.</p>'+
- '<table><tr><th>Each month, you can…</th><th>Sourcing</th><th>Events</th><th>Business</th></tr>'+
- '<tr><td>Have this many people log in (more at R395 each)</td><td>2</td><td>5</td><td>10</td></tr>'+
- '<tr><td>Send requests to this many hotels</td><td>400</td><td>1,200</td><td>3,000</td></tr>'+
- '<tr><td>Contact this many hotels your organisation has not contacted in the last 90 days</td><td>200</td><td>300</td><td>500</td></tr>'+
- '<tr><td>Have this many quotes and confirmations read for you</td><td>100</td><td>300</td><td>750</td></tr>'+
- '<tr><td>Get hands-on help from us</td><td>1 hour</td><td>2 hours</td><td>4 hours</td></tr>'+
- '<tr><td>Run guest events of up to 100 guests (counted per year, not per month)</td><td>—</td><td>120 a year</td><td>120 a year</td></tr></table>'+
- '<div class="note">If you go over, you see a warning at 80%, you can go 20% over once in a month, and nothing you have already set up is ever switched off. We never say "unlimited" because it is never true.</div>'+
+{ title:'The limits', body:function(){ return '<p class="lede">Only three things change between plans: how many people can log in, how many guest events are included, and how much hands-on help you get. Everything else is one fair-use rule, the same on every plan, there to protect the hotels and the directory — not to make you buy a bigger plan.</p>'+
+ '<table><tr><th>Changes between plans</th><th>Sourcing</th><th>Events</th><th>Business</th></tr>'+
+ '<tr><td>People who can log in (more at R395 each)</td><td>2</td><td>5</td><td>10</td></tr>'+
+ '<tr><td>Guest events of up to 100 guests, a year</td><td>—</td><td>120</td><td>120</td></tr>'+
+ '<tr><td>Hands-on help from us, a month</td><td>1 hour</td><td>2 hours</td><td>4 hours</td></tr></table>'+
+ '<table style="margin-top:12px"><tr><th>Same on every plan</th><th>Rule</th></tr>'+
+ '<tr><td>How many hotels one request can go to</td><td>Up to 25 (we suggest 12) — a hotel should only get requests it can win</td></tr>'+
+ '<tr><td>Requests a day</td><td>150 for your whole company</td></tr>'+
+ '<tr><td>Hotel contact details</td><td>Used to send your requests; never exported. Typical use 200–500 new hotels a month, which we watch rather than cap</td></tr>'+
+ '<tr><td>Documents read for you (quotes, confirmations, invoices)</td><td>300 a month on Sourcing, 750 on Events and Business</td></tr></table>'+
+ '<div class="note">If you go over, you see a warning at 80%, you can go 20% over once in a month, and nothing you have already set up is ever switched off. Going over all the time is a conversation, not a surprise invoice. We never say "unlimited" because it is never true.</div>'+
  ask('lim_stop','Would any of these limits have stopped you or your team?',[['never','No, never'],['sometimes','Occasionally, in a busy month'],['often','Yes, regularly','Which limit, and what number would have worked?'],['unsure','I cannot tell from this','What would you need to know to tell?']])+
  ask('lim_clear','Are the limits written clearly enough to understand without asking?',[['yes','Yes'],['mostly','Mostly'],['no','No','What confused you?']])+
  txt('lim_note','Which limit would you change, and to what?'); } },
@@ -304,11 +306,13 @@ function missing(){ var v=document.getElementById('view'); var out=[];
     var val=S[k]; if(val===undefined||val===null||String(val).trim()==='') out.push(k); });
   return out; }
 document.getElementById('next').onclick=function(){
-  var v=document.getElementById('view'); v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
+  var v=document.getElementById('view');
+  v.querySelectorAll('[data-k]').forEach(function(el){ if(el.type==='radio'){ if(el.checked) S[el.getAttribute('data-k')]=el.value; } else if(el.value!==undefined && el.value!=='') S[el.getAttribute('data-k')]=el.value; }); save();
+  if(document.activeElement&&document.activeElement.blur) document.activeElement.blur(); v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
   var m=missing();
   if(m.length){ var first=null; m.forEach(function(k){ var el=v.querySelector('[data-k="'+k+'"]'); var a=el&&(el.closest('.ask')||el.closest('.sub')); if(a){ a.classList.add('miss'); if(!first) first=a; } });
     var msg=document.getElementById('missmsg'); msg.style.display='block'; msg.textContent=m.length===1?'One question still needs an answer — it is marked in red.':m.length+' questions still need an answer — they are marked in red.';
-    if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); } return; }
+    if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); var fi=first.querySelector('input,textarea,select'); if(fi&&fi.type!=='radio'){ setTimeout(function(){ try{fi.focus();}catch(e){} },350); } } return; }
   if(step<SCREENS.length-1){ step++; render(); } };
 document.getElementById('back').onclick=function(){ if(step>0){ step--; render(); } };
 render();

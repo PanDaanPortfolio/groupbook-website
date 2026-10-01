@@ -271,3 +271,10 @@ figure.waterfall figcaption{font-size:13.5px;color:var(--ink-2);margin-top:12px;
 .next p{font-size:13.5px;color:var(--ink-2)}
 .rung .setup{font-size:12.5px;color:var(--ink-2);background:var(--cream);border-radius:8px;padding:6px 10px}
 .rung .setup a{text-decoration:underline}
+
+/* v3.3 guest-event bands (pricing) */
+.gbands{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.gbands>div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:10px 8px;text-align:center}
+.gbands b{display:block;font-size:18px;color:#fff}
+.gbands span{display:block;font-size:12px;color:#D9E0E8;margin-top:2px}
+@media (max-width:640px){.gbands{grid-template-columns:repeat(2,1fr)}}

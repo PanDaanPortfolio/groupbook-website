@@ -11,7 +11,7 @@
 // Counts: read from production on the date shown; never guessed.
 // =============================================================================
 window.GB = {
-  updated: "30 September 2026",
+  updated: "1 October 2026",
   hero: {
     eyebrow: "For group travel professionals",
     h1: "Source suppliers. Coordinate group travel. One place.",
@@ -24,20 +24,31 @@ window.GB = {
     venues: 404,
     confirmedDirect: 117, // group-desk address confirmed directly with the property
   },
+  // 1 Oct (evening): per-plan sends/contactsMonth/ai/daily are no longer published on plan cards — fair use is one envelope
+  // for every plan (fair-use page). Kept here for monitoring and Schedule 1; only name/monthly/users/setup are shown.
   tiers: [
     { key: "directory",  name: "Directory",  published: false, monthly: 750,   users: 1,  sends: null, contactsMonth: 100, contactsYear: "≈ 40% of the directory", ai: null, daily: null, setup: 0, setupWhat: "Remote onboarding included" },
     { key: "sourcing",   name: "Sourcing",   monthly: 1950,  users: 2,  sends: 400,  contactsMonth: 200, contactsYear: "≈ 60%",                 ai: 100,  daily: 60,   setup: 0, setupWhat: "Remote onboarding included" },
-    { key: "practice",   name: "Practice",   monthly: 4950,  users: 5,  sends: 1200, contactsMonth: 300, contactsYear: "≈ 90%",                 ai: 300,  daily: 150,  setup: 0, setupWhat: "Remote onboarding included" },
-    { key: "agency",     name: "Agency",     monthly: 9950,  users: 10, sends: 3000, contactsMonth: 500, contactsYear: "No annual cap — monitored", ai: 750, daily: 300, setup: 0, setupWhat: "Remote onboarding included" },
-    { key: "enterprise", name: "Enterprise", monthly: 19500, users: null, sends: null, contactsMonth: null, contactsYear: null, ai: null, daily: null, setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "practice",   name: "Events",   monthly: 4950,  users: 5,  sends: 1200, contactsMonth: 300, contactsYear: "≈ 90%",                 ai: 300,  daily: 150,  setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "agency",     name: "Business",     monthly: 9950,  users: 10, sends: 3000, contactsMonth: 500, contactsYear: "No annual cap — monitored", ai: 750, daily: 300, setup: 0, setupWhat: "Remote onboarding included" },
+    { key: "enterprise", name: "Larger organisations", monthly: null, users: null, sends: null, contactsMonth: null, contactsYear: null, ai: null, daily: null, setup: 0, setupWhat: "Remote onboarding included" },
   ],
+  // Guest events (RSVP for one event): included up to 100 guests; over 100 priced per event. Decided 1 Oct 2026 (DECISION_GUEST_EVENT_METER v0.2).
+  guestEvents: {
+    includedPerYear: 120,          // Events and Business; shared across the organisation
+    includedGuestsEach: 100,       // an event of 100 guests or fewer is included
+    monthToMonthAccrual: 10,       // month-to-month subscriptions: 10 a month, carried over, max 120
+    overCountSmallEvent: 4500,     // a ≤100-guest event beyond the 120
+    bands: [[200, 9500], [300, 14500], [500, 19500]],  // [max guests, price]; above 500 quoted
+    appliesTo: ["practice", "agency", "enterprise"],
+  },
   extraUser: 395,
   annualMultiplier: 10, // annual = 10 × monthly (two months free)
   support: {
     hours: "Monday to Friday, 08:00–17:00 SAST, excluding South African public holidays",
     rate: 699,
     afterHours: 1048.5,
-    eventWindowDay: 1950,
+    eventWindowDay: 1950,            // pre-booked remote cover, subject to availability and agreed scope (1 Oct)
     minutesPool: { directory: null, sourcing: 60, practice: 120, agency: 240 },
     sev1: { directory: "4 business hours", sourcing: "2 business hours", practice: "2 business hours", agency: "2 business hours", enterprise: "As agreed" },
     eventWindowDays: { directory: null, sourcing: null, practice: 0, agency: 0 }, // 30 Sep: no included days; bookable at eventWindowDay
