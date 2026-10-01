@@ -204,17 +204,19 @@ INDEX = """
 <section class="band-white" id="how">
   <div class="wrap">
     <div class="eyebrow">How it works</div>
-    <h2 style="margin-top:10px">Six steps from brief to a running event</h2>
-    <div class="roles"><div class="r">Client<small>sends the brief</small></div><div class="a"></div><div class="r">You<small>shortlist, request, award</small></div><div class="a"></div><div class="r">Suppliers<small>quote, confirm</small></div><div class="a"></div><div class="r">Guests<small>travel on one itinerary</small></div><div class="a"></div><div class="r">Finance<small>reconciles</small></div></div>
-    <div class="grid g3" style="margin-top:28px">
-      <div class="card"><div class="k">1</div><h3>Capture the brief</h3><p>Dates, numbers, rooms, meeting space, budget. Forward a client email and the Smart Inbox drafts it for you.</p></div>
-      <div class="card"><div class="k">2</div><h3>Shortlist from the directory</h3><p>Town, capacity, distance from the venue. Pick the properties that fit; the width of a request is capped so hotels take it seriously.</p></div>
-      <div class="card"><div class="k">3</div><h3>Send one request</h3><p>A branded request to every shortlisted group desk in one go, with a deadline and a reply address that files the answer for you.</p></div>
-      <div class="card"><div class="k">4</div><h3>Compare replies side by side</h3><p>Quotes are read into a comparison — rates, totals, availability, conditions — so the meeting is about the choice, not the paperwork.</p></div>
-      <div class="card"><div class="k">5</div><h3>Award, and close the loop</h3><p>Pick the winner; decline the rest with one click. Everyone who quoted hears back.</p></div>
-      <div class="card"><div class="k">6</div><h3>Run the group</h3><p>Guests, rooming lists, flight lists and transfer manifests are kept from the confirmed guest list; supplier packs go out from the same record.</p></div>
+    <h2 style="margin-top:10px">Seven steps from brief to settlement</h2>
+    <div class="roles"><div class="r">Client<small>sends the brief</small></div><div class="a"></div><div class="r">You<small>shortlist, request, award</small></div><div class="a"></div><div class="r">Suppliers<small>quote, confirm</small></div><div class="a"></div><div class="r">Guests<small>reply, travel on one itinerary</small></div><div class="a"></div><div class="r">Finance<small>reconciles</small></div></div>
+    <div class="grid g4" style="margin-top:28px">
+      <div class="card"><div class="k">1</div><h3>Capture the brief</h3><p>Dates, people, rooms, meeting space, flights, transfers, car hire, budget. One form for the client, or forward their email and the brief drafts itself.</p></div>
+      <div class="card"><div class="k">2</div><h3>Shortlist from the directory</h3><p>Town, capacity, layout, distance. Every listed hotel has its group-desk address on file, with the date it was last checked.</p></div>
+      <div class="card"><div class="k">3</div><h3>Send one request</h3><p>One branded request to the whole shortlist, with a deadline and a reply address that files each answer for you.</p></div>
+      <div class="card"><div class="k">4</div><h3>Compare and award</h3><p>Quotes read out of PDFs into a side-by-side comparison. One click awards the winner and tells everyone else.</p></div>
+      <div class="card"><div class="k">5</div><h3>Invite and look after the guests</h3><p>Invitations, online replies, dietary and special needs, sessions, check-in at the door, and a personal itinerary on every guest's phone.</p></div>
+      <div class="card"><div class="k">6</div><h3>Run the travel</h3><p>From the same list: rooming lists per hotel, passenger lists per airline, transfer sheets with drivers, car hire, supplier packs and vouchers — all regenerated when the list changes.</p></div>
+      <div class="card"><div class="k">7</div><h3>Settle</h3><p>Card statements matched to bookings and purchase orders; you review only the exceptions.</p></div>
+      <div class="card" style="background:var(--navy);border-color:var(--navy)"><div class="k" style="color:var(--gold-2)">∞</div><h3 style="color:#fff">The Smart Inbox, under every step</h3><p style="color:#D9E0E8">Forward an email or a PDF; it is read and filed where it belongs — brief, comparison, itinerary or reconciliation.</p></div>
     </div>
-    <div class="btn-row"><a class="btn btn-ghost" href="/how-it-works">The six steps in detail</a></div>
+    <div class="btn-row"><a class="btn btn-ghost" href="/how-it-works">The seven steps in detail</a></div>
   </div>
 </section>
 
@@ -479,19 +481,24 @@ HOW = """
 <section class="band-white" style="padding-bottom:20px">
   <div class="wrap">
     <div class="eyebrow">How it works</div>
-    <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Six steps, one record.</h1>
+    <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Seven steps, one record.</h1>
     <p class="lede" style="margin-top:12px">The same event information is captured once and reused at every step — by you, the suppliers, the guests and, at the end, finance.</p>
-    <div class="roles"><div class="r">Client<small>sends the brief</small></div><div class="a"></div><div class="r">You<small>shortlist, request, award</small></div><div class="a"></div><div class="r">Suppliers<small>quote, confirm</small></div><div class="a"></div><div class="r">Guests<small>travel on one itinerary</small></div><div class="a"></div><div class="r">Finance<small>reconciles</small></div></div>
+    <div class="roles"><div class="r">Client<small>sends the brief</small></div><div class="a"></div><div class="r">You<small>shortlist, request, award</small></div><div class="a"></div><div class="r">Suppliers<small>quote, confirm</small></div><div class="a"></div><div class="r">Guests<small>reply, travel on one itinerary</small></div><div class="a"></div><div class="r">Finance<small>reconciles</small></div></div>
   </div>
 </section>
 <section class="band-cream" style="padding-top:30px">
   <div class="wrap grid g2">
-""" + step(1,"Capture the brief","Dates, numbers, rooms, meeting space, budget, must-haves. Forward the client's email to your Smart Inbox and the brief is drafted for you to check.","Re-typing the client's email into a template, then chasing the two details it did not say.","The brief is a record from minute one; the client sees a clean version and confirms it.") + \
-step(2,"Shortlist from the directory","Search by town, capacity, layout and distance from the venue. The directory holds the group-desk contact for every listed hotel, with the date it was last checked.","Phoning switchboards to find who handles groups this month.","A shortlist in minutes, each property with a reachable group desk.") + \
-step(3,"Send one request","One branded request to the whole shortlist, with a deadline and a reply address that files each answer against the brief. The width of a request is capped so hotels know it is a real enquiry.","One email per hotel, copied and edited; replies scattered across an inbox.","Send once. Every reply lands on the brief, timestamped.") + \
-step(4,"Compare replies side by side","Quotes are read into a comparison — rates, totals, availability, conditions and attachments — so the client meeting is about the choice.","A spreadsheet built by hand from PDF quotes, redone when a revised quote arrives.","A live comparison; a revised quote updates its own column.") + \
-step(5,"Award, and close the loop","Pick the winner. Decline the rest with one click; everyone who quoted hears back, which is why they quote next time.","Hotels that never hear back, and stop answering.","One click awards and declines; the decision and the quotes stay on the record.") + \
-step(6,"Run the group","Guests are imported and assigned; rooming lists, flight lists and transfer manifests come from the confirmed guest list; supplier packs go out from the same record. Card statements import for reconciliation.","Three spreadsheets that disagree the night before arrival.","One guest list; every output regenerated from it when the list changes.") + """
+""" + step(1,"Capture the brief","Dates, people, rooms, meeting space, flights, transfers, car hire, budget. One intake form for the client — or forward their email to your Smart Inbox and the brief is drafted for you to check.","Re-typing the client's email into a template, then chasing the two details it did not say.","The brief is a record from minute one; the client sees a clean version and confirms it.") + \
+step(2,"Shortlist from the directory","Search by town, capacity, layout and distance from the venue. Every listed hotel has its group-desk address on file, with the date it was last checked.","Phoning switchboards to find who handles groups this month.","A shortlist in minutes, each property with a reachable group desk.") + \
+step(3,"Send one request","One branded request to the whole shortlist, with a deadline and a reply address that files each answer against the brief. Any other supplier — a transfer company, an airline desk, car hire — can receive the same request.","One email per hotel, copied and edited; replies scattered across an inbox.","Send once. Every reply lands on the brief, timestamped.") + \
+step(4,"Compare and award","Quotes are read out of PDFs and emails into a side-by-side comparison — rates, totals, availability, conditions. A revised quote updates its own column. Pick the winner in one click; everyone else is declined automatically and hears back.","A spreadsheet built by hand from PDF quotes; hotels that never hear back, and stop answering.","Read for you, compared for you, everyone told; the decision and the quotes stay on the record.") + \
+step(5,"Invite and look after the guests","One guest list. Invitations and reminders in your branding; guests reply online, give dietary and special requirements, choose sessions and sub-events; a QR code and check-in at the door for conferences. Each guest gets a personal itinerary on their phone — hotel, flight, transfer, car — that updates when anything changes. <span class='tag'>Online RSVP and guest page: in UAT with a launch customer</span>","A spreadsheet of names, an RSVP supplier per event, confirmations typed one by one.","Invite, track and inform every guest from the same list.") + \
+step(6,"Run the travel","From that same guest list. <strong>Rooms:</strong> room blocks per hotel, auto-assign, a locked rooming list sent to each hotel's group desk, the hotel's reference number carried back to the guest. <strong>Flights:</strong> legs and seat counts, bookings imported, passports captured for international routes, a passenger list per airline. <strong>Transfers:</strong> pick-ups and drop-offs, driver assignment, a transfer sheet per supplier, changes flagged until the supplier is told. <strong>Car hire:</strong> vehicle, drivers, pick-up and return. Supplier packs and vouchers come out of the record.","Three spreadsheets that disagree the night before arrival; the hotel has last week's list.","Change the list once; every rooming list, passenger list, transfer sheet and itinerary updates.") + \
+step(7,"Settle","Import the card statement; match each line to a booking or purchase order; review only the exceptions; track purchase orders and budgets per event. <span class='tag'>Automatic matching: coming Q4 2026</span>","Two days a month in Excel. \"Which Van der Merwe is this?\"","Statement lines matched to the record; you check what doesn't fit.") + """
+  </div>
+  <div class="wrap" style="margin-top:22px">
+    <div class="card" style="border-left:5px solid var(--gold)"><h3>The engine under all seven steps: the Smart Inbox</h3><p style="margin-top:6px">Forward any email or upload any PDF — a client's brief, a hotel's quote, a flight or hotel confirmation, a supplier invoice — and GroupBook reads it, works out what it is, and files it where it belongs: the brief, the comparison, the guest's itinerary, the reconciliation. New suppliers are recognised from what they send you. Anything it is unsure of is flagged for a person, not filed silently.</p></div>
+  </div>
   </div>
   <div class="wrap" style="margin-top:16px"><p class="note">Guest portal and RSVP are in UAT with a launch customer. Automatic reconciliation matching is coming in Q4 2026; card-statement import and the reconciliation workspace run today.</p></div>
 </section>
@@ -788,7 +795,7 @@ CONTACT = """
 
 page("index", "GroupBook — Source suppliers. Coordinate group travel. One place.", "Find hotels and venues across South Africa, request and compare quotes, then coordinate guest accommodation, flights and transfers — in one workspace.", INDEX)
 page("pricing", "Pricing — GroupBook", "One price ladder for group travel professionals: Sourcing R1,950, Practice R4,950, Agency R9,950, Enterprise from R19,500 a month. Annual with two months free. No VAT charged.", PRICING)
-page("how-it-works", "How GroupBook works — six steps from brief to a running event", "Capture the brief, shortlist from the directory, send one request, compare replies, award, and run the group from one record.", HOW)
+page("how-it-works", "How GroupBook works — seven steps from brief to settlement", "Capture the brief, shortlist from the directory, send one request, compare and award, invite the guests, run the travel, and settle — all from one record.", HOW)
 page("for-hotels", "For hotels and venues — GroupBook", "Why a GroupBook request reaches your group desk, carries the brief, and is capped in width. How to update your contact.", HOTELS)
 page("support", "Support — GroupBook", "Our defects are free. Help using GroupBook is included. Assistance beyond that is quoted first. Response targets by severity and plan.", SUPPORT)
 page("fair-use", "Fair use — GroupBook", "The fair-use envelope for every GroupBook plan: users, request recipients, contact reveals, AI-read documents and what happens at 80% and 100%.", FAIR)
