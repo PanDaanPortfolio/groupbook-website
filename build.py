@@ -277,7 +277,7 @@ INDEX = """
       <details class="faq"><summary>How current is the hotel directory?</summary><p>Every listed hotel has a group-desk contact on file, with the date it was last checked. A person maintains it: phoning, checking the property's own pages, and recording where each address came from. The number confirmed directly with the property is published on this page and grows weekly. Bounced addresses are flagged for re-checking before the next request goes out.</p></details>
       <details class="faq"><summary>We already use an RSVP tool. Does GroupBook replace it?</summary><p>For most events, the guest module covers invitations, entitlements, dietary and special requirements, sub-events and a personalised itinerary per guest, with the guest portal and RSVP in UAT with our launch customer. Everyday events are included on Boutique (up to 100 registered guests) and Full House (up to 150), with a few larger ones each year; the really big ones are priced per event. Where a specialist RSVP tool is already embedded, GroupBook imports the confirmed list and runs the travel from there — that never triggers an event charge.</p></details>
       <details class="faq"><summary>Are there usage limits?</summary><p>Plans differ on users, guest events (how many and how big) and help. Everything else is one fair-use envelope, the same on every plan, there to protect hotels' inboxes and the directory. You see a notice at 80% and can go 20% over once; sustained use above it is a conversation, never a surprise invoice. The envelope is on the <a href="/fair-use">fair-use page</a>.</p></details>
-      <details class="faq"><summary>What does support cost?</summary><p>Our defects are fixed at no charge, whenever they occur; response follows the published business-hours targets. Help using GroupBook is included. Work on your own data, set-up or training comes from a monthly allowance of minutes, and anything bigger is quoted at R699 an hour and approved by you first. Details, response targets and the Event Window offer are on the <a href="/support">support page</a>.</p></details>
+      <details class="faq"><summary>What does support cost?</summary><p>Our defects are fixed at no charge, whenever they occur; response follows the published business-hours targets. Help using GroupBook is included. Work on your own data, set-up or training comes from a monthly allowance of minutes, and anything bigger is quoted at R850 an hour and approved by you first. Details, response targets and the Event Window offer are on the <a href="/support">support page</a>.</p></details>
     </div>
   </div>
 </section>
@@ -449,7 +449,7 @@ rung("enterprise","Larger organisations","Talk to us","Annual · by order form",
     </div>
     <div class="card" style="gap:10px">
       <h3>Scoped and quoted before work begins</h3>
-      <p>Additional training sessions, historical data migration and complex set-up are quoted on a reviewed sample of your data and requirements, at the published assistance rate of R699 an hour, and approved by you before any work starts.</p>
+      <p>Additional training sessions, historical data migration and complex set-up are quoted on a reviewed sample of your data and requirements, at the published assistance rate of R850 an hour, and approved by you before any work starts.</p>
       <p>There is no on-site offer. Running your event, chasing suppliers and cleaning years of records are separate from onboarding, which teaches your team to use GroupBook.</p>
     </div>
   </div>
@@ -578,7 +578,7 @@ SUPPORT = """
     <div class="grid g3" style="margin-top:26px">
       <div class="card"><div class="k">1</div><h3>Our mistakes are free.</h3><p>If GroupBook got something wrong, we find it and fix it, including any data it damaged, at no charge, whatever the severity and whenever it occurs. Response follows the business-hours targets unless an Event Window is booked.</p></div>
       <div class="card"><div class="k">2</div><h3>Help using GroupBook is included.</h3><p>How-do-I questions, your users and settings, and anything about your allowances are part of your plan. Email support@ or press Log a call; you get a reference number and one confirmation.</p></div>
-      <div class="card"><div class="k">3</div><h3>Work on your data, set-up or training comes from a monthly allowance; anything bigger is quoted first.</h3><p>Small jobs use the minutes in your plan. Planned work, and anything you ask for after hours, is quoted at R699 an hour and never starts without your approval.</p></div>
+      <div class="card"><div class="k">3</div><h3>Work on your data, set-up or training comes from a monthly allowance; anything bigger is quoted first.</h3><p>Small jobs use the minutes in your plan. Planned work, and anything you ask for after hours, is quoted at R850 an hour and never starts without your approval.</p></div>
     </div>
   </div>
 </section>
@@ -670,9 +670,9 @@ SUPPORT = """
     </figure>
     <div class="grid g4" style="margin-top:18px">
       <div class="card"><div class="muted">Our defects</div><div class="k" style="color:var(--free)">R0</div><p>Diagnosing and fixing anything GroupBook got wrong, including repairing data it damaged. Never charged.</p></div>
-      <div class="card"><div class="muted">Assistance</div><div class="k" style="color:var(--pool)">R699 / h</div><p>5-minute units, rounded once per work session. Any charge beyond your allowance needs your approval first.</p></div>
+      <div class="card"><div class="muted">Assistance</div><div class="k" style="color:var(--pool)">R850 / h</div><p>5-minute units, rounded once per work session. Any charge beyond your allowance needs your approval first.</p></div>
       <div class="card"><div class="muted">Prepaid credit</div><div class="k" style="color:var(--credit)">Top up by card</div><p>Rand, not hours: one balance covers assistance and Event Window days. Unspent purchased credit is refundable if you cancel.</p></div>
-      <div class="card"><div class="muted">After hours, at your request</div><div class="k" style="color:var(--invoice)">R1,048.50 / h</div><p>One-hour minimum. Not for our defects. A booked Event Window is the better way to plan for it.</p></div>
+      <div class="card"><div class="muted">After hours, at your request</div><div class="k" style="color:var(--invoice)">R1,275 / h</div><p>One-hour minimum. Not for our defects. A booked Event Window is the better way to plan for it.</p></div>
     </div>
     <p class="note" style="margin-top:12px">Billed monthly in arrears, one line per GB number, with a statement every month even when it is zero. A month totalling under R350 carries forward. A charge that turns out to be our defect is returned to wherever it came from. No VAT is charged.</p>
   </div>
@@ -699,7 +699,7 @@ SUPPORT = """
     <div class="grid g3" style="margin-top:22px">
       <div class="ex"><h3>Guest portal down at 02:00 on arrival day <span class="note">(illustrative)</span></h3><p>Boutique plan, no Event Window booked. You log a call and tick "a live event is affected".</p><ol><li>Sev 1. A person is alerted.</li><li>Cause: a GroupBook defect.</li><li><span class="pill p-free">Defect</span>no charge, whatever time it took.</li></ol><div class="total"><span>You pay</span><span class="amt free">R0</span></div></div>
       <div class="ex"><h3>25 minutes fixing a rooming list you imported wrong</h3><p>Sourcing plan, Tuesday 09:00. Duplicate rows in the file you uploaded.</p><ol><li>Sev 3. Not a defect: the file was the cause.</li><li>Over 15 minutes, so a quick estimate — 25 min from your allowance — which you approve on the call.</li><li>25 of your 60 minutes used; 35 left this month.</li></ol><div class="total"><span>You pay</span><span class="amt pool">R0 <span class="note">(from allowance)</span></span></div></div>
-      <div class="ex"><h3>A 3-hour training session for two new staff</h3><p>Boutique plan, R1,500 prepaid credit on the account.</p><ol><li>Planned work: quoted in full at R699/h → R2,097; your named approver approves.</li><li>Planned work does not draw on the monthly allowance.</li><li>R1,500 comes off credit; R597 goes on this month's invoice.</li></ol><div class="total"><span>You pay</span><span class="amt credit">R1,500 credit + R597 invoiced</span></div></div>
+      <div class="ex"><h3>A 3-hour training session for two new staff</h3><p>Boutique plan, R1,500 prepaid credit on the account.</p><ol><li>Planned work: quoted in full at R850/h → R2,550; your named approver approves.</li><li>Planned work does not draw on the monthly allowance.</li><li>R1,500 comes off credit; R1,050 goes on this month's invoice.</li></ol><div class="total"><span>You pay</span><span class="amt credit">R1,500 credit + R1,050 invoiced</span></div></div>
     </div>
   </div>
 </section>

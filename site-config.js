@@ -49,8 +49,8 @@ window.GB = {
   annualMultiplier: 10, // annual = 10 × monthly (two months free)
   support: {
     hours: "Monday to Friday, 08:00–17:00 SAST, excluding South African public holidays",
-    rate: 699,
-    afterHours: 1048.5,
+    rate: 850,
+    afterHours: 1275,
     eventWindowDay: 1950,            // pre-booked remote cover, subject to availability and agreed scope (1 Oct)
     minutesPool: { directory: null, sourcing: 60, practice: 120, agency: 240 },
     sev1: { directory: "4 business hours", sourcing: "2 business hours", practice: "2 business hours", agency: "2 business hours", enterprise: "As agreed" },
