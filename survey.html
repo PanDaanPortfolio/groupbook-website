@@ -1,1431 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GroupBook — Shape the future of group travel software in SA</title>
-<!-- Survey v4: Essential/Value-Add/Nice-to-Have flow aligned to ITC/Agency/TMC pricing. 4 Apr 2026 -->
-<meta name="description" content="5-minute survey for South African travel professionals. Help us get the pricing right. 5 lucky draw winners each get 1 month GroupBook free.">
-<meta property="og:title" content="Win 1 month free — GroupBook pricing survey">
-<meta property="og:description" content="5 minutes. 5 winners. Help shape SA's group travel platform. Enter the lucky draw.">
-<meta property="og:image" content="https://groupbook.co.za/images/survey-og.png">
-<meta property="og:url" content="https://groupbook.co.za/survey">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GroupBook — 3-minute survey: what would group travel software be worth to you?</title>
+<meta name="description" content="Tell us how you source hotels and venues and run group travel today, and what you would pay for software that does it. Early access and a free first month for everyone who answers.">
+<meta property="og:title" content="What would group travel software be worth to you? A 3-minute survey.">
+<meta property="og:description" content="GroupBook finds hotels and venues, compares quotes, and runs the guest and travel logistics in one place. Tell us what you'd pay — and get early access with a free first month.">
+<meta property="og:image" content="https://www.groupbook.co.za/groupbook-og-image.png">
+<meta property="og:url" content="https://www.groupbook.co.za/survey">
+<meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2A3A">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #152742;
-    --gold: #B88A44;
-    --gold-light: #B88A4418;
-    --gold-mid: #B88A4440;
-    --cream: #F0F0E6;
-    --text: #1a1a1a;
-    --text-secondary: #6b7280;
-    --text-hint: #9ca3af;
-    --border: #e5e7eb;
-    --border-hover: #B88A4466;
-    --surface: #ffffff;
-    --surface-secondary: #f9fafb;
-    --radius: 10px;
-    --radius-sm: 7px;
-    --danger: #dc2626;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-hint: #64748b;
-      --border: #2a3547;
-      --border-hover: #B88A4466;
-      --surface: #111827;
-      --surface-secondary: #1e293b;
-    }
-    body { background: #0d1420; }
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-    background: #f3f4f6;
-    min-height: 100vh;
-    color: var(--text);
-    line-height: 1.6;
-  }
-
-  /* ---- Layout ---- */
-  .page-wrap {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .topbar {
-    background: var(--navy);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .topbar-logo {
-    width: 30px;
-    height: 30px;
-    background: var(--gold);
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: .04em;
-    flex-shrink: 0;
-  }
-  .topbar-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: .01em;
-  }
-  .topbar-tagline {
-    font-size: 12px;
-    color: rgba(255,255,255,.5);
-    margin-left: auto;
-  }
-
-  .main {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 2rem 1rem 4rem;
-  }
-
-  .card {
-    background: var(--surface);
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    padding: 2rem 2rem 1.75rem;
-    width: 100%;
-    max-width: 620px;
-    box-shadow: 0 4px 24px rgba(0,0,0,.06);
-  }
-  @media (max-width: 480px) {
-    .card { padding: 1.5rem 1.25rem 1.5rem; border-radius: 12px; }
-  }
-
-  /* ---- Progress ---- */
-  .progress-wrap {
-    margin-bottom: 1.75rem;
-  }
-  .progress-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-  .progress-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-  .progress-count {
-    font-size: 11px;
-    color: var(--text-secondary);
-  }
-  .progress-track {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width .4s cubic-bezier(.4,0,.2,1);
-  }
-
-  /* ---- Screens ---- */
-  .screen { display: none; }
-  .screen.active { display: block; }
-
-  /* ---- Cover ---- */
-  .prize-banner {
-    background: var(--navy);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.75rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .prize-banner::after {
-    content: '';
-    position: absolute;
-    right: -24px; top: -24px;
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: rgba(184,138,68,.15);
-    pointer-events: none;
-  }
-  .prize-icon {
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    background: rgba(184,138,68,.18);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .prize-icon svg { width: 22px; height: 22px; }
-  .prize-text-top {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 4px;
-  }
-  .prize-text-main {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.3;
-  }
-  .prize-text-sub {
-    font-size: 12px;
-    color: rgba(255,255,255,.55);
-    margin-top: 3px;
-  }
-
-  .cover-heading {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: .6rem;
-  }
-  .cover-sub {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 1.75rem;
-  }
-  .cover-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.75rem;
-  }
-  .cover-chip {
-    font-size: 12px;
-    color: var(--text-secondary);
-    background: var(--surface-secondary);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 5px 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .cover-chip-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-    flex-shrink: 0;
-  }
-
-  /* ---- Section badge ---- */
-  .section-badge {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: var(--gold-light);
-    border-radius: 20px;
-    padding: 3px 10px;
-    margin-bottom: .85rem;
-    border: 1px solid var(--gold-mid);
-  }
-
-  /* ---- Question ---- */
-  .q-text {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.45;
-    margin-bottom: .5rem;
-  }
-  .q-note {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: .9rem;
-  }
-
-  /* ---- Options ---- */
-  .options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
-
-  .opt {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: border-color .15s, background .15s;
-    background: var(--surface);
-    user-select: none;
-  }
-  .opt:hover { border-color: var(--border-hover); background: var(--gold-light); }
-  .opt.selected { border-color: var(--gold); background: var(--gold-light); }
-
-  .opt-radio {
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    flex-shrink: 0;
-    transition: all .15s;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--surface);
-  }
-  .opt.selected .opt-radio {
-    border-color: var(--gold);
-    background: var(--gold);
-  }
-  .opt-radio-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #fff;
-    opacity: 0;
-    transition: opacity .15s;
-  }
-  .opt.selected .opt-radio-dot { opacity: 1; }
-
-  .opt-check {
-    width: 18px; height: 18px;
-    border-radius: 4px;
-    border: 1.5px solid var(--border);
-    flex-shrink: 0;
-    transition: all .15s;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--surface);
-  }
-  .opt.selected .opt-check {
-    border-color: var(--gold);
-    background: var(--gold);
-  }
-  .opt-check svg { opacity: 0; transition: opacity .15s; }
-  .opt.selected .opt-check svg { opacity: 1; }
-
-  .opt-label { font-size: 14px; color: var(--text); line-height: 1.4; }
-
-  /* ---- Multi select note ---- */
-  .multi-note {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: .75rem;
-  }
-
-  /* ---- Feature boxes ---- */
-  .feature-box {
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-    font-size: 0.82rem;
-    line-height: 1.85;
-  }
-  .feature-box strong {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 0.9rem;
-  }
-  .feature-box .sub-label {
-    font-size: 0.76rem;
-    display: block;
-    margin-bottom: 2px;
-  }
-  .feature-box-green { background: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e20; }
-  .feature-box-green strong { color: #1b5e20; }
-  .feature-box-blue { background: #e3f2fd; border: 1px solid #90caf9; color: #0d47a1; }
-  .feature-box-blue strong { color: #0d47a1; }
-  .feature-box-blue .sub-label { color: #1565c0; }
-  .feature-box-purple { background: #f3e5f5; border: 1px solid #ce93d8; color: #4a148c; }
-  .feature-box-purple strong { color: #4a148c; }
-  .feature-box-purple .sub-label { color: #6a1b9a; }
-
-  /* ---- Price inputs ---- */
-  .price-hint {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.65;
-    margin-bottom: 1.25rem;
-    padding: 10px 14px;
-    background: var(--surface-secondary);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-  }
-  .price-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-  @media (max-width: 420px) { .price-grid { grid-template-columns: 1fr; } }
-
-  .price-field label {
-    display: block;
-    font-size: 11px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-  .price-input-row {
-    display: flex;
-    align-items: stretch;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    background: var(--surface);
-    transition: border-color .15s;
-  }
-  .price-input-row:focus-within { border-color: var(--gold); }
-  .price-prefix {
-    padding: 0 10px;
-    background: var(--surface-secondary);
-    border-right: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--text-secondary);
-    display: flex; align-items: center;
-    flex-shrink: 0;
-  }
-  .price-input-row input {
-    border: none;
-    outline: none;
-    background: transparent;
-    padding: 0 10px;
-    font-size: 14px;
-    color: var(--text);
-    height: 40px;
-    width: 100%;
-    font-family: inherit;
-  }
-  .price-input-row input::placeholder { color: var(--text-hint); }
-
-  /* ---- Text areas ---- */
-  .text-input {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 11px 14px;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    outline: none;
-    transition: border-color .15s;
-    font-family: inherit;
-    line-height: 1.55;
-    resize: vertical;
-    margin-bottom: 1.5rem;
-  }
-  .text-input:focus { border-color: var(--gold); }
-  .text-input::placeholder { color: var(--text-hint); }
-
-  /* ---- Entry form ---- */
-  .entry-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
-  .field-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-  }
-  .field-input {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 11px 14px;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    outline: none;
-    transition: border-color .15s;
-    font-family: inherit;
-    height: 44px;
-  }
-  .field-input:focus { border-color: var(--gold); }
-  .field-input::placeholder { color: var(--text-hint); }
-
-  .popia-note {
-    font-size: 11px;
-    color: var(--text-hint);
-    line-height: 1.6;
-    margin-top: -.25rem;
-    margin-bottom: 1.5rem;
-  }
-
-  /* ---- Errors ---- */
-  .err-msg {
-    font-size: 12px;
-    color: var(--danger);
-    margin-top: -.75rem;
-    margin-bottom: .75rem;
-    display: none;
-  }
-  .err-msg.visible { display: block; }
-
-  /* ---- Navigation ---- */
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: .5rem;
-  }
-
-  .btn {
-    padding: 10px 22px;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all .15s;
-    border: none;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .btn-back {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    padding: 10px 16px;
-  }
-  .btn-back:hover { border-color: var(--border-hover); color: var(--text); }
-  .btn-primary {
-    background: var(--navy);
-    color: #fff;
-    padding: 11px 24px;
-  }
-  .btn-primary:hover { background: #1d3560; }
-  .btn-primary:active { transform: scale(.98); }
-  .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; }
-  .btn-gold {
-    background: var(--gold);
-    color: #fff;
-    padding: 12px 28px;
-    font-size: 15px;
-  }
-  .btn-gold:hover { background: #a07838; }
-
-  /* ---- Done screen ---- */
-  .done-icon {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: var(--gold-light);
-    border: 1px solid var(--gold-mid);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1.25rem;
-  }
-  .done-heading {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: .5rem;
-    line-height: 1.3;
-  }
-  .done-sub {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-  .done-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 1.5rem 0;
-  }
-  .share-heading {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    margin-bottom: .9rem;
-  }
-  .share-btns { display: flex; flex-wrap: wrap; gap: 10px; }
-  .btn-linkedin {
-    background: #0A66C2; color: #fff;
-    padding: 10px 18px; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    font-family: inherit; border: none;
-    display: flex; align-items: center; gap: 8px;
-    transition: background .15s;
-  }
-  .btn-linkedin:hover { background: #085196; }
-  .btn-copy {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    padding: 10px 18px; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    font-family: inherit;
-    display: flex; align-items: center; gap: 8px;
-    transition: all .15s;
-  }
-  .btn-copy:hover { border-color: var(--border-hover); }
-  .copy-confirm {
-    font-size: 12px;
-    color: var(--gold);
-    margin-top: .5rem;
-    display: none;
-  }
-
-  /* ---- Draw receipt ---- */
-  .draw-receipt {
-    background: var(--surface-secondary);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-  .draw-receipt-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 13px;
-    padding: 4px 0;
-  }
-  .draw-receipt-label { color: var(--text-secondary); }
-  .draw-receipt-value { color: var(--text); font-weight: 500; }
-  .draw-receipt-prize {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--gold);
-    font-weight: 600;
-    text-align: center;
-  }
-
-  /* ---- Next steps ---- */
-  .next-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 14px;
-    background: var(--surface-secondary);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-  }
-  .step-num {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: var(--gold-light);
-    border: 1px solid var(--gold-mid);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    color: var(--gold);
-    flex-shrink: 0;
-  }
-  .step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .step-desc { font-size: 12px; color: var(--text-secondary); }
-
-  /* ---- Footer ---- */
-  .footer {
-    text-align: center;
-    padding: 1.5rem 1rem;
-    font-size: 11px;
-    color: var(--text-hint);
-    line-height: 1.7;
-  }
-  .footer a { color: var(--text-hint); text-decoration: underline; }
+:root{--navy:#1B2A3A;--navy2:#22333F;--gold:#B8893A;--gold2:#E2B96B;--cream:#F6F3EC;--ink:#1B2A3A;--ink2:#41506A;--ink3:#6E7B92;--line:#DCD8CA;--green:#2E6B3F;--greenbg:#E7F2EA;--red:#9B2C2C;--redbg:#F8E5E5}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;font:16px/1.55 "DM Sans",-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--cream)}
+button{touch-action:manipulation;font:inherit}
+.top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px}
+.top img{height:30px;width:auto}.top span{font-size:14px;color:#D9E0E8}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 110px}
+.bar{height:6px;background:#E6E1D4;border-radius:3px;overflow:hidden;margin:4px 0 18px}.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.stepno{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,5vw,34px);line-height:1.15;margin:6px 0 10px}
+h2{font-family:Fraunces,Georgia,serif;font-size:20px;margin:22px 0 6px}
+h3{font-size:16px;margin:0 0 6px}
+p{margin:8px 0}.lede{font-size:17px;color:var(--ink2)}.hint{font-size:13.5px;color:var(--ink3);margin:4px 0 10px}
+.q{margin:22px 0 6px;font-weight:700}.q .req{color:var(--red);margin-left:4px}
+.opts{display:grid;gap:8px}.opt{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt input{margin-top:4px;flex:none;width:18px;height:18px;accent-color:var(--navy)}.opt.on{border-color:var(--navy);background:#fff;box-shadow:0 0 0 2px #1B2A3A22}
+.f{display:block;font-weight:600;margin-top:10px}.f input[type=text],.f input[type=email],.f input[type=number],.f textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;font:inherit;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.f textarea{min-height:92px;resize:vertical}
+.ask.miss .opt,.ask.miss input,.ask.miss textarea{border-color:var(--red)}.ask.miss .q{color:var(--red)}
+.missmsg{display:none;background:var(--redbg);color:var(--red);border-radius:10px;padding:10px 14px;font-weight:600;margin-top:16px}
+.plan{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+.plan.hi{border-color:var(--gold);box-shadow:0 0 0 3px #F3E7CF}
+.plan .nm{font-family:Fraunces,Georgia,serif;font-size:22px}.plan .job{color:var(--ink2);margin:4px 0 8px}
+.plan ul{margin:6px 0 10px;padding-left:20px}.plan li{margin:3px 0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}@media(max-width:480px){.pair{grid-template-columns:1fr}}
+.pair .f{margin-top:0;font-size:14px}.pair .f span{display:block;color:var(--ink3);font-weight:400;font-size:12.5px}
+.in{position:relative}.in b{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink3);font-weight:500}.in input{padding-left:30px!important}
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+.card.navy{background:var(--navy);border-color:var(--navy);color:#fff}.card.navy p{color:#D9E0E8}.card.navy h3{color:#fff}
+.gift{background:var(--greenbg);border:1.5px solid #BFDCC7;border-radius:14px;padding:14px 16px;margin-top:14px;color:var(--green)}
+.foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.foot .row{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.btn{border:0;border-radius:999px;padding:14px 26px;font-weight:700;font-size:16px;cursor:pointer}
+.btn.p{background:var(--navy);color:#fff}.btn.g{background:#fff;color:var(--ink);border:1.5px solid var(--line)}.btn:disabled{opacity:.4;cursor:default}
+.where{font-size:13px;color:var(--ink3)}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:14px;color:var(--ink2)}.chk input{margin-top:3px;width:18px;height:18px;accent-color:var(--navy);flex:none}
+.small{font-size:13px;color:var(--ink3)}
+.done{text-align:center;padding:30px 0}.done h1{font-size:30px}
+.err{background:var(--redbg);color:var(--red);border-radius:10px;padding:12px 14px;margin-top:14px;display:none}
+a{color:var(--navy)}
 </style>
 </head>
 <body>
-
-<div class="page-wrap">
-  <nav class="topbar">
-    <div class="topbar-logo">GB</div>
-    <span class="topbar-name">GroupBook</span>
-    <span class="topbar-tagline">groupbook.co.za</span>
-  </nav>
-
-  <main class="main">
-    <div class="card">
-
-      <!-- Progress bar (hidden on cover and done) -->
-      <div class="progress-wrap" id="progress-wrap" style="display:none">
-        <div class="progress-meta">
-          <span class="progress-label" id="section-label">About you</span>
-          <span class="progress-count" id="step-count">1 / 12</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 0 - COVER
-           ================================================================ -->
-      <div class="screen active" id="sc-cover">
-        <div class="prize-banner">
-          <div class="prize-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#B88A44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div>
-            <div class="prize-text-top">Lucky draw -- 5 winners</div>
-            <div class="prize-text-main">1 month GroupBook free</div>
-            <div class="prize-text-sub">Complete the survey to enter. Winners drawn at launch.</div>
-          </div>
-        </div>
-
-        <h1 class="cover-heading">Help shape SA's group travel platform -- and win</h1>
-        <p class="cover-sub">GroupBook automates your group travel business -- including admin and travel management. This 5-minute survey helps us price it correctly for ITCs, agencies, and TMCs. Your answers go directly to the product team.</p>
-
-        <div class="cover-chips">
-          <div class="cover-chip"><div class="cover-chip-dot"></div>5 minutes to complete</div>
-          <div class="cover-chip"><div class="cover-chip-dot"></div>12 questions</div>
-          <div class="cover-chip"><div class="cover-chip-dot"></div>5 lucky draw winners</div>
-          <div class="cover-chip"><div class="cover-chip-dot"></div>100% confidential</div>
-        </div>
-
-        <div class="nav" style="justify-content:flex-end">
-          <button class="btn btn-gold" onclick="go(1)">Start survey &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 1 - Role
-           ================================================================ -->
-      <div class="screen" id="sc-1">
-        <div class="section-badge">About you</div>
-        <p class="q-text">Which best describes your role?</p>
-        <div class="options" id="opts-1">
-          <div class="opt" onclick="pickSingle(1,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Solo ITC / independent travel consultant</span></div>
-          <div class="opt" onclick="pickSingle(1,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Boutique agency owner or manager (2-5 staff)</span></div>
-          <div class="opt" onclick="pickSingle(1,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Mid-size agency (6-20 staff)</span></div>
-          <div class="opt" onclick="pickSingle(1,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">TMC / large agency (20+ staff)</span></div>
-        </div>
-        <div class="err-msg" id="err-1">Please select an option to continue.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(0)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextSingle(1, 2)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 2 - RFP Volume
-           ================================================================ -->
-      <div class="screen" id="sc-2">
-        <div class="section-badge">About you</div>
-        <p class="q-text">How many group hotel RFPs do you send per month on average?</p>
-        <div class="options" id="opts-2">
-          <div class="opt" onclick="pickSingle(2,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">0-2 per month</span></div>
-          <div class="opt" onclick="pickSingle(2,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">3-5 per month</span></div>
-          <div class="opt" onclick="pickSingle(2,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">6-10 per month</span></div>
-          <div class="opt" onclick="pickSingle(2,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">11-20 per month</span></div>
-          <div class="opt" onclick="pickSingle(2,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">More than 20 per month</span></div>
-        </div>
-        <div class="err-msg" id="err-2">Please select an option to continue.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(1)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextSingle(2, 3)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 3 - Reconciliation
-           ================================================================ -->
-      <div class="screen" id="sc-3">
-        <div class="section-badge">About you</div>
-        <p class="q-text">Do you personally handle Diners Club or lodge card reconciliation for your travel spend?</p>
-        <p class="q-note">Reconciliation = matching your card statement line by line to booking confirmations.</p>
-        <div class="options" id="opts-3">
-          <div class="opt" onclick="pickSingle(3,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Yes -- I reconcile my own statements personally</span></div>
-          <div class="opt" onclick="pickSingle(3,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">My host TMC or back-office handles this for me</span></div>
-          <div class="opt" onclick="pickSingle(3,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">I don't handle group travel card spend</span></div>
-          <div class="opt" onclick="pickSingle(3,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not applicable to my role</span></div>
-        </div>
-        <div class="err-msg" id="err-3">Please select an option to continue.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(2)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextSingle(3, 4)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 4 - Pain points
-           ================================================================ -->
-      <div class="screen" id="sc-4">
-        <div class="section-badge">About you</div>
-        <p class="q-text">What are your biggest pain points in group travel today?</p>
-        <p class="multi-note">Select up to 2 that apply most.</p>
-        <div class="options" id="opts-4">
-          <div class="opt" onclick="toggleMulti(4,0,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Sourcing and comparing hotel quotes</span></div>
-          <div class="opt" onclick="toggleMulti(4,1,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Managing guests -- dietary, rooming, transfers</span></div>
-          <div class="opt" onclick="toggleMulti(4,2,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Tracking bookings vs card charges</span></div>
-          <div class="opt" onclick="toggleMulti(4,3,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Client finance reporting</span></div>
-          <div class="opt" onclick="toggleMulti(4,4,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Coordinating multiple suppliers</span></div>
-          <div class="opt" onclick="toggleMulti(4,5,this,2)"><div class="opt-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="opt-label">Duplicate data entry across systems</span></div>
-        </div>
-        <div class="err-msg" id="err-4">Please select at least one option.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(3)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextMulti(4, 5)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 5 - Concept relevance
-           ================================================================ -->
-      <div class="screen" id="sc-5">
-        <div class="section-badge">Concept check</div>
-        <p class="q-text">GroupBook automates your group travel business -- including admin and travel management. Hotel sourcing, guest management, self-service booking portals, payment collection, and reconciliation -- all in one platform. How relevant is this to your workflow?</p>
-        <div class="options" id="opts-5">
-          <div class="opt" onclick="pickSingle(5,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Extremely relevant -- I need this now</span></div>
-          <div class="opt" onclick="pickSingle(5,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Very relevant -- would improve my work significantly</span></div>
-          <div class="opt" onclick="pickSingle(5,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Somewhat relevant -- useful for some tasks</span></div>
-          <div class="opt" onclick="pickSingle(5,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not very relevant to my workflow</span></div>
-          <div class="opt" onclick="pickSingle(5,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not relevant at all</span></div>
-        </div>
-        <div class="err-msg" id="err-5">Please select an option to continue.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(4)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextSingle(5, 6)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 6 - ESSENTIAL FEATURES (ITC tier = R999/mo)
-           ================================================================ -->
-      <div class="screen" id="sc-6">
-        <div class="section-badge">Essential features -- automate your admin</div>
-        <p class="q-text">These are the essentials every group travel professional needs. What would you pay?</p>
-
-        <div class="feature-box feature-box-green">
-          <strong>The essentials (ITC tier)</strong>
-          &#10003; 342+ verified SA hotel database with direct groups contacts<br>
-          &#10003; Client brief form -- clients fill it in, you get a clean brief<br>
-          &#10003; One-click RFP to multiple hotels + side-by-side quote comparison<br>
-          &#10003; Smart Inbox AI -- hotel replies auto-extracted into structured data<br>
-          &#10003; Up to 20 guests per event and up to 5 Aide Memoires per month<br>
-          &#10003; 1 user included. All AI costs absorbed -- never passed to you.
-        </div>
-
-        <div class="price-hint">Enter a Rand amount per month that feels right for you -- no wrong answers.</div>
-
-        <div class="price-grid">
-          <div class="price-field">
-            <label style="color:#2e7d32">Good value -- I'd subscribe without hesitation</label>
-            <div class="price-input-row">
-              <div class="price-prefix">R</div>
-              <input type="number" min="0" step="1" placeholder="e.g. 799" id="p-t1-good" oninput="savePriceVal('tier1_good_value',this.value)">
-            </div>
-          </div>
-          <div class="price-field">
-            <label style="color:#1b5e20">Too expensive -- I wouldn't subscribe at this price</label>
-            <div class="price-input-row">
-              <div class="price-prefix">R</div>
-              <input type="number" min="0" step="1" placeholder="e.g. 1500" id="p-t1-max" oninput="savePriceVal('tier1_too_expensive',this.value)">
-            </div>
-          </div>
-        </div>
-
-        <div class="err-msg" id="err-6">Please fill in both price fields before continuing.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(5)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextEssentialPrices(7)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 7 - VALUE-ADD FEATURES (Agency tier = R1,999/mo)
-           ================================================================ -->
-      <div class="screen" id="sc-7">
-        <div class="section-badge">Value-add features -- automate your guest management</div>
-        <p class="q-text">Now imagine adding full guest management on top of the essentials. What would you pay?</p>
-
-        <div class="feature-box feature-box-blue">
-          <strong>Value-adds (Agency tier)</strong>
-          <span class="sub-label">Everything in the essentials above, PLUS:</span>
-          &#10003; Unlimited guest management -- RSVP, invitations, rooming lists, dietary tracking<br>
-          &#10003; Aide Memoire -- branded mobile e-ticket for every guest (unlimited)<br>
-          &#10003; Full Smart Inbox AI -- all 9 document types (hotels, flights, transfers, car hire, activities and more)<br>
-          &#10003; Passport AI extraction -- scan passports, fields auto-populate<br>
-          &#10003; Guest import from Excel (.xlsx)<br>
-          &#10003; Event Pack export -- print-quality guest list, rooming summary, dietary, transfer manifest<br>
-          &#10003; Custom agency branding on all outputs -- your logo, your colours<br>
-          &#10003; Up to 3 users included
-        </div>
-
-        <div class="price-hint">Enter a Rand amount per month for the essentials PLUS these value-adds combined -- no wrong answers.</div>
-
-        <div class="price-grid">
-          <div class="price-field">
-            <label style="color:#1565c0">Good value -- I'd subscribe without hesitation</label>
-            <div class="price-input-row">
-              <div class="price-prefix">R</div>
-              <input type="number" min="0" step="1" placeholder="e.g. 1999" id="p-t2-good" oninput="savePriceVal('tier2_good_value',this.value)">
-            </div>
-          </div>
-          <div class="price-field">
-            <label style="color:#0d47a1">Too expensive -- I wouldn't subscribe at this price</label>
-            <div class="price-input-row">
-              <div class="price-prefix">R</div>
-              <input type="number" min="0" step="1" placeholder="e.g. 3500" id="p-t2-max" oninput="savePriceVal('tier2_too_expensive',this.value)">
-            </div>
-          </div>
-        </div>
-
-        <div class="err-msg" id="err-7">Please fill in both price fields before continuing.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(6)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextValueAddPrices(8)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 8 - NICE-TO-HAVE FEATURES (TMC tier = R4,999/mo)
-           ================================================================ -->
-      <div class="screen" id="sc-8">
-        <div class="section-badge">Nice-to-have features -- automate your travel management</div>
-        <p class="q-text">Finally -- the full travel management suite. Guests book and pay online, transfers run live, reconciliation is automated. What would you pay?</p>
-
-        <div class="feature-box feature-box-purple">
-          <strong>Nice-to-haves (TMC tier)</strong>
-          <span class="sub-label">Everything in essentials + value-adds above, PLUS:</span>
-          &#10003; Accommodation booking portal -- guests browse, select rooms, and pay online<br>
-          &#10003; Transfers portal -- live manifest, driver dispatch, real-time change tracking<br>
-          &#10003; Flights portal -- seat inventory, passport capture, airline manifest export<br>
-          &#10003; Payment gateway (Netcash) -- collect guest payments directly through the platform<br>
-          &#10003; Proforma and tax invoice generation on payment<br>
-          &#10003; Branded confirmation emails auto-sent after payment<br>
-          &#10003; Per-event branding -- switch between event and agency logo per event<br>
-          &#10003; Diners / lodge card reconciliation -- 90%+ transactions auto-matched<br>
-          &#10003; Up to 10 users included
-        </div>
-
-        <div class="price-hint">Enter a Rand amount per month for the COMPLETE package -- essentials + value-adds + nice-to-haves combined -- no wrong answers.</div>
-
-        <div class="price-grid">
-          <div class="price-field">
-            <label style="color:#6a1b9a">Good value -- I'd subscribe without hesitation</label>
-            <div class="price-input-row">
-              <div class="price-prefix">R</div>
-              <input type="number" min="0" step="1" placeholder="e.g. 4999" id="p-t3-good" oninput="savePriceVal('tier3_good_value',this.value)">
-            </div>
-          </div>
-          <div class="price-field">
-            <label style="color:#4a148c">Too expensive -- I wouldn't subscribe at this price</label>
-            <div class="price-input-row">
-              <div class="price-prefix">R</div>
-              <input type="number" min="0" step="1" placeholder="e.g. 8000" id="p-t3-max" oninput="savePriceVal('tier3_too_expensive',this.value)">
-            </div>
-          </div>
-        </div>
-
-        <div class="err-msg" id="err-8">Please fill in both price fields before continuing.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(7)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextNiceToHavePrices(9)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 9 - Which tier fits you?
-           ================================================================ -->
-      <div class="screen" id="sc-9">
-        <div class="section-badge">Your fit</div>
-        <p class="q-text">Based on what you've seen -- which level best fits your needs today?</p>
-        <div class="options" id="opts-9">
-          <div class="opt" onclick="pickSingle(9,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Just the essentials -- hotel sourcing and RFP automation (ITC)</span></div>
-          <div class="opt" onclick="pickSingle(9,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Essentials + guest management -- I manage 20+ guests per event (Agency)</span></div>
-          <div class="opt" onclick="pickSingle(9,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">The full package -- I need booking portals, payments, and reconciliation (TMC)</span></div>
-          <div class="opt" onclick="pickSingle(9,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Not sure yet -- I'd need to see it in action first</span></div>
-        </div>
-        <div class="err-msg" id="err-9">Please select an option to continue.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(8)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextSingle(9, 10)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 10 - Team size
-           ================================================================ -->
-      <div class="screen" id="sc-10">
-        <div class="section-badge">Team size</div>
-        <p class="q-text">How many people in your team would use GroupBook?</p>
-        <div class="options" id="opts-10">
-          <div class="opt" onclick="pickSingle(10,0,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">Just me (1 user)</span></div>
-          <div class="opt" onclick="pickSingle(10,1,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">2-3 people</span></div>
-          <div class="opt" onclick="pickSingle(10,2,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">4-6 people</span></div>
-          <div class="opt" onclick="pickSingle(10,3,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">7-10 people</span></div>
-          <div class="opt" onclick="pickSingle(10,4,this)"><div class="opt-radio"><div class="opt-radio-dot"></div></div><span class="opt-label">11 or more</span></div>
-        </div>
-        <div class="err-msg" id="err-10">Please select an option to continue.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(9)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="nextSingle(10, 11)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 11 - Open feedback
-           ================================================================ -->
-      <div class="screen" id="sc-11">
-        <div class="section-badge">Last question</div>
-        <p class="q-text">What's your biggest hesitation about subscribing to new software for group travel?</p>
-        <p class="q-note">Your honest answer helps us address real concerns -- not just build features.</p>
-        <textarea class="text-input" id="open-feedback" rows="4" placeholder='e.g. "Price, getting my team to adopt it, not sure it fits my workflow..."' oninput="state.answers['open_feedback']=this.value"></textarea>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(10)">&larr; Back</button>
-          <button class="btn btn-primary" onclick="go(12)">Continue &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 12 - Survey complete + draw choice
-           Survey data is submitted here. Draw entry is a separate opt-in.
-           ================================================================ -->
-      <div class="screen" id="sc-12">
-        <div class="done-icon" style="margin-bottom:1rem">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-            <path d="M5 13l6 6L21 7" stroke="#B88A44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <p class="q-text" style="margin-bottom:.5rem">That's it -- your responses have been recorded.</p>
-        <p class="q-note" style="margin-bottom:1.5rem">Thank you for helping shape GroupBook's pricing and features. Your input goes directly to the product team.</p>
-
-        <div style="border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
-          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:.35rem;">Would you like to enter the lucky draw?</div>
-          <div style="font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:1.1rem;">5 winners will each receive 1 month GroupBook free at launch. Winners drawn 5 May 2026. Entering takes 30 seconds.</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <button class="btn btn-gold" style="width:100%;justify-content:center;" onclick="go(13)">Yes -- enter the lucky draw &rarr;</button>
-            <button class="btn btn-back" style="width:100%;justify-content:center;" onclick="submitAnonymous()">No thanks, I'm done</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN 13 - Draw entry form (only reached by choice)
-           ================================================================ -->
-      <div class="screen" id="sc-13">
-        <div class="section-badge">Lucky draw entry</div>
-        <p class="q-text">Enter your details to be included in the draw</p>
-        <p class="q-note" style="margin-bottom:1.25rem">5 winners each receive 1 month GroupBook free at launch. Winners drawn 5 May 2026 and notified by email.</p>
-        <div class="entry-fields">
-          <div>
-            <label class="field-label" for="inp-name">Your name</label>
-            <input class="field-input" type="text" id="inp-name" placeholder="e.g. Thandi Nkosi" autocomplete="name">
-          </div>
-          <div>
-            <label class="field-label" for="inp-email">Email address</label>
-            <input class="field-input" type="email" id="inp-email" placeholder="you@youragency.co.za" autocomplete="email">
-          </div>
-          <div>
-            <label class="field-label" for="inp-agency">Agency / company name <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-hint)">(optional)</span></label>
-            <input class="field-input" type="text" id="inp-agency" placeholder="e.g. Sunshine Travel" autocomplete="organization">
-          </div>
-        </div>
-        <p class="popia-note">By entering you consent to GroupBook storing your contact details in line with POPIA. We will never sell or share your details. You can unsubscribe at any time.</p>
-        <div class="err-msg" id="err-entry">Please enter your name and a valid email address.</div>
-        <div class="nav">
-          <button class="btn btn-back" onclick="go(12)">&larr; Back</button>
-          <button class="btn btn-gold" id="submit-btn" onclick="submitSurvey()">Submit &amp; enter draw &rarr;</button>
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SCREEN - DONE
-           ================================================================ -->
-      <div class="screen" id="sc-done">
-        <div class="done-icon">
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-            <path d="M5 13l6 6L21 7" stroke="#B88A44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h1 class="done-heading" id="done-heading">Thank you!</h1>
-        <p class="done-sub" id="done-sub">Your answers go directly to the GroupBook team.</p>
-
-        <div class="draw-receipt" id="draw-receipt" style="display:none">
-          <div class="draw-receipt-row">
-            <span class="draw-receipt-label">Name</span>
-            <span class="draw-receipt-value" id="receipt-name">--</span>
-          </div>
-          <div class="draw-receipt-row">
-            <span class="draw-receipt-label">Email</span>
-            <span class="draw-receipt-value" id="receipt-email">--</span>
-          </div>
-          <div class="draw-receipt-prize">5 winners &middot; 1 month GroupBook free each</div>
-        </div>
-
-        <div class="done-divider"></div>
-
-        <p class="share-heading">What happens next</p>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem;">
-          <div class="next-step">
-            <div class="step-num">1</div>
-            <div>
-              <div class="step-title">Survey closes 30 April 2026</div>
-              <div class="step-desc">All responses collected. Pricing analysis completed and shared with early respondents.</div>
-            </div>
-          </div>
-          <div class="next-step">
-            <div class="step-num">2</div>
-            <div>
-              <div class="step-title">Lucky draw -- 5 May 2026</div>
-              <div class="step-desc">5 winners drawn randomly from all respondents. Each wins 1 month GroupBook free. Winners notified by email.</div>
-            </div>
-          </div>
-          <div class="next-step">
-            <div class="step-num">3</div>
-            <div>
-              <div class="step-title">GroupBook launches Q2 2026</div>
-              <div class="step-desc">You'll be the first to hear pricing and get early-access sign-up before the public announcement.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="done-divider"></div>
-
-        <p class="share-heading">Know someone else in travel? Share the survey</p>
-        <p style="font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem">The more responses we get, the better we can build GroupBook for the whole industry. Every share helps.</p>
-        <div class="share-btns">
-          <button class="btn-linkedin" onclick="shareLinkedIn()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            Share on LinkedIn
-          </button>
-          <button class="btn-copy" onclick="copyLink()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            Copy link
-          </button>
-        </div>
-        <p class="copy-confirm" id="copy-confirm">Link copied to clipboard!</p>
-      </div>
-
-    </div><!-- /.card -->
-  </main>
-
-  <footer class="footer">
-    <p>&copy; 2026 PanDaan (Pty) Ltd &middot; GroupBook &middot; <a href="https://groupbook.co.za/privacy" target="_blank">Privacy policy</a> &middot; POPIA compliant</p>
-    <p style="margin-top:4px">Survey responses are confidential and used solely for product research.</p>
-  </footer>
+<div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>A 3-minute survey · early access and a free first month for everyone who answers</span></div>
+<div class="wrap">
+  <div class="bar"><i id="bar"></i></div>
+  <div id="view"></div>
 </div>
+<div class="foot"><div class="row"><button class="btn g" id="back">Back</button><span class="where" id="where"></span><button class="btn p" id="next">Next</button></div></div>
 
 <script>
-  // ---- Constants ----
-  const TOTAL_QUESTION_SCREENS = 11; // Screen 12 is the completion/choice screen, not a question
-  const SURVEY_URL = 'https://groupbook.co.za/survey';
+var API='https://app.groupbook.co.za/api/survey';
+var SURVEY_VERSION='2026-10-v2';
+var S={}; try{ S=JSON.parse(localStorage.getItem('gb_survey2')||'{}'); }catch(e){}
+function save(){ try{ localStorage.setItem('gb_survey2',JSON.stringify(S)); }catch(e){} }
+var step=S._step||0; var REQ={};
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function ask(key,q,opts,hint,optional){
+  REQ[key]=!optional;
+  return '<div class="ask" data-ask="'+key+'"><div class="q">'+q+(optional?'':'<span class="req">*</span>')+'</div>'+(hint?'<div class="hint">'+hint+'</div>':'')+'<div class="opts">'+
+    opts.map(function(o,i){ var v=o[0], l=o[1]; var on=S[key]===v; return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+key+'" value="'+v+'"'+(on?' checked':'')+' data-k="'+key+'"><span>'+l+'</span></label>'; }).join('')+'</div></div>';
+}
+function multi(key,q,opts,hint,max){
+  REQ[key]=true; var cur=S[key]||[];
+  return '<div class="ask" data-ask="'+key+'" data-multi="'+key+'" data-max="'+(max||99)+'"><div class="q">'+q+'<span class="req">*</span></div>'+(hint?'<div class="hint">'+hint+'</div>':'')+'<div class="opts">'+
+    opts.map(function(o){ var on=cur.indexOf(o[0])>=0; return '<label class="opt'+(on?' on':'')+'"><input type="checkbox" value="'+o[0]+'"'+(on?' checked':'')+' data-mk="'+key+'"><span>'+o[1]+'</span></label>'; }).join('')+'</div></div>';
+}
+function num(key,label,ph,required,prefix,sub){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+(sub?'<span>'+sub+'</span>':'')+'<div class="in">'+(prefix?'<b>'+prefix+'</b>':'')+'<input type="number" inputmode="numeric" data-k="'+key+'" value="'+esc(S[key]||'')+'" placeholder="'+(ph||'')+'"></div></label></div>'; }
+function txt(key,label,ph,required,type){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'<input type="'+(type||'text')+'" data-k="'+key+'" value="'+esc(S[key]||'')+'" placeholder="'+(ph||'')+'"></label></div>'; }
+function area(key,label,ph,required){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'<textarea data-k="'+key+'" placeholder="'+(ph||'')+'">'+esc(S[key]||'')+'</textarea></label></div>'; }
 
-  // Maps screen number to section label shown in progress bar
-  const SECTION_MAP = {
-    1: 'About you',
-    2: 'About you',
-    3: 'About you',
-    4: 'About you',
-    5: 'Concept check',
-    6: 'Essential features',
-    7: 'Value-add features',
-    8: 'Nice-to-have features',
-    9: 'Your fit',
-    10: 'Team size',
-    11: 'Last question'
-  };
+var SCREENS=[
+{ title:'What would software for group travel be worth to you?', body:function(){ return '<p class="lede">GroupBook is a South African tool that finds the right hotels and venues for a group, gets the quotes in one place, and then runs the guest and travel logistics around the event — rooming lists, flights, transfers, RSVPs. We are deciding what it should cost, and we would rather ask than guess.</p>'+
+ '<div class="gift"><b>Four minutes, a dozen quick questions.</b> Leave your email at the end and you get early access when we launch commercially, with your first month free.</div>'+
+ '<p class="small" style="margin-top:14px">No prices are shown — we are asking what <em>you</em> would pay. Your answers are stored by PanDaan (Pty) Ltd, the company behind GroupBook, and used only for this research and, if you ask for it, early access. Nothing is shared or sold.</p>'; } },
 
-  // All screens in traversal order
-  const screenOrder = ['cover', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 'done'];
+{ title:'About you', body:function(){ return '<p class="lede">So we can read your answers in context.</p>'+
+ ask('role','Which of these is closest to your work?',[[1,'I organise events or group travel inside a company (events team, marketing, EA, travel desk)'],[2,'I work at an event, incentive or conference agency'],[3,'I work at a travel agency or travel management company'],[4,'I am an independent travel consultant (ITC) or a one-to-three-person agency'],[5,'Something else']])+
+ ask('volume','Roughly how many group events or group bookings a year are you involved in?',[[1,'Fewer than 5'],[2,'5 to 20'],[3,'21 to 60'],[4,'More than 60']])+
+ ask('event_size','How big is a typical event or group?',[[1,'Under 50 people'],[2,'50 to 150'],[3,'151 to 300'],[4,'301 to 500'],[5,'More than 500']])+
+ ask('team_size','How many people in your team would use a tool like this?',[[1,'Just me'],[2,'2 to 3'],[3,'4 to 6'],[4,'7 to 10'],[5,'11 or more']]); } },
 
-  // Survey state -- answers keyed by question number, prices keyed by label
-  const state = {
-    current: 'cover',
-    answers: {},
-    prices: {},
-    name: '',
-    email: '',
-    agency: ''
-  };
+{ title:'How you do it today', body:function(){ return ''+
+ ask('sourcing_today','When you need group accommodation or a venue, how do you get quotes today?',[[1,'I phone the hotels to find the right person, then email'],[2,'I email contacts I already have'],[3,'A sourcing company or venue finder does it for me'],[4,'A booking tool or platform'],[5,'I rarely source group accommodation']])+
+ ask('rsvp_today','Who runs the invitations and RSVPs for your events?',[[1,'We do it ourselves — spreadsheets and email'],[2,'Our event agency'],[3,'A specialist RSVP or registration supplier'],[4,'We rarely run RSVPs']])+
+ num('rsvp_paid','If you have paid an RSVP or registration supplier for one event, roughly what did it cost? (rand, optional)','e.g. 25000',false,'R','Put 0 if you did it yourselves.')+
+ multi('pains','What takes the most time or causes the most frustration?',[['quotes','Finding the right hotel contact and chasing quotes'],['compare','Comparing quotes that arrive in different formats'],['guests','Guest lists that keep changing — dietary, rooming, transfers'],['rsvp','Invitations, RSVPs and registration'],['suppliers','Keeping hotels, airlines and transfer companies on the same page'],['recon','Matching card statements and invoices to bookings'],['retyping','Typing the same information into several systems']],'Pick up to two.',2); } },
 
-  // ---- Navigation ----
-  function getIdx(sc) {
-    return screenOrder.indexOf(sc);
-  }
+{ title:'The plans — and what you would pay', body:function(){ return '<p class="lede">Three plans, each including everything in the one before it. For each, two numbers: the monthly price at which you would subscribe <b>without hesitation</b>, and the price at which it becomes <b>too expensive</b>. Rand per month, your honest guess — there are no wrong answers.</p>'+
+ '<div class="plan"><div class="nm">Sourcing</div><div class="job">Find hotels and venues, get the quotes, choose.</div><ul><li>Hundreds of South African hotels and venues, each with the group-bookings email on file</li><li>One request to all the hotels you choose, in your company\'s branding</li><li>Quotes read out of the replies into a side-by-side comparison</li><li>Choose the winner; the others are told automatically</li><li>2 people can log in</li></ul>'+
+   '<div class="pair">'+num('tier1_good_value','Good value — I\'d subscribe without hesitation','e.g. 1500',true,'R','per month')+num('tier1_too_expensive','Too expensive — I would not pay this','e.g. 4000',true,'R','per month')+'</div></div>'+
+ '<div class="plan hi"><div class="nm">Boutique</div><div class="job">Everything in Sourcing, plus the guests and the travel.</div><ul><li>One guest list with dietary and special needs; online invitations and RSVPs</li><li>Rooming list for each hotel, flight lists per airline, transfer schedules with drivers, car hire</li><li>A personal itinerary on every guest\'s phone that updates when anything changes</li><li>Forward a hotel\'s quote or a flight confirmation by email and it is filed for you</li><li>Everyday guest events included; a few bigger ones a year included</li><li>4 people can log in</li></ul>'+
+   '<div class="pair">'+num('tier2_good_value','Good value — I\'d subscribe without hesitation','e.g. 4000',true,'R','per month')+num('tier2_too_expensive','Too expensive — I would not pay this','e.g. 9000',true,'R','per month')+'</div></div>'+
+ '<div class="plan"><div class="nm">Full House</div><div class="job">Everything in Boutique, for several clients at once, bigger events included, plus the finance.</div><ul><li>Room for several clients\' events running at the same time</li><li>Larger guest events included each year</li><li>Import the company card statement and match each line to a booking or purchase order; track budgets per event</li><li>10 people can log in</li></ul>'+
+   '<div class="pair">'+num('tier3_good_value','Good value — I\'d subscribe without hesitation','e.g. 8000',true,'R','per month')+num('tier3_too_expensive','Too expensive — I would not pay this','e.g. 18000',true,'R','per month')+'</div></div>'+
+ ask('tier_fit','Which plan would fit you?',[[1,'Sourcing — just the hotels, venues and quotes'],[2,'Boutique — I run the guests and the travel too'],[3,'Full House — several clients at once, and the finance'],[4,'Bigger than that — several business units or a signed service agreement'],[5,'Not sure — I would need to see it']]); } },
 
-  function go(sc) {
-    state.current = sc;
-    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+{ title:'One thing priced per event', body:function(){ return '<p class="lede">Running the invitations and RSVPs for a <b>big</b> event is the one thing we are thinking of pricing per event rather than per month — the way a specialist RSVP supplier charges. Everyday events would be included in the plan.</p>'+
+ ask('pay_pref','How would you rather pay for something like this?',[[1,'A monthly subscription that includes everything'],[2,'Per event — only when I use it'],[3,'A smaller subscription plus a per-event charge for big events'],[4,'Not sure']])+
+ num('event_price','For one event of about 250 guests — invitations, online RSVPs, the guest page, check-in at the door — what would be a fair once-off price? (rand, optional)','e.g. 12000',false,'R')+
+ ask('relevance','How relevant is a tool like this to your work?',[[5,'Extremely — I need this now'],[4,'Very — it would improve my work a lot'],[3,'Somewhat — useful for some of it'],[2,'Not very'],[1,'Not at all']]); } },
 
-    var el;
-    if (sc === 'cover') el = document.getElementById('sc-cover');
-    else if (sc === 'done') el = document.getElementById('sc-done');
-    else if (sc === 13) el = document.getElementById('sc-13');
-    else el = document.getElementById('sc-' + sc);
-    if (el) el.classList.add('active');
+{ title:'Quick reactions', body:function(){ return ''+
+ ask('names_clear','The three plans are called Sourcing, Boutique and Full House. Do the names tell you what each is for?',[[1,'Yes, straight away'],[2,'Mostly'],[3,'No — they would need explaining']])+
+ num('big_event','In your world, at what number of guests does an event become a "big" one?','e.g. 150',false,'',' guests (your own number — we have drawn a line and want to check it)')+
+ ask('hero','If you landed on our website, which of these lines would make you read on?',[[1,'Source suppliers. Coordinate group travel. One place.'],[2,'Find venues. Book hotels. Coordinate group travel. All in one place.'],[3,'Group travel logistics, sourced and sorted in one place.'],[4,'Everything you need to get your group there.'],[5,'None of these']])+
+ ask('trial','What would get you to try it on a real booking?',[[1,'A free first month'],[2,'I would pay for one month to try it'],[3,'A live walkthrough first, then decide'],[4,'A reference from someone I know who uses it']]); } },
 
-    // Progress bar
-    var progressWrap = document.getElementById('progress-wrap');
-    // Hide progress bar on cover, done, screen 12 (completion), screen 13 (draw entry)
-    // Screen 12 also fires the auto-submit
-    if (sc === 'cover' || sc === 'done' || sc === 12 || sc === 13) {
-      progressWrap.style.display = 'none';
-      if (sc === 12) autoSubmitSurvey();
-    } else {
-      progressWrap.style.display = 'block';
-      var idx = getIdx(sc);
-      var pct = Math.round(((idx - 1) / TOTAL_QUESTION_SCREENS) * 100);
-      document.getElementById('progress-fill').style.width = pct + '%';
-      document.getElementById('section-label').textContent = SECTION_MAP[sc] || '';
-      document.getElementById('step-count').textContent = idx + ' / ' + TOTAL_QUESTION_SCREENS;
-    }
+{ title:'Last page', body:function(){ return ''+
+ area('open_feedback','What is your biggest hesitation about paying for software for this kind of work?','Honest is helpful.',false)+
+ '<div class="card navy"><h3>Early access and a free first month</h3><p>Leave your details and you are on the list: priority onboarding when we launch commercially, and your first month free. We will email you once, when it is ready.</p></div>'+
+ txt('name','Your name','',true)+txt('email','Email','you@company.co.za',true,'email')+txt('agency','Company or agency (optional)','')+
+ '<div class="ask" data-ask="consent"><label class="chk"><input type="checkbox" data-k="consent" '+(S.consent?'checked':'')+'><span>GroupBook (PanDaan (Pty) Ltd) may store these answers for this research and contact me about early access. I can ask for my details to be removed at any time by emailing support@groupbook.co.za.<span class="req">*</span></span></label></div>'+
+ '<div class="err" id="err"></div>'; } },
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+{ title:'', body:function(){ return '<div class="done"><h1>Thank you — you are on the list.</h1><p class="lede">We will email you once, when early access opens. Your first month is free.</p><p>Know someone else who sources hotels and runs group travel? Send them this page: <b>www.groupbook.co.za/survey</b></p><p style="margin-top:20px"><a href="https://www.groupbook.co.za/">See what GroupBook does →</a></p></div>'; } }
+];
 
-    // Done screen — content depends on whether they entered the draw
-    if (sc === 'done') {
-      const enteredDraw = !!(state.email);
-      document.getElementById('done-heading').textContent = enteredDraw ? "You're in the draw!" : "Thank you!";
-      document.getElementById('done-sub').textContent = enteredDraw
-        ? "Your answers go directly to the GroupBook team. We'll notify draw winners personally after 5 May 2026."
-        : "Your answers go directly to the GroupBook team. We'll use them to shape GroupBook's pricing and features.";
-      const receipt = document.getElementById('draw-receipt');
-      if (enteredDraw) {
-        receipt.style.display = 'block';
-        document.getElementById('receipt-name').textContent = state.name || '--';
-        document.getElementById('receipt-email').textContent = state.email || '--';
-      } else {
-        receipt.style.display = 'none';
-      }
-    }
-
-    restoreScreen(sc);
-  }
-
-  // Re-apply saved answers when navigating back to a screen
-  function restoreScreen(sc) {
-    if (sc === 6) {
-      var p = state.prices;
-      if (p.tier1_good_value) document.getElementById('p-t1-good').value = p.tier1_good_value;
-      if (p.tier1_too_expensive) document.getElementById('p-t1-max').value = p.tier1_too_expensive;
-    }
-    if (sc === 7) {
-      var p = state.prices;
-      if (p.tier2_good_value) document.getElementById('p-t2-good').value = p.tier2_good_value;
-      if (p.tier2_too_expensive) document.getElementById('p-t2-max').value = p.tier2_too_expensive;
-    }
-    if (sc === 8) {
-      var p = state.prices;
-      if (p.tier3_good_value) document.getElementById('p-t3-good').value = p.tier3_good_value;
-      if (p.tier3_too_expensive) document.getElementById('p-t3-max').value = p.tier3_too_expensive;
-    }
-    if (sc === 11 && state.answers['open_feedback']) {
-      document.getElementById('open-feedback').value = state.answers['open_feedback'];
-    }
-    if (sc === 12) {
-      if (state.name) document.getElementById('inp-name').value = state.name;
-      if (state.email) document.getElementById('inp-email').value = state.email;
-      if (state.agency) document.getElementById('inp-agency').value = state.agency;
-    }
-    if (sc === 13) {
-      if (state.name) document.getElementById('inp-name').value = state.name;
-      if (state.email) document.getElementById('inp-email').value = state.email;
-      if (state.agency) document.getElementById('inp-agency').value = state.agency;
-    }
-    // Restore sc-12 entry fields (legacy - kept for back navigation safety)
-    if (sc === 12) {
-      if (state.name) { var n = document.getElementById('inp-name'); if(n) n.value = state.name; }
-      if (state.email) { var e = document.getElementById('inp-email'); if(e) e.value = state.email; }
-      if (state.agency) { var a = document.getElementById('inp-agency'); if(a) a.value = state.agency; }
-    }
-    if (typeof sc === 'number' && [1, 2, 3, 5, 9, 10].includes(sc)) {
-      var saved = state.answers['q' + sc];
-      if (saved !== undefined) {
-        document.querySelectorAll('#opts-' + sc + ' .opt').forEach(function(o, i) {
-          o.classList.toggle('selected', i === saved);
-        });
-      }
-    }
-    if (sc === 4) {
-      var saved = state.answers['q4'] || [];
-      document.querySelectorAll('#opts-4 .opt').forEach(function(o, i) {
-        o.classList.toggle('selected', saved.includes(i));
-      });
-    }
-  }
-
-  // ---- Selection helpers ----
-  function pickSingle(sc, val, el) {
-    state.answers['q' + sc] = val;
-    document.querySelectorAll('#opts-' + sc + ' .opt').forEach(function(o) { o.classList.remove('selected'); });
-    el.classList.add('selected');
-    setTimeout(function() {
-      var next = screenOrder[getIdx(sc) + 1];
-      go(next);
-    }, 220);
-  }
-
-  function toggleMulti(sc, val, el, max) {
-    var arr = state.answers['q' + sc] || [];
-    if (arr.includes(val)) {
-      arr = arr.filter(function(v) { return v !== val; });
-      el.classList.remove('selected');
-    } else {
-      if (arr.length >= max) return;
-      arr = arr.concat([val]);
-      el.classList.add('selected');
-    }
-    state.answers['q' + sc] = arr;
-  }
-
-  // ---- Validation ----
-  function nextSingle(sc, next) {
-    var err = document.getElementById('err-' + sc);
-    if (state.answers['q' + sc] === undefined) {
-      err.classList.add('visible');
-      return;
-    }
-    err.classList.remove('visible');
-    go(next);
-  }
-
-  function nextMulti(sc, next) {
-    var arr = state.answers['q' + sc] || [];
-    var err = document.getElementById('err-' + sc);
-    if (arr.length === 0) {
-      err.classList.add('visible');
-      return;
-    }
-    err.classList.remove('visible');
-    go(next);
-  }
-
-  function savePriceVal(key, val) {
-    state.prices[key] = val;
-  }
-
-  function nextEssentialPrices(next) {
-    var p = state.prices;
-    var err = document.getElementById('err-6');
-    if (!p.tier1_good_value || !p.tier1_too_expensive) {
-      err.classList.add('visible');
-      return;
-    }
-    err.classList.remove('visible');
-    go(next);
-  }
-
-  function nextValueAddPrices(next) {
-    var p = state.prices;
-    var err = document.getElementById('err-7');
-    if (!p.tier2_good_value || !p.tier2_too_expensive) {
-      err.classList.add('visible');
-      return;
-    }
-    err.classList.remove('visible');
-    go(next);
-  }
-
-  function nextNiceToHavePrices(next) {
-    var p = state.prices;
-    var err = document.getElementById('err-8');
-    if (!p.tier3_good_value || !p.tier3_too_expensive) {
-      err.classList.add('visible');
-      return;
-    }
-    err.classList.remove('visible');
-    go(next);
-  }
-
-  // Auto-submit survey data when screen 12 is reached
-  var surveyAutoSubmitted = false;
-  function autoSubmitSurvey() {
-    if (surveyAutoSubmitted) return;
-    surveyAutoSubmitted = true;
-    fetch('https://app.groupbook.co.za/api/survey/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildPayload(null, null, null))
-    }).catch(function(e) { console.error('Survey auto-submit error:', e); });
-  }
-
-  function buildPayload(name, email, agency) {
-    return {
-      submitted_at: new Date().toISOString(),
-      name: name || null,
-      email: email || null,
-      agency: agency || null,
-      role: state.answers['q1'],
-      rfp_volume: state.answers['q2'],
-      self_reconciles: state.answers['q3'],
-      pain_points: state.answers['q4'],
-      concept_relevance: state.answers['q5'],
-      tier1_good_value: state.prices['tier1_good_value'] || null,
-      tier1_too_expensive: state.prices['tier1_too_expensive'] || null,
-      tier2_good_value: state.prices['tier2_good_value'] || null,
-      tier2_too_expensive: state.prices['tier2_too_expensive'] || null,
-      tier3_good_value: state.prices['tier3_good_value'] || null,
-      tier3_too_expensive: state.prices['tier3_too_expensive'] || null,
-      tier_fit: state.answers['q9'],
-      team_size: state.answers['q10'],
-      open_feedback: state.answers['open_feedback'] || ''
-    };
-  }
-
-  // Submit draw entry from screen 13
-  function submitSurvey() {
-    var name = document.getElementById('inp-name').value.trim();
-    var email = document.getElementById('inp-email').value.trim();
-    var agency = document.getElementById('inp-agency').value.trim();
-    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    var err = document.getElementById('err-entry');
-    if (!name || !emailOk) { err.classList.add('visible'); return; }
-    err.classList.remove('visible');
-    state.name = name;
-    state.email = email;
-    state.agency = agency;
-    var submitBtn = document.getElementById('submit-btn');
-    if (submitBtn) { submitBtn.textContent = 'Submitting...'; submitBtn.disabled = true; }
-    fetch('https://app.groupbook.co.za/api/survey/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildPayload(name, email, agency))
-    }).catch(function(e) { console.error('Draw entry error:', e); });
-    go('done');
-  }
-
-  // "No thanks" -- data already submitted on screen 12, just go to done
-  function submitAnonymous() {
-    go('done');
-  }
-
-  // ---- Share ----
-  function shareLinkedIn() {
-    var url = encodeURIComponent(SURVEY_URL);
-    var msg = encodeURIComponent("I just helped shape GroupBook - SA's new group travel platform. 5-minute survey, lucky draw with 5 winners each getting 1 month free. Worth it if you're in travel!");
-    window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url + '&summary=' + msg, '_blank');
-  }
-
-  function copyLink() {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(SURVEY_URL).then(function() {
-        var el = document.getElementById('copy-confirm');
-        el.style.display = 'block';
-        setTimeout(function() { el.style.display = 'none'; }, 2500);
-      });
-    } else {
-      prompt('Copy this link:', SURVEY_URL);
-    }
-  }
+function render(){
+  var sc=SCREENS[step]; var v=document.getElementById('view'); REQ={};
+  var last=step===SCREENS.length-1;
+  v.innerHTML=(last?'':'<div class="stepno">'+(step===0?'3-minute survey':'Page '+step+' of '+(SCREENS.length-2))+'</div>')+(sc.title?'<h1>'+sc.title+'</h1>':'')+sc.body()+'<div class="missmsg" id="missmsg"></div>'+(step>0&&step<SCREENS.length-1?'<p class="hint" style="margin-top:14px">Questions marked * need an answer before you go on.</p>':'');
+  document.getElementById('bar').style.width=Math.round(step/(SCREENS.length-1)*100)+'%';
+  document.getElementById('back').style.visibility=(step===0||last)?'hidden':'visible';
+  var nb=document.getElementById('next'); nb.style.visibility=last?'hidden':'visible'; nb.textContent=step===0?'Start':(step===SCREENS.length-2?'Send my answers':'Next');
+  document.getElementById('where').textContent=last||step===0?'':(SCREENS.length-2-step)+' to go';
+  v.querySelectorAll('[data-k]').forEach(function(el){
+    var ev=el.type==='radio'||el.type==='checkbox'?'change':'input';
+    el.addEventListener(ev,function(){ S[el.getAttribute('data-k')]=el.type==='checkbox'?el.checked:el.value; save();
+      if(el.type==='radio'){ v.querySelectorAll('input[name="'+el.name+'"]').forEach(function(r){ r.closest('.opt').classList.toggle('on',r.checked); }); } });
+  });
+  v.querySelectorAll('[data-mk]').forEach(function(el){ el.addEventListener('change',function(){ var k=el.getAttribute('data-mk'); var box=el.closest('[data-multi]'); var max=+box.getAttribute('data-max');
+      var cur=S[k]||[]; if(el.checked){ if(cur.length>=max){ el.checked=false; return; } cur.push(el.value); } else { cur=cur.filter(function(x){return x!==el.value;}); }
+      S[k]=cur; save(); el.closest('.opt').classList.toggle('on',el.checked); }); });
+  S._step=step; save(); window.scrollTo(0,0);
+}
+function syncFromDom(){ var v=document.getElementById('view'); v.querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined&&el.value!=='') S[k]=el.value; }); save(); }
+function missing(){ var out=[]; Object.keys(REQ).forEach(function(k){ if(!REQ[k]) return; var val=S[k]; if(val===undefined||val===null||val===false||String(val).trim()===''||(Array.isArray(val)&&!val.length)) out.push(k); });
+  if(REQ.email && S.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(S.email)) out.push('email');
+  if(step===SCREENS.length-2 && !S.consent) out.push('consent');
+  return out; }
+function block(m){ var v=document.getElementById('view'); var first=null; m.forEach(function(k){ var a=v.querySelector('[data-ask="'+k+'"]'); if(a){ a.classList.add('miss'); if(!first) first=a; } });
+  var msg=document.getElementById('missmsg'); msg.style.display='block'; msg.textContent=m.length===1?'One question still needs an answer — it is marked in red.':m.length+' questions still need an answer — they are marked in red.';
+  if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); var fi=first.querySelector('input:not([type=radio]):not([type=checkbox]),textarea'); if(fi){ setTimeout(function(){ try{fi.focus();}catch(e){} },350); } } }
+function payload(){
+  var n=function(x){ return x===undefined||x===''||x===null?null:Number(x); };
+  return { survey_version:SURVEY_VERSION, source:(new URLSearchParams(location.search).get('src'))||'website',
+    name:S.name||null, email:S.email||null, agency:S.agency||null,
+    role:n(S.role), rfp_volume:n(S.volume), team_size:n(S.team_size), pain_points:S.pains||[], concept_relevance:n(S.relevance), tier_fit:n(S.tier_fit),
+    tier1_good_value:n(S.tier1_good_value), tier1_too_expensive:n(S.tier1_too_expensive), tier2_good_value:n(S.tier2_good_value), tier2_too_expensive:n(S.tier2_too_expensive), tier3_good_value:n(S.tier3_good_value), tier3_too_expensive:n(S.tier3_too_expensive),
+    open_feedback:S.open_feedback||null, consent:!!S.consent,
+    answers:{ event_size:n(S.event_size), sourcing_today:n(S.sourcing_today), rsvp_today:n(S.rsvp_today), rsvp_paid:n(S.rsvp_paid), pay_pref:n(S.pay_pref), event_price:n(S.event_price), names_clear:n(S.names_clear), big_event:n(S.big_event), hero:n(S.hero), trial:n(S.trial), early_access:true, user_agent:navigator.userAgent },
+    website:'' };
+}
+function submit(){
+  var nb=document.getElementById('next'); nb.disabled=true; nb.textContent='Sending…'; var err=document.getElementById('err'); err.style.display='none';
+  fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())}).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json().catch(function(){return {};}); })
+  .then(function(){ if(window.va) window.va('event',{name:'survey_submit'}); S._done=true; save(); step=SCREENS.length-1; render(); })
+  .catch(function(e){ nb.disabled=false; nb.textContent='Send my answers'; err.style.display='block';
+    var body=encodeURIComponent('GroupBook survey answers\n\n'+JSON.stringify(payload(),null,2));
+    err.innerHTML='Sorry — that did not send. Your answers are saved on this phone; please try again in a moment, or <a href="mailto:support@groupbook.co.za?subject=GroupBook%20survey&body='+body+'">email them to us</a> with one tap.'; });
+}
+document.getElementById('next').onclick=function(){
+  syncFromDom(); if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  var v=document.getElementById('view'); v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
+  var m=missing(); if(m.length){ block(m); return; }
+  if(step===SCREENS.length-2){ submit(); return; }
+  if(step<SCREENS.length-1){ step++; render(); } };
+document.getElementById('back').onclick=function(){ if(step>0){ step--; render(); } };
+if(S._done){ step=SCREENS.length-1; }
+render();
 </script>
-
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
