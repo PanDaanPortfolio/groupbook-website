@@ -68,7 +68,7 @@ a{color:var(--navy)}
 <div class="foot"><div class="row"><button class="btn g" id="back">Back</button><span class="where" id="where"></span><button class="btn p" id="next">Next</button></div></div>
 
 <script>
-var API='https://app.groupbook.co.za/api/survey';
+var API='https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey'; // interim receiver (SURVEY-API-001); swap to app.groupbook.co.za/api/survey when the app route ships
 var SURVEY_VERSION='2026-10-v2';
 var S={}; try{ S=JSON.parse(localStorage.getItem('gb_survey2')||'{}'); }catch(e){}
 function save(){ try{ localStorage.setItem('gb_survey2',JSON.stringify(S)); }catch(e){} }
@@ -165,7 +165,7 @@ function render(){
 }
 function syncFromDom(){ var v=document.getElementById('view'); v.querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined&&el.value!=='') S[k]=el.value; }); save(); }
 function missing(){ var out=[]; Object.keys(REQ).forEach(function(k){ if(!REQ[k]) return; var val=S[k]; if(val===undefined||val===null||val===false||String(val).trim()===''||(Array.isArray(val)&&!val.length)) out.push(k); });
-  if(REQ.email && S.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(S.email)) out.push('email');
+  if(REQ.email && S.email && (!/^[^@\s]+@[^@\s.][^@\s]*\.[^@\s.]{2,}$/.test(S.email) || /\.\./.test(S.email))) out.push('email');
   if(step===SCREENS.length-2 && !S.consent) out.push('consent');
   return out; }
 function block(m){ var v=document.getElementById('view'); var first=null; m.forEach(function(k){ var a=v.querySelector('[data-ask="'+k+'"]'); if(a){ a.classList.add('miss'); if(!first) first=a; } });
@@ -183,11 +183,11 @@ function payload(){
 }
 function submit(){
   var nb=document.getElementById('next'); nb.disabled=true; nb.textContent='Sending…'; var err=document.getElementById('err'); err.style.display='none';
-  fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())}).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json().catch(function(){return {};}); })
+  fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())}).then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok) throw new Error(j&&j.error?j.error:'HTTP '+r.status); return j; }); })
   .then(function(){ if(window.va) window.va('event',{name:'survey_submit'}); S._done=true; save(); step=SCREENS.length-1; render(); })
   .catch(function(e){ nb.disabled=false; nb.textContent='Send my answers'; err.style.display='block';
     var body=encodeURIComponent('GroupBook survey answers\n\n'+JSON.stringify(payload(),null,2));
-    err.innerHTML='Sorry — that did not send. Your answers are saved on this phone; please try again in a moment, or <a href="mailto:support@groupbook.co.za?subject=GroupBook%20survey&body='+body+'">email them to us</a> with one tap.'; });
+    err.innerHTML='Sorry — that did not send'+(e&&e.message&&!/HTTP|Failed to fetch|NetworkError/.test(e.message)?' ('+e.message+')':'')+'. Your answers are saved on this phone; please try again in a moment, or <a href="mailto:support@groupbook.co.za?subject=GroupBook%20survey&body='+body+'">email them to us</a> with one tap.'; });
 }
 document.getElementById('next').onclick=function(){
   syncFromDom(); if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
