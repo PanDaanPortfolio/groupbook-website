@@ -1,6 +1,9 @@
 /* GroupBook marketing site — shared behaviour. No frameworks, no third-party scripts. */
 (function () {
   var GB = window.GB || {};
+  // Vercel Web Analytics custom events (queued until the script loads). One conversion: the walkthrough request.
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  function track(name, data) { try { window.va('event', { name: name, data: data || {} }); } catch (e) {} }
 
   // Mobile nav
   var toggle = document.querySelector('.nav-toggle');
@@ -48,8 +51,8 @@
       btn.disabled = true; btn.textContent = 'Sending…';
       fetch(GB.demoEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .then(function () { show('ok', 'Thank you — we have your request and will reply by email to arrange a time.'); form.reset(); })
-        .catch(function () { show('err', 'That did not send. Email us at support@groupbook.co.za and we will set it up by hand.'); })
+        .then(function () { track('walkthrough_request', { segment: data.volume || 'unspecified' }); if (window.fbq) fbq('track', 'Lead', { content_name: 'walkthrough request' }); show('ok', 'Thank you — we have your request and will reply by email to arrange a time.'); form.reset(); })
+        .catch(function () { track('walkthrough_request_failed'); show('err', 'That did not send. Email us at support@groupbook.co.za and we will set it up by hand.'); })
         .finally(function () { btn.disabled = false; btn.textContent = 'Request a walkthrough'; });
     });
     function show(kind, text) { msg.className = 'form-msg ' + kind; msg.textContent = text; }

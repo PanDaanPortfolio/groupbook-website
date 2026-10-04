@@ -58,6 +58,9 @@ p{margin:8px 0}.lede{font-size:17px;color:var(--ink2)}.hint{font-size:13.5px;col
 .err{background:var(--redbg);color:var(--red);border-radius:10px;padding:12px 14px;margin-top:14px;display:none}
 a{color:var(--navy)}
 </style>
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1074625875168260');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1074625875168260&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 <div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>A 5-minute survey · early access and a free first month for everyone who answers</span></div>
@@ -184,7 +187,7 @@ function payload(){
 function submit(){
   var nb=document.getElementById('next'); nb.disabled=true; nb.textContent='Sending…'; var err=document.getElementById('err'); err.style.display='none';
   fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())}).then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok) throw new Error(j&&j.error?j.error:'HTTP '+r.status); return j; }); })
-  .then(function(){ if(window.va) window.va('event',{name:'survey_submit'}); S._done=true; save(); step=SCREENS.length-1; render(); })
+  .then(function(){ if(window.va) window.va('event',{name:'survey_submit'}); if(window.fbq) fbq('track','Lead',{content_name:'survey '+SURVEY_VERSION}); if(window.lintrk) lintrk('track',{conversion_id:window.LI_CONV||0}); S._done=true; save(); step=SCREENS.length-1; render(); })
   .catch(function(e){ nb.disabled=false; nb.textContent='Send my answers'; err.style.display='block';
     var body=encodeURIComponent('GroupBook survey answers\n\n'+JSON.stringify(payload(),null,2));
     err.innerHTML='Sorry — that did not send'+(e&&e.message&&!/HTTP|Failed to fetch|NetworkError/.test(e.message)?' ('+e.message+')':'')+'. Your answers are saved on this phone; please try again in a moment, or <a href="mailto:support@groupbook.co.za?subject=GroupBook%20survey&body='+body+'">email them to us</a> with one tap.'; });
