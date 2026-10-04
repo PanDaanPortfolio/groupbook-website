@@ -60,7 +60,7 @@ a{color:var(--navy)}
 </style>
 </head>
 <body>
-<div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>A 3-minute survey · early access and a free first month for everyone who answers</span></div>
+<div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>A 5-minute survey · early access and a free first month for everyone who answers</span></div>
 <div class="wrap">
   <div class="bar"><i id="bar"></i></div>
   <div id="view"></div>
@@ -84,7 +84,7 @@ function multi(key,q,opts,hint,max){
   return '<div class="ask" data-ask="'+key+'" data-multi="'+key+'" data-max="'+(max||99)+'"><div class="q">'+q+'<span class="req">*</span></div>'+(hint?'<div class="hint">'+hint+'</div>':'')+'<div class="opts">'+
     opts.map(function(o){ var on=cur.indexOf(o[0])>=0; return '<label class="opt'+(on?' on':'')+'"><input type="checkbox" value="'+o[0]+'"'+(on?' checked':'')+' data-mk="'+key+'"><span>'+o[1]+'</span></label>'; }).join('')+'</div></div>';
 }
-function num(key,label,ph,required,prefix,sub){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+(sub?'<span>'+sub+'</span>':'')+'<div class="in">'+(prefix?'<b>'+prefix+'</b>':'')+'<input type="number" inputmode="numeric" data-k="'+key+'" value="'+esc(S[key]||'')+'" placeholder="'+(ph||'')+'"></div></label></div>'; }
+function num(key,label,ph,required,prefix,sub){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+(sub?'<span>'+sub+'</span>':'')+'<div class="in">'+(prefix?'<b>'+prefix+'</b>':'')+'<input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="'+key+'" value="'+esc(S[key]||'')+'" placeholder="'+(ph||'')+'"></div></label></div>'; }
 function txt(key,label,ph,required,type){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'<input type="'+(type||'text')+'" data-k="'+key+'" value="'+esc(S[key]||'')+'" placeholder="'+(ph||'')+'"></label></div>'; }
 function area(key,label,ph,required){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'<textarea data-k="'+key+'" placeholder="'+(ph||'')+'">'+esc(S[key]||'')+'</textarea></label></div>'; }
 
@@ -155,7 +155,7 @@ function render(){
   document.getElementById('where').textContent=last||step===0?'':(SCREENS.length-2-step)+' to go';
   v.querySelectorAll('[data-k]').forEach(function(el){
     var ev=el.type==='radio'||el.type==='checkbox'?'change':'input';
-    el.addEventListener(ev,function(){ S[el.getAttribute('data-k')]=el.type==='checkbox'?el.checked:el.value; save();
+    el.addEventListener(ev,function(){ if(el.getAttribute('inputmode')==='numeric'){ var d=el.value.replace(/[^0-9]/g,''); if(d!==el.value) el.value=d; } S[el.getAttribute('data-k')]=el.type==='checkbox'?el.checked:el.value; save();
       if(el.type==='radio'){ v.querySelectorAll('input[name="'+el.name+'"]').forEach(function(r){ r.closest('.opt').classList.toggle('on',r.checked); }); } });
   });
   v.querySelectorAll('[data-mk]').forEach(function(el){ el.addEventListener('change',function(){ var k=el.getAttribute('data-mk'); var box=el.closest('[data-multi]'); var max=+box.getAttribute('data-max');
