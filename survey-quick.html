@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GroupBook — 5 questions: what should group-booking software cost?</title>
+<meta name="description" content="Five questions, about 90 seconds. Tell a South African travel-software team how you source group hotels today and what it should cost. We send you the verified group-desk contacts for up to 10 hotels you name.">
+<meta property="og:title" content="What should group-booking software cost? You tell us — 5 questions.">
+<meta property="og:description" content="Still phoning the front desk to find who handles groups this month? Five questions, 90 seconds, from the team building GroupBook in South Africa.">
+<meta property="og:image" content="https://www.groupbook.co.za/groupbook-og-image.png">
+<meta property="og:url" content="https://www.groupbook.co.za/survey-quick">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2A3A">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2A3A;--gold:#B8893A;--cream:#F6F3EC;--ink:#1B2A3A;--ink2:#41506A;--ink3:#6E7B92;--line:#DCD8CA;--green:#2E6B3F;--greenbg:#E7F2EA;--red:#9B2C2C;--redbg:#F8E5E5}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;font:16px/1.55 "DM Sans",-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--cream)}
+button{touch-action:manipulation;font:inherit}
+.top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px}
+.top img{height:30px;width:auto}.top span{font-size:14px;color:#D9E0E8}
+.wrap{max-width:640px;margin:0 auto;padding:22px 16px 60px}
+.stepno{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,5vw,34px);line-height:1.15;margin:6px 0 10px}
+p{margin:8px 0}.lede{font-size:17px;color:var(--ink2)}.hint{font-size:13.5px;color:var(--ink3);margin:4px 0 10px}
+.q{margin:24px 0 8px;font-weight:700}.q .req{color:var(--red);margin-left:4px}.q .n{display:inline-block;min-width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;margin-right:8px}
+.opts{display:grid;gap:8px}.opt{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt input{margin-top:4px;flex:none;width:18px;height:18px;accent-color:var(--navy)}.opt.on{border-color:var(--navy);box-shadow:0 0 0 2px #1B2A3A22}
+.f{display:block;font-weight:600;margin-top:10px}.f input,.f textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;font:inherit;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+.f textarea{min-height:70px;resize:vertical}.f span{display:block;color:var(--ink3);font-weight:400;font-size:12.5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:480px){.two{grid-template-columns:1fr}}
+.in{position:relative}.in b{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink3);font-weight:500;margin-top:3px}.in input{padding-left:30px!important}
+.ask.miss .opt,.ask.miss input,.ask.miss textarea{border-color:var(--red)}.ask.miss .q,.ask.miss .f{color:var(--red)}
+.gift{background:var(--greenbg);border:1.5px solid #BFDCC7;border-radius:14px;padding:14px 16px;margin-top:18px;color:var(--green)}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:14px;color:var(--ink2)}.chk input{margin-top:3px;width:18px;height:18px;accent-color:var(--navy);flex:none}
+.btn{border:0;border-radius:999px;padding:16px 28px;font-weight:700;font-size:17px;cursor:pointer;background:var(--navy);color:#fff;width:100%;margin-top:18px}.btn:disabled{opacity:.5;cursor:default}
+.err{background:var(--redbg);color:var(--red);border-radius:10px;padding:12px 14px;margin-top:14px;display:none}
+.small{font-size:13px;color:var(--ink3)}
+.done{text-align:center;padding:30px 0}.done h1{font-size:30px}
+.card{background:var(--navy);color:#fff;border-radius:14px;padding:18px;margin-top:18px;text-align:left}.card h3{margin:0 0 6px;color:#fff}.card p{color:#D9E0E8}.card a{color:#E2B96B;font-weight:700}
+.hp{position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden}
+a{color:var(--navy)}
+</style>
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1074625875168260');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1074625875168260&ev=PageView&noscript=1"/></noscript>
+<!-- LinkedIn Insight Tag -->
+<script type="text/javascript">_linkedin_partner_id="10972185";window._linkedin_data_partner_ids=window._linkedin_data_partner_ids||[];window._linkedin_data_partner_ids.push(_linkedin_partner_id);</script><script type="text/javascript">(function(l){if(!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};window.lintrk.q=[]}var s=document.getElementsByTagName("script")[0];var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src="https://snap.licdn.com/li.lms-analytics/insight.min.js";s.parentNode.insertBefore(b,s);})(window.lintrk);</script>
+<noscript><img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=10972185&fmt=gif"/></noscript>
+</head>
+<body>
+<div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>5 questions · about 90 seconds</span></div>
+<div class="wrap">
+<div id="view"></div>
+</div>
+<script>
+var API='https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
+var SURVEY_VERSION='2026-10-quick';
+var SRC=(new URLSearchParams(location.search).get('src'))||'website';
+var S={}; try{ S=JSON.parse(localStorage.getItem('gb_survey_quick')||'{}'); }catch(e){}
+function save(){ try{ localStorage.setItem('gb_survey_quick',JSON.stringify(S)); }catch(e){} }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+var started=false; function startOnce(){ if(started) return; started=true; if(window.fbq) fbq('trackCustom','SurveyStart',{version:SURVEY_VERSION,src:SRC}); if(window.va) window.va('event',{name:'survey_quick_start'}); }
+
+var ROLES=[[1,'I organise events or group travel inside a company (events team, marketing, EA, travel desk)'],[2,'I work at an event, incentive or conference agency'],[3,'I work at a travel agency or travel management company'],[4,'I am an independent travel consultant or a one-to-three-person agency'],[5,'Something else']];
+var SOURCING=[[1,'I phone the hotels to find the right person, then email'],[2,'I email contacts I already have'],[3,'A sourcing company or venue finder does it for me'],[4,'A booking tool or platform'],[5,'I rarely source group accommodation']];
+var PAINS=[['quotes','Finding the right hotel contact and chasing quotes'],['compare','Comparing quotes that arrive in different formats'],['guests','Guest lists that keep changing — dietary, rooming, transfers'],['rsvp','Invitations, RSVPs and registration'],['suppliers','Keeping hotels, airlines and transfer companies on the same page'],['recon','Matching card statements and invoices to bookings'],['retyping','Typing the same information into several systems']];
+
+function radios(key,opts){ return '<div class="opts">'+opts.map(function(o){ var on=String(S[key])===String(o[0]); return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+key+'" value="'+o[0]+'"'+(on?' checked':'')+' data-k="'+key+'"><span>'+o[1]+'</span></label>'; }).join('')+'</div>'; }
+
+function form(){
+  return '<div class="stepno">5 questions · no sales call</div>'+
+  '<h1>What should group-booking software cost? You tell us.</h1>'+
+  '<p class="lede">Still phoning the hotel front desk to find out who handles group bookings this month? We are building GroupBook in South Africa: the group-desk contact for 679 hotels on file, your brief sent to all of them at once, the quotes side by side. We are deciding what it should cost and would rather ask than guess.</p>'+
+  '<div class="two">'+
+   '<div class="ask" data-ask="name"><label class="f">First name<span class="req" style="color:#9B2C2C"> *</span><input type="text" data-k="name" autocomplete="given-name" value="'+esc(S.name)+'" placeholder="Amanda"></label></div>'+
+   '<div class="ask" data-ask="email"><label class="f">Work email<span class="req" style="color:#9B2C2C"> *</span><input type="email" data-k="email" autocomplete="email" inputmode="email" value="'+esc(S.email)+'" placeholder="you@agency.co.za"></label></div>'+
+  '</div>'+
+  '<div class="ask" data-ask="role"><div class="q"><span class="n">1</span>Which is closest to your work?<span class="req">*</span></div>'+radios('role',ROLES)+'</div>'+
+  '<div class="ask" data-ask="sourcing_today"><div class="q"><span class="n">2</span>When you need group accommodation or a venue, how do you get quotes today?<span class="req">*</span></div>'+radios('sourcing_today',SOURCING)+'</div>'+
+  '<div class="ask" data-ask="pain"><div class="q"><span class="n">3</span>What costs you the most time?<span class="req">*</span></div>'+radios('pain',PAINS)+'</div>'+
+  '<div class="ask" data-ask="price"><div class="q"><span class="n">4</span>A tool that finds the right hotels and venues, gets every quote side by side and awards in one click — what is a fair monthly price for your agency?</div><div class="hint">Rand per month, your honest guess. Optional — leave it blank if you really do not know.</div>'+
+   '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="price" value="'+esc(S.price)+'" placeholder="e.g. 1500"></div></label></div>'+
+  '<div class="ask" data-ask="hotels"><div class="q"><span class="n">5</span>Which hotels\' group-desk contacts would you like from us?</div><div class="hint">Name up to 10 South African hotels or venues. We look them up in our directory and email you the verified group-desk contact for each — our thank-you for the 90 seconds.</div>'+
+   '<label class="f" style="margin-top:0"><textarea data-k="hotels" placeholder="e.g. Protea Hotel Fire & Ice Melrose Arch, Spier, The Capital Zimbali…">'+esc(S.hotels)+'</textarea></label></div>'+
+  '<div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" data-hp="1"></label></div>'+
+  '<div class="ask" data-ask="consent"><label class="chk"><input type="checkbox" data-k="consent"'+(S.consent?' checked':'')+'><span>GroupBook (PanDaan (Pty) Ltd) may store these answers for this research and email me the hotel contacts and, later, early access. I can ask for my details to be removed at any time by emailing support@groupbook.co.za.<span class="req" style="color:#9B2C2C"> *</span></span></label></div>'+
+  '<div class="err" id="err"></div>'+
+  '<button class="btn" id="send">Send my 5 answers</button>'+
+  '<p class="small" style="margin-top:12px">No prices are shown anywhere — we are asking what <em>you</em> would pay. Nothing is shared or sold.</p>';
+}
+function done(){
+  var q='?src='+encodeURIComponent(SRC)+'&email='+encodeURIComponent(S.email||'')+'&name='+encodeURIComponent(S.name||'');
+  return '<div class="done"><h1>Thank you — that helps more than you know.</h1>'+
+  '<p class="lede">'+(S.hotels&&String(S.hotels).trim()?'Your hotel contacts are on their way: we check each one against the directory and email you within two working days.':'We will email you once when early access opens, with your first month free.')+'</p>'+
+  '<div class="card"><h3>Want to shape the plans and the prices?</h3><p>There is a longer version — about ten minutes — where we show you the three plans and ask what each is worth. Your name and email carry over.</p><p><a href="/survey'+q+'">Open the 10-minute version →</a></p></div>'+
+  '<p style="margin-top:20px">Know someone else who books groups? Send them <b>www.groupbook.co.za/survey-quick</b></p>'+
+  '<p><a href="https://www.groupbook.co.za/">See what GroupBook does →</a></p></div>';
+}
+function render(){
+  var v=document.getElementById('view'); v.innerHTML=S._done?done():form();
+  if(S._done){ window.scrollTo(0,0); return; }
+  v.querySelectorAll('[data-k]').forEach(function(el){
+    var ev=el.type==='radio'||el.type==='checkbox'?'change':'input';
+    el.addEventListener(ev,function(){ startOnce(); if(el.getAttribute('inputmode')==='numeric'){ var d=el.value.replace(/[^0-9]/g,''); if(d!==el.value) el.value=d; }
+      S[el.getAttribute('data-k')]=el.type==='checkbox'?el.checked:el.value; save();
+      if(el.type==='radio'){ v.querySelectorAll('input[name="'+el.name+'"]').forEach(function(r){ r.closest('.opt').classList.toggle('on',r.checked); }); } });
+    el.addEventListener('focus',startOnce);
+  });
+  document.getElementById('send').onclick=submit;
+}
+function missing(){
+  var m=[]; if(!S.name||!String(S.name).trim()) m.push('name');
+  if(!S.email||!/^[^@\s]+@[^@\s.][^@\s]*\.[^@\s.]{2,}$/.test(S.email)||/\.\./.test(S.email)) m.push('email');
+  ['role','sourcing_today','pain'].forEach(function(k){ if(!S[k]) m.push(k); });
+  if(!S.consent) m.push('consent'); return m;
+}
+function payload(){
+  var n=function(x){ return x===undefined||x===''||x===null?null:Number(x); };
+  return { survey_version:SURVEY_VERSION, source:SRC, name:S.name||null, email:S.email||null, agency:null,
+    role:n(S.role), pain_points:S.pain?[S.pain]:[], tier1_good_value:n(S.price), consent:!!S.consent,
+    answers:{ quick:true, sourcing_today:n(S.sourcing_today), quick_price:n(S.price), hotels_wanted:(S.hotels||'').slice(0,1000)||null, early_access:true, user_agent:navigator.userAgent },
+    website:(document.querySelector('[data-hp]')||{}).value||'' };
+}
+function submit(){
+  var v=document.getElementById('view'); v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
+  var m=missing(); var err=document.getElementById('err'); err.style.display='none';
+  if(m.length){ var first=null; m.forEach(function(k){ var a=v.querySelector('[data-ask="'+k+'"]'); if(a){ a.classList.add('miss'); if(!first) first=a; } });
+    err.style.display='block'; err.textContent=m.length===1?'One thing still needs an answer — it is marked in red.':m.length+' things still need an answer — they are marked in red.';
+    if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  var b=document.getElementById('send'); b.disabled=true; b.textContent='Sending…';
+  fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload())})
+  .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ if(!r.ok) throw new Error(j&&j.error?j.error:'HTTP '+r.status); return j; }); })
+  .then(function(){ if(window.va) window.va('event',{name:'survey_quick_submit'}); if(window.fbq) fbq('track','Lead',{content_name:'survey '+SURVEY_VERSION}); if(window.lintrk) lintrk('track',{conversion_id:window.LI_CONV||0}); S._done=true; save(); render(); })
+  .catch(function(e){ b.disabled=false; b.textContent='Send my 5 answers'; err.style.display='block';
+    var body=encodeURIComponent('GroupBook quick survey\n\n'+JSON.stringify(payload(),null,2));
+    err.innerHTML='Sorry — that did not send'+(e&&e.message&&!/HTTP|Failed to fetch|NetworkError/.test(e.message)?' ('+e.message+')':'')+'. Your answers are saved on this phone; please try again in a moment, or <a href="mailto:support@groupbook.co.za?subject=GroupBook%20survey&body='+body+'">email them to us</a> with one tap.'; });
+}
+render();
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

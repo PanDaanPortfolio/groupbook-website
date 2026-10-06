@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GroupBook — 3-minute survey: what would group travel software be worth to you?</title>
+<title>GroupBook — the full survey (about 10 minutes): what would group travel software be worth to you?</title>
 <meta name="description" content="Tell us how you source hotels and venues and run group travel today, and what you would pay for software that does it. Early access and a free first month for everyone who answers.">
-<meta property="og:title" content="What would group travel software be worth to you? A 3-minute survey.">
+<meta property="og:title" content="What would group travel software be worth to you? About ten minutes.">
 <meta property="og:description" content="GroupBook finds hotels and venues, compares quotes, and runs the guest and travel logistics in one place. Tell us what you'd pay — and get early access with a free first month.">
 <meta property="og:image" content="https://www.groupbook.co.za/groupbook-og-image.png">
 <meta property="og:url" content="https://www.groupbook.co.za/survey">
@@ -65,7 +65,7 @@ a{color:var(--navy)}
 <noscript><img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=10972185&fmt=gif"/></noscript>
 </head>
 <body>
-<div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>A 5-minute survey · early access and a free first month for everyone who answers</span></div>
+<div class="top"><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>The full survey · about 10 minutes · early access and a free first month for everyone who answers</span></div>
 <div class="wrap">
   <div class="bar"><i id="bar"></i></div>
   <div id="view"></div>
@@ -77,6 +77,7 @@ var API='https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey'; // inter
 var SURVEY_VERSION='2026-10-v2';
 var S={}; try{ S=JSON.parse(localStorage.getItem('gb_survey2')||'{}'); }catch(e){}
 function save(){ try{ localStorage.setItem('gb_survey2',JSON.stringify(S)); }catch(e){} }
+var Q=new URLSearchParams(location.search); if(!S.email&&Q.get('email')) S.email=Q.get('email'); if(!S.name&&Q.get('name')) S.name=Q.get('name');
 var step=S._step||0; var REQ={};
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function ask(key,q,opts,hint,optional){
@@ -95,10 +96,11 @@ function area(key,label,ph,required){ if(required) REQ[key]=true; return '<div c
 
 var SCREENS=[
 { title:'What would software for group travel be worth to you?', body:function(){ return '<p class="lede">GroupBook is a South African tool that finds the right hotels and venues for a group, gets the quotes in one place, and then runs the guest and travel logistics around the event — rooming lists, flights, transfers, RSVPs. We are deciding what it should cost, and we would rather ask than guess.</p>'+
- '<div class="gift"><b>Five minutes, a dozen quick questions.</b> Leave your email at the end and you get early access when we launch commercially, with your first month free.</div>'+
+ '<div class="gift"><b>About ten minutes, twenty questions — the long version.</b> Everyone who answers gets early access when we launch commercially, with the first month free. In a hurry? <a href="/survey-quick">The 5-question version takes 90 seconds.</a></div>'+
  '<p class="small" style="margin-top:14px">No prices are shown — we are asking what <em>you</em> would pay. Your answers are stored by PanDaan (Pty) Ltd, the company behind GroupBook, and used only for this research and, if you ask for it, early access. Nothing is shared or sold.</p>'; } },
 
-{ title:'About you', body:function(){ return '<p class="lede">So we can read your answers in context.</p>'+
+{ title:'About you', body:function(){ return '<p class="lede">So we can read your answers in context — and so your answers are not lost if you stop halfway.</p>'+
+ txt('name','Your name','',true)+txt('email','Email','you@company.co.za',true,'email')+
  ask('role','Which of these is closest to your work?',[[1,'I organise events or group travel inside a company (events team, marketing, EA, travel desk)'],[2,'I work at an event, incentive or conference agency'],[3,'I work at a travel agency or travel management company'],[4,'I am an independent travel consultant (ITC) or a one-to-three-person agency'],[5,'Something else']])+
  ask('volume','Roughly how many group events or group bookings a year are you involved in?',[[1,'Fewer than 5'],[2,'5 to 20'],[3,'21 to 60'],[4,'More than 60']])+
  ask('event_size','How big is a typical event or group?',[[1,'Under 50 people'],[2,'50 to 150'],[3,'151 to 300'],[4,'301 to 500'],[5,'More than 500']])+
@@ -143,7 +145,7 @@ var SCREENS=[
 { title:'Last page', body:function(){ return ''+
  area('open_feedback','What is your biggest hesitation about paying for software for this kind of work?','Honest is helpful.',false)+
  '<div class="card navy"><h3>Early access and a free first month</h3><p>Leave your details and you are on the list: priority onboarding when we launch commercially, and your first month free. We will email you once, when it is ready.</p></div>'+
- txt('name','Your name','',true)+txt('email','Email','you@company.co.za',true,'email')+txt('agency','Company or agency (optional)','')+
+ txt('agency','Company or agency (optional)','')+
  '<div class="ask" data-ask="consent"><label class="chk"><input type="checkbox" data-k="consent" '+(S.consent?'checked':'')+'><span>GroupBook (PanDaan (Pty) Ltd) may store these answers for this research and contact me about early access. I can ask for my details to be removed at any time by emailing support@groupbook.co.za.<span class="req">*</span></span></label></div>'+
  '<div class="err" id="err"></div>'; } },
 
@@ -153,7 +155,7 @@ var SCREENS=[
 function render(){
   var sc=SCREENS[step]; var v=document.getElementById('view'); REQ={};
   var last=step===SCREENS.length-1;
-  v.innerHTML=(last?'':'<div class="stepno">'+(step===0?'3-minute survey':'Page '+step+' of '+(SCREENS.length-2))+'</div>')+(sc.title?'<h1>'+sc.title+'</h1>':'')+sc.body()+'<div class="missmsg" id="missmsg"></div>'+(step>0&&step<SCREENS.length-1?'<p class="hint" style="margin-top:14px">Questions marked * need an answer before you go on.</p>':'');
+  v.innerHTML=(last?'':'<div class="stepno">'+(step===0?'The full survey':'Page '+step+' of '+(SCREENS.length-2))+'</div>')+(sc.title?'<h1>'+sc.title+'</h1>':'')+sc.body()+'<div class="missmsg" id="missmsg"></div>'+(step>0&&step<SCREENS.length-1?'<p class="hint" style="margin-top:14px">Questions marked * need an answer before you go on.</p>':'');
   document.getElementById('bar').style.width=Math.round(step/(SCREENS.length-1)*100)+'%';
   document.getElementById('back').style.visibility=(step===0||last)?'hidden':'visible';
   var nb=document.getElementById('next'); nb.style.visibility=last?'hidden':'visible'; nb.textContent=step===0?'Start':(step===SCREENS.length-2?'Send my answers':'Next');
@@ -199,7 +201,7 @@ document.getElementById('next').onclick=function(){
   var v=document.getElementById('view'); v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
   var m=missing(); if(m.length){ block(m); return; }
   if(step===SCREENS.length-2){ submit(); return; }
-  if(step<SCREENS.length-1){ step++; render(); } };
+  if(step<SCREENS.length-1){ if(step===0&&window.fbq) fbq('trackCustom','SurveyStart',{version:SURVEY_VERSION,src:(new URLSearchParams(location.search).get('src'))||'website'}); step++; if(window.fbq) fbq('trackCustom','SurveyPage',{page:step}); render(); } };
 document.getElementById('back').onclick=function(){ if(step>0){ step--; render(); } };
 if(S._done){ step=SCREENS.length-1; }
 render();
