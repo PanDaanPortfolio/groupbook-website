@@ -31,7 +31,7 @@ p{margin:8px 0}.lede{font-size:17px;color:var(--ink2)}.hint{font-size:13.5px;col
 .opts{display:grid;gap:8px}.opt{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
 .opt input{margin-top:4px;flex:none;width:18px;height:18px;accent-color:var(--navy)}.opt.on{border-color:var(--navy);box-shadow:0 0 0 2px #1B2A3A22}
 .f{display:block;font-weight:600;margin-top:10px}.f input,.f textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;font:inherit;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
-.f textarea{min-height:70px;resize:vertical}.f span{display:block;color:var(--ink3);font-weight:400;font-size:12.5px}
+.f textarea{min-height:70px;resize:vertical}.f .req{color:var(--red)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:480px){.two{grid-template-columns:1fr}}
 .in{position:relative}.in b{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink3);font-weight:500;margin-top:3px}.in input{padding-left:30px!important}
 .ask.miss .opt,.ask.miss input,.ask.miss textarea{border-color:var(--red)}.ask.miss .q,.ask.miss .f{color:var(--red)}
@@ -77,8 +77,8 @@ function form(){
   '<h1>What should group-booking software cost? You tell us.</h1>'+
   '<p class="lede">Still phoning the hotel front desk to find out who handles group bookings this month? We are building GroupBook in South Africa: the group-desk contact for 679 hotels on file, your brief sent to all of them at once, the quotes side by side. We are deciding what it should cost and would rather ask than guess.</p>'+
   '<div class="two">'+
-   '<div class="ask" data-ask="name"><label class="f">First name<span class="req" style="color:#9B2C2C"> *</span><input type="text" data-k="name" autocomplete="given-name" value="'+esc(S.name)+'" placeholder="Amanda"></label></div>'+
-   '<div class="ask" data-ask="email"><label class="f">Work email<span class="req" style="color:#9B2C2C"> *</span><input type="email" data-k="email" autocomplete="email" inputmode="email" value="'+esc(S.email)+'" placeholder="you@agency.co.za"></label></div>'+
+   '<div class="ask" data-ask="name"><label class="f">First name<span class="req"> *</span><input type="text" data-k="name" autocomplete="given-name" value="'+esc(S.name)+'" placeholder="Amanda"></label></div>'+
+   '<div class="ask" data-ask="email"><label class="f">Work email<span class="req"> *</span><input type="email" data-k="email" autocomplete="email" inputmode="email" value="'+esc(S.email)+'" placeholder="you@agency.co.za"></label></div>'+
   '</div>'+
   '<div class="ask" data-ask="role"><div class="q"><span class="n">1</span>Which is closest to your work?<span class="req">*</span></div>'+radios('role',ROLES)+'</div>'+
   '<div class="ask" data-ask="sourcing_today"><div class="q"><span class="n">2</span>When you need group accommodation or a venue, how do you get quotes today?<span class="req">*</span></div>'+radios('sourcing_today',SOURCING)+'</div>'+
@@ -88,7 +88,7 @@ function form(){
   '<div class="ask" data-ask="hotels"><div class="q"><span class="n">5</span>Which hotels\' group-desk contacts would you like from us?</div><div class="hint">Name up to 10 South African hotels or venues. We look them up in our directory and email you the verified group-desk contact for each — our thank-you for the 90 seconds.</div>'+
    '<label class="f" style="margin-top:0"><textarea data-k="hotels" placeholder="e.g. Protea Hotel Fire & Ice Melrose Arch, Spier, The Capital Zimbali…">'+esc(S.hotels)+'</textarea></label></div>'+
   '<div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" data-hp="1"></label></div>'+
-  '<div class="ask" data-ask="consent"><label class="chk"><input type="checkbox" data-k="consent"'+(S.consent?' checked':'')+'><span>GroupBook (PanDaan (Pty) Ltd) may store these answers for this research and email me the hotel contacts and, later, early access. I can ask for my details to be removed at any time by emailing support@groupbook.co.za.<span class="req" style="color:#9B2C2C"> *</span></span></label></div>'+
+  '<div class="ask" data-ask="consent"><label class="chk"><input type="checkbox" data-k="consent"'+(S.consent?' checked':'')+'><span>GroupBook (PanDaan (Pty) Ltd) may store these answers for this research and email me the hotel contacts and, later, early access. I can ask for my details to be removed at any time by emailing support@groupbook.co.za.<span class="req"> *</span></span></label></div>'+
   '<div class="err" id="err"></div>'+
   '<button class="btn" id="send">Send my 5 answers</button>'+
   '<p class="small" style="margin-top:12px">No prices are shown anywhere — we are asking what <em>you</em> would pay. Nothing is shared or sold.</p>';
@@ -107,7 +107,7 @@ function render(){
   v.querySelectorAll('[data-k]').forEach(function(el){
     var ev=el.type==='radio'||el.type==='checkbox'?'change':'input';
     el.addEventListener(ev,function(){ startOnce(); if(el.getAttribute('inputmode')==='numeric'){ var d=el.value.replace(/[^0-9]/g,''); if(d!==el.value) el.value=d; }
-      S[el.getAttribute('data-k')]=el.type==='checkbox'?el.checked:el.value; save();
+      S[el.getAttribute('data-k')]=el.type==='checkbox'?el.checked:el.value; save(); var ask=el.closest('.ask'); if(ask) ask.classList.remove('miss'); if(!v.querySelector('.ask.miss')){ var e2=document.getElementById('err'); if(e2) e2.style.display='none'; }
       if(el.type==='radio'){ v.querySelectorAll('input[name="'+el.name+'"]').forEach(function(r){ r.closest('.opt').classList.toggle('on',r.checked); }); } });
     el.addEventListener('focus',startOnce);
   });
