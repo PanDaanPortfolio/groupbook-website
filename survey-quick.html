@@ -83,9 +83,9 @@ function planFits(){ return ['1','2','3'].indexOf(String(S.tier_fit))>-1; }
 function pricingBlock(){
   return '<div id="pricing"'+(planFits()?'':' hidden')+'>'+
   '<div class="ask" data-ask="good_value"><div class="q"><span class="n">5</span>For that plan, what monthly price would you pay <em>without hesitation</em>?<span class="req">*</span></div><div class="hint">Rand per month for your whole team, excluding VAT. Your own honest guess. No prices are shown anywhere, so there is no wrong answer.</div>'+
-   '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="good_value" value="'+esc(S.good_value)+'" placeholder="e.g. 2500"></div></label></div>'+
+   '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="good_value" value="'+esc(S.good_value)+'"></div></label></div>'+
   '<div class="ask" data-ask="too_expensive"><div class="q"><span class="n">6</span>And at what monthly price does it become <em>too expensive to consider</em>?<span class="req">*</span></div>'+
-   '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="too_expensive" value="'+esc(S.too_expensive)+'" placeholder="e.g. 6000"></div></label></div></div>'+
+   '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="too_expensive" value="'+esc(S.too_expensive)+'"></div></label></div></div>'+
   '<div id="nopricing"'+(planFits()?' hidden':'')+'><div class="ask" data-ask="none_reason"><div class="q"><span class="n">5</span>What would a plan need to include for you to consider it?</div><div class="hint">Optional. One or two sentences is plenty.</div>'+
    '<label class="f" style="margin-top:0"><textarea data-k="none_reason" placeholder="e.g. we only need flights and transfers…">'+esc(S.none_reason)+'</textarea></label></div></div>';
 }
