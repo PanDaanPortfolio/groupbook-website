@@ -139,7 +139,7 @@ function planCards(){
 // ---------- screens
 var SCREENS = [
 { title:'Thank you for helping', body:function(){ return '<p class="lede">GroupBook is a web tool for people who book group accommodation and travel — conferences, incentives, year-end functions, sports tours. Before we put prices on our website, we would like the honest opinion of people who have done this work.</p>'+
- '<div class="card"><h3>How this works</h3><p style="margin-top:8px">About 15 minutes. Twelve short screens, and a few are just reading. Nothing is sent anywhere until the last screen, where you copy your answers and send them to Danie on WhatsApp or email.</p><p style="margin-top:8px">There are no right answers. If something is unclear, say so — that is exactly what we need to know. Every name and price here is a <b>test</b>, not a decision.</p><p style="margin-top:8px">Your answers come back the way you type them; you can pause and come back later on the same phone or computer.</p></div>'+
+ '<div class="card"><h3>How this works</h3><p style="margin-top:8px">About 15 minutes. Thirteen short screens, and a few are just reading. Nothing is sent anywhere until the last screen, where you copy your answers and send them to Danie on WhatsApp or email.</p><p style="margin-top:8px">There are no right answers. If something is unclear, say so — that is exactly what we need to know. Every name and price here is a <b>test</b>, not a decision.</p><p style="margin-top:8px">Your answers come back the way you type them; you can pause and come back later on the same phone or computer.</p></div>'+
  txt('name','Your name (optional)')+'<div class="hint">Only so Danie knows who to thank.</div>'; } },
 
 { title:'About you', body:function(){ return '<p class="lede">So we can read your answers in context.</p>'+
@@ -194,13 +194,21 @@ var SCREENS = [
  ask('forced','Would you have had to buy a bigger plan than you needed, just to get one feature?',[['no','No'],['yes','Yes','Which feature, and which plan is it in?'],['unsure','Not sure']])+
  txt('plan_note','Is anything in the wrong plan? Anything you would move up or down?'); } },
 
+{ title:'Before the numbers', body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">One screen before you see our prices. Answer for <b>'+(p?p.n:'the plan closest to your old team')+'</b>, per month, in rand, for the whole team.</p>'+
+ num('price_expect','What would you have expected a tool like this to cost a month?','Your first instinct, before you see anything.','e.g. 3500',true)+
+ num('price_acceptable','What monthly price would have felt acceptable — you would sign without much thought?','','e.g. 2500')+
+ num('price_expensive','At what monthly price does it start to feel expensive, but you would still consider it?','','e.g. 6000')+
+ num('price_prohibitive','At what monthly price would you not consider it at all?','','e.g. 12000'); } },
+
 { title:'The prices', body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">Prices are per month, in rand, no VAT charged. Pay monthly and cancel any month, or pay for ten months up front and use it for twelve. Getting started is included: we set you up and run your first real booking with you on a call.</p>'+
  '<table><tr><th>Plan</th><th>A month</th><th>A year (two months free)</th></tr><tr><td>Sourcing</td><td>R1,950</td><td>R19,500</td></tr><tr><td>Boutique</td><td>R4,950</td><td>R49,500</td></tr><tr><td>Full House</td><td>R9,950</td><td>R99,500</td></tr><tr><td>Larger organisations</td><td colspan="2">Agreed in a contract</td></tr></table>'+
  (p?'<div class="note">You chose <b>'+p.n+'</b> on the previous screen: <b>'+R(p.m)+' a month</b>, or <b>'+R(p.m*10)+' a year</b>.</div>':'<div class="note">You did not choose a plan on the previous screen. Answer for the plan closest to your old team\'s needs.</div>')+
- ask('price_fit','Compared with what you expected, this price is…',[['lower','Lower than I expected'],['about','About what I expected'],['higher','Higher than I expected'],['much','Much higher than I expected']])+
+ ask('price_fit','Now that you have seen it: compared with what you expected, this price is…',[['lower','Lower than I expected'],['about','About what I expected'],['higher','Higher than I expected'],['much','Much higher than I expected']])+
  num('price_pay','What would your old team realistically have paid a month for the plan you chose? (a number in rand)','Your honest guess is more useful than a polite one. Put 0 if nothing.','e.g. 2500',true)+
  ask('price_how','How would they rather have paid?',[['monthly','Monthly, cancel any time'],['annual','Once a year, two months free'],['perevent','Per event, not a subscription'],['unsure','Not sure']])+
- txt('price_compare','What would you compare this price to? (A supplier you paid, a tool you used, a person\'s time?)'); } },
+ txt('price_compare','What would you compare this price to? (A supplier you paid, a tool you used, a person\'s time?)')+
+ ask('buy_at_price','Would your old team have bought the plan you chose at this price?',[['yes','Yes'],['maybe','Maybe — it depends'],['no','No']],'',false)+
+ txt('buy_at_price_why','Why? One line is enough.'); } },
 
 { title:'The limits', body:function(){ return '<p class="lede">Only three things change between plans: how many people can log in, how many guest events are included (and how big), and how much hands-on help you get. Everything else is one fair-use rule, the same on every plan, there to protect the hotels and the directory — not to make you buy a bigger plan.</p>'+
  '<table><tr><th>Changes between plans</th><th>Sourcing</th><th>Boutique</th><th>Full House</th></tr>'+

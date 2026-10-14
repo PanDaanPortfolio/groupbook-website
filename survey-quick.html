@@ -74,6 +74,8 @@ var started=false; function startOnce(){ if(started) return; started=true; if(wi
 var ROLES=[[1,'I organise events or group travel inside a company (events team, marketing, EA, travel desk)'],[2,'I work at an event, incentive or conference agency'],[3,'I work at a travel agency or travel management company'],[4,'I am an independent travel consultant or a one-to-three-person agency'],[5,'Something else']];
 var SOURCING=[[1,'I phone the hotels to find the right person, then email'],[2,'I email contacts I already have'],[3,'A sourcing company or venue finder does it for me'],[4,'A booking tool or platform'],[5,'I rarely source group accommodation']];
 var PLANS=[[1,'Sourcing','For a team that books group accommodation or venues several times a year. One brief sent to the hotels you choose, every quote side by side, award and decline.','2 users.'],[2,'Boutique','Everything in Sourcing, plus running the group once it is booked: guest list, rooms, flights, transfers, lists for every supplier and a personal itinerary for each guest.','4 users. Up to 60 events a year, each up to 100 guests. Online RSVP is in final testing.'],[3,'Full House','Everything in Boutique, for an agency or travel desk running several clients\' groups at once, plus matching card statements to bookings.','10 users. Up to 120 events a year, each up to 150 guests.'],[4,'None of these suits my work','Tell us what is missing below.',''],[5,'Not sure','I would need to see it first.','']];
+var EVENTS_PER_YEAR=[[1,'Fewer than 5'],[2,'5 to 20'],[3,'21 to 60'],[4,'More than 60']];
+var TYPICAL_GUESTS=[[1,'Under 50'],[2,'50 to 100'],[3,'101 to 150'],[4,'151 to 300'],[5,'More than 300']];
 var PAINS=[['quotes','Finding the right hotel contact and chasing quotes'],['compare','Comparing quotes that arrive in different formats'],['guests','Guest lists that keep changing — dietary, rooming, transfers'],['rsvp','Invitations, RSVPs and registration'],['suppliers','Keeping hotels, airlines and transfer companies on the same page'],['recon','Matching card statements and invoices to bookings'],['retyping','Typing the same information into several systems']];
 
 function radios(key,opts){ return '<div class="opts">'+opts.map(function(o){ var on=String(S[key])===String(o[0]); return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="'+key+'" value="'+o[0]+'"'+(on?' checked':'')+' data-k="'+key+'"><span>'+o[1]+'</span></label>'; }).join('')+'</div>'; }
@@ -82,11 +84,11 @@ function pains(){ var sel=S.pains||[]; return '<div class="opts">'+PAINS.map(fun
 function planFits(){ return ['1','2','3'].indexOf(String(S.tier_fit))>-1; }
 function pricingBlock(){
   return '<div id="pricing"'+(planFits()?'':' hidden')+'>'+
-  '<div class="ask" data-ask="good_value"><div class="q"><span class="n">5</span>For that plan, what monthly price would you pay <em>without hesitation</em>?<span class="req">*</span></div><div class="hint">Rand per month for your whole team, excluding VAT. Your own honest guess. No prices are shown anywhere, so there is no wrong answer.</div>'+
+  '<div class="ask" data-ask="good_value"><div class="q"><span class="n">7</span>For that plan, what monthly price would you pay <em>without hesitation</em>?<span class="req">*</span></div><div class="hint">Rand per month for your whole team, excluding VAT. Your own honest guess. No prices are shown anywhere, so there is no wrong answer.</div>'+
    '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="good_value" value="'+esc(S.good_value)+'"></div></label></div>'+
-  '<div class="ask" data-ask="too_expensive"><div class="q"><span class="n">6</span>And at what monthly price does it become <em>too expensive to consider</em>?<span class="req">*</span></div>'+
+  '<div class="ask" data-ask="too_expensive"><div class="q"><span class="n">8</span>And at what monthly price does it become <em>too expensive to consider</em>?<span class="req">*</span></div>'+
    '<label class="f" style="margin-top:0"><div class="in"><b>R</b><input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" data-k="too_expensive" value="'+esc(S.too_expensive)+'"></div></label></div></div>'+
-  '<div id="nopricing"'+(planFits()?' hidden':'')+'><div class="ask" data-ask="none_reason"><div class="q"><span class="n">5</span>What would a plan need to include for you to consider it?</div><div class="hint">Optional. One or two sentences is plenty.</div>'+
+  '<div id="nopricing"'+(planFits()?' hidden':'')+'><div class="ask" data-ask="none_reason"><div class="q"><span class="n">7</span>What would a plan need to include for you to consider it?</div><div class="hint">Optional. One or two sentences is plenty.</div>'+
    '<label class="f" style="margin-top:0"><textarea data-k="none_reason" placeholder="e.g. we only need flights and transfers…">'+esc(S.none_reason)+'</textarea></label></div></div>';
 }
 function form(){
@@ -99,9 +101,11 @@ function form(){
    '<div class="ask" data-ask="email"><label class="f">Work email<span class="req"> *</span><input type="email" data-k="email" autocomplete="email" inputmode="email" value="'+esc(S.email)+'" placeholder="you@agency.co.za"></label></div>'+
   '</div>'+
   '<div class="ask" data-ask="role"><div class="q"><span class="n">1</span>Which is closest to your work?<span class="req">*</span></div>'+radios('role',ROLES)+'</div>'+
-  '<div class="ask" data-ask="sourcing_today"><div class="q"><span class="n">2</span>When you need group accommodation or a venue, how do you get quotes today?<span class="req">*</span></div>'+radios('sourcing_today',SOURCING)+'</div>'+
-  '<div class="ask" data-ask="pains"><div class="q"><span class="n">3</span>Which parts of a group booking cost you the most time?</div><div class="hint">Optional. Tick up to two.</div>'+pains()+'</div>'+
-  '<div class="ask" data-ask="tier_fit"><div class="q"><span class="n">4</span>GroupBook comes in three plans. Which one would fit your work?<span class="req">*</span></div><div class="hint">Each plan includes everything in the one above it. Pick the closest.</div><div class="opts">'+
+  '<div class="ask" data-ask="events_per_year"><div class="q"><span class="n">2</span>How many group events or group bookings does your team run in a year?<span class="req">*</span></div>'+radios('events_per_year',EVENTS_PER_YEAR)+'</div>'+
+  '<div class="ask" data-ask="typical_guests"><div class="q"><span class="n">3</span>How many guests does a typical one have?</div><div class="hint">Registered guests, not invitations. Rough is fine.</div>'+radios('typical_guests',TYPICAL_GUESTS)+'</div>'+
+  '<div class="ask" data-ask="sourcing_today"><div class="q"><span class="n">4</span>When you need group accommodation or a venue, how do you get quotes today?<span class="req">*</span></div>'+radios('sourcing_today',SOURCING)+'</div>'+
+  '<div class="ask" data-ask="pains"><div class="q"><span class="n">5</span>Which parts of a group booking cost you the most time?</div><div class="hint">Optional. Tick up to two.</div>'+pains()+'</div>'+
+  '<div class="ask" data-ask="tier_fit"><div class="q"><span class="n">6</span>GroupBook comes in three plans. Which one would fit your work?<span class="req">*</span></div><div class="hint">Each plan includes everything in the one above it. Pick the closest.</div><div class="opts">'+
    PLANS.map(function(o){ var on=String(S.tier_fit)===String(o[0]); return '<label class="opt'+(on?' on':'')+'"><input type="radio" name="tier_fit" value="'+o[0]+'"'+(on?' checked':'')+' data-k="tier_fit"><span><b>'+o[1]+'</b><br><span class="small">'+o[2]+(o[3]?'<span class="limits"><b>'+o[3]+'</b></span>':'')+'</span></span></label>'; }).join('')+'</div></div>'+
   pricingBlock()+
   '<div class="ask" data-ask="hotels"><div class="q">Optional extra: hotel group-desk contacts</div><div class="hint">Name up to 10 South African hotels or venues and we will email you the latest group-desk contact we hold for each, with the date it was last checked.</div>'+
@@ -141,7 +145,7 @@ function render(){
 function missing(){
   var m=[]; if(!S.name||!String(S.name).trim()) m.push('name');
   if(!S.email||!/^[^@\s]+@[^@\s.][^@\s]*\.[^@\s.]{2,}$/.test(S.email)||/\.\./.test(S.email)) m.push('email');
-  ['role','sourcing_today','tier_fit'].forEach(function(k){ if(!S[k]) m.push(k); });
+  ['role','events_per_year','sourcing_today','tier_fit'].forEach(function(k){ if(!S[k]) m.push(k); });
   if(planFits()) ['good_value','too_expensive'].forEach(function(k){ if(S[k]===undefined||String(S[k]).trim()==='') m.push(k); });
   if(!S.consent) m.push('consent'); return m;
 }
@@ -152,7 +156,7 @@ function payload(){
     tier1_good_value:String(S.tier_fit)==='1'?n(S.good_value):null, tier1_too_expensive:String(S.tier_fit)==='1'?n(S.too_expensive):null,
     tier2_good_value:String(S.tier_fit)==='2'?n(S.good_value):null, tier2_too_expensive:String(S.tier_fit)==='2'?n(S.too_expensive):null,
     tier3_good_value:String(S.tier_fit)==='3'?n(S.good_value):null, tier3_too_expensive:String(S.tier_fit)==='3'?n(S.too_expensive):null,
-    answers:{ quick:true, sourcing_today:n(S.sourcing_today), plan_chosen:n(S.tier_fit), good_value:planFits()?n(S.good_value):null, too_expensive:planFits()?n(S.too_expensive):null, price_unit:'ZAR per month, whole team, ex VAT', hotels_wanted:(S.hotels||'').slice(0,1000)||null, interview_ok:!!S.interview_ok, marketing_optin:!!S.marketing_optin, plan_text_version:'v5.0-2026-10-02', user_agent:navigator.userAgent },
+    answers:{ quick:true, events_per_year:n(S.events_per_year), typical_guests:n(S.typical_guests), sourcing_today:n(S.sourcing_today), plan_chosen:n(S.tier_fit), good_value:planFits()?n(S.good_value):null, too_expensive:planFits()?n(S.too_expensive):null, price_unit:'ZAR per month, whole team, ex VAT', hotels_wanted:(S.hotels||'').slice(0,1000)||null, interview_ok:!!S.interview_ok, marketing_optin:!!S.marketing_optin, plan_text_version:'v5.0-2026-10-14', user_agent:navigator.userAgent },
     website:(document.querySelector('[data-hp]')||{}).value||'' };
 }
 function submit(){
