@@ -149,6 +149,8 @@ var SCREENS = [
  ask('volume','Roughly how many group events or group bookings a year were you involved in?',[['lt5','Fewer than 5'],['5to20','5 to 20'],['21to60','21 to 60'],['60plus','More than 60']])+
  ask('size','How big was a typical event?',[['s','Under 50 people'],['m','50 to 150 people'],['l','150 to 500 people'],['xl','More than 500 people']])+
  txt('sizes','Thinking about your last few events: roughly how many guests were invited to each? (For example: 40, 120, 350, 60)','A few numbers is enough. We use this to check where we have drawn our lines.')+
+ num('complex_guests','Think of your most layered event last year — the one with the most moving parts. How many guests?','Layered, not biggest: a 100-guest event with three hotels and visas can be harder than a 500-guest conference in one hotel.','e.g. 120')+
+ txt('complex_layers','What made it layered? List what applied: several hotels, international flights, more than one transfer supplier, a partner programme, visas, public tickets, changes after the lists were sent, anything else.')+
  ask('approver','Who approved spending on a new tool or supplier?',[['me','I could'],['boss','My manager or a director'],['finance','Finance or procurement'],['unsure','Not sure']])+
  txt('tools','What did you use to do this work? (For example: Outlook and Excel, a travel agent, an RSVP company, a specific system)'); } },
 
