@@ -4,6 +4,13 @@ Shared header/footer live here so every page carries the same nav and legal band
 import os, json, re
 OUT = os.path.dirname(os.path.abspath(__file__))
 
+# PRICING-HIDE-001 (Danie, 15 Oct 2026): no rand amounts on the public site while the pricing research
+# runs (Strategy v5.0 §3.6). The plan ladder, inclusions and FAQ stay; every price becomes "in research"
+# and the pricing page asks for the 60-second survey. Flip to False and rebuild to restore the full page.
+# /pricing-test shows prices on purpose (it is the research instrument) and is not generated here.
+HIDE_PRICES = True
+IN_RESEARCH = "In research"
+
 NAV = [("index", "Home"), ("how-it-works", "How it works"), ("pricing", "Pricing"), ("for-hotels", "For hotels"), ("support", "Support")]
 
 def nav_links(path):
@@ -99,7 +106,8 @@ def faq_ld(body):
 
 def page(name, title, desc, body):
     graph = [ORG] if name == "index" else []
-    if name == "index": graph.append(APP)
+    if name == "index": graph.append({k: v for k, v in APP.items() if k != "offers"} if HIDE_PRICES else APP)
+    body = hide_prices(name, body)   # before faq_ld, so the FAQ JSON-LD is built from the hidden text
     f_ld = faq_ld(body)
     if f_ld: graph.append(f_ld)
     ld = '<script type="application/ld+json">' + json.dumps({"@context":"https://schema.org","@graph":graph}, ensure_ascii=False) + '</script>' if graph else ''
@@ -833,8 +841,95 @@ CONTACT = """
 </section>
 """
 
+
+PRICING_RESEARCH = """
+<section class="band-white" style="padding-bottom:28px">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">One price ladder. We are setting the numbers with the people who will use it.</h1>
+    <p class="lede" style="margin-top:12px">The three plans below are set: what each one is for and what it includes. The prices are not on this page yet, on purpose. We are asking South African agencies, event teams and travel desks what the work is worth to them before we print a number, and we would rather ask you than guess.</p>
+    <div class="btn-row" style="margin-top:18px"><a class="btn btn-primary" href="/survey-quick?src=pricing">Help set the price — 60 seconds</a><a class="btn btn-ghost" href="/contact">Request a walkthrough</a></div>
+    <p class="note" style="margin-top:12px">No prices are shown in the survey either. Everyone who answers gets the results: what their peers run, how big, and what they said it was worth. Monthly on a debit order, cancel any month, or annual with two months free; no VAT is charged.</p>
+  </div>
+</section>
+<section class="band-cream" style="padding-top:36px">
+  <div class="wrap">
+    <div class="ladder four">
+""" + \
+rung("sourcing","Sourcing",IN_RESEARCH,"Help us set it",["2 named users, up to 5","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","60 minutes of hands-on help a month","Fair use: the same envelope on every plan"]) + \
+rung("practice","Boutique",IN_RESEARCH,"Help us set it",["4 named users, up to 10","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, car hire, supplier packs, a personal itinerary per guest","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","Everyday guest events included; bigger ones priced per event, shown and approved first","120 minutes of hands-on help a month · Event Window bookable"], hi=True, badge="Recommended for teams running events") + \
+rung("agency","Full House",IN_RESEARCH,"Help us set it",["10 named users, up to 20","Everything in Boutique","Bigger events included; capacity for several clients' groups at once","Card-statement import and the matching workspace — your team matches lines to bookings and purchase orders","Automatic reconciliation matching <span class='tag'>Coming Q4 2026</span>","240 minutes of hands-on help a month · Event Window bookable"]) + \
+rung("enterprise","Larger organisations","Talk to us","Annual · by order form",["Everything in Full House","Users, allowances and service levels by order form","SSO and data residency <span class='tag'>By agreed scope</span>","Security review, named support contact, agreed response targets"]) + """
+    </div>
+    <p class="note" style="margin-top:14px">Four things change between plans: price, users, guest events (how many and how big) and help — plus the finance workspace on Full House. Everything else is one fair-use envelope, the same on every plan: it protects the hotels' inboxes and the directory, and it is on the <a href="/fair-use">fair-use page</a>. Quantities are never “unlimited”.</p>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="wrap">
+    <h2 style="margin-bottom:18px">Before you choose</h2>
+    <div class="grid" style="gap:10px">
+      <details class="faq"><summary>When will the prices be published?</summary><p>When the research closes. If you answer the survey, you hear first, and the people who help us set the prices are offered the best terms we will ever offer.</p></details>
+      <details class="faq"><summary>Is there a contract?</summary><p>No. Monthly plans run on a debit order and can be cancelled in any month. Annual plans are invoiced once at ten months' price for twelve months' use.</p></details>
+      <details class="faq"><summary>Is there a set-up or implementation fee?</summary><p>No. Remote onboarding — workspace set-up and one 60-minute session with your administrator — is included with every plan.</p></details>
+      <details class="faq"><summary>What counts as a user?</summary><p>A named login. Each plan includes its users and has a maximum — Sourcing 2 (up to 5), Boutique 4 (up to 10), Full House 10 (up to 20); further named users can be added up to the maximum.</p></details>
+      <details class="faq"><summary>What is a guest event, and when is it charged?</summary><p>Running the RSVP for one event in GroupBook — invitations, online replies, the guest page, check-in — sized by the guests who registered. Everyday guest events are included on Boutique and Full House; the really big ones are priced per event, shown and approved before anything is charged.</p></details>
+      <details class="faq"><summary>Do hotels pay to be listed or to reply?</summary><p>No. Hotels and venues are listed and receive requests at no charge. The only thing we ask of them is a current group-desk contact.</p></details>
+      <details class="faq"><summary>Why is there no VAT on the price?</summary><p>PanDaan (Pty) Ltd is not a registered VAT vendor, so no VAT is charged on any GroupBook invoice. The price shown is the amount invoiced.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="band-cream">
+  <div class="wrap two">
+    <div>
+      <h2>On every plan</h2>
+      <ul class="list" style="margin-top:14px">
+        <li>POPIA operator agreement and the same security safeguards, whatever the plan.</li>
+        <li>Tenancy isolation: your briefs, clients and guests are yours; the directory is shared, its contacts are not.</li>
+        <li>Support by email or in-app, with a reference number and a business-hours response target. Our defects are fixed at no charge, whenever they occur.</li>
+        <li>No VAT is charged while PanDaan (Pty) Ltd is not a registered VAT vendor.</li>
+      </ul>
+    </div>
+    <div class="card" style="gap:12px">
+      <h3>What the roadmap lines mean</h3>
+      <p><span class="tag">In UAT with a launch customer</span> is live for one customer today and being hardened before general release. It is included in the plan shown, at no extra cost, when it releases.</p>
+      <p><span class="tag">Coming Q4 2026</span> is being built now. Nothing on this page with that tag is charged for until it ships.</p>
+      <p><span class="tag">By agreed scope</span> means a capability for larger organisations, delivered under the order form, not switched on off the shelf. Anything without a tag runs in production today.</p>
+      <h3 style="margin-top:8px">Not sure which plan?</h3>
+      <p>Tell us what you run and we will point at a rung — and say so if a lower one fits.</p>
+      <a class="btn btn-primary" href="/contact" style="justify-self:start">Request a walkthrough</a>
+    </div>
+  </div>
+</section>
+"""
+
+def hide_prices(name, body):
+    """PRICING-HIDE-001: targeted swaps on the rendered body so the templates stay intact for the restore."""
+    if not HIDE_PRICES: return body
+    if name == "index":
+        for amt in ("R1,950", "R4,950", "R9,950"):
+            body = body.replace('<div class="price">%s<small> /month</small></div>' % amt, '<div class="price">%s</div>' % IN_RESEARCH)
+        body = body.replace("One ladder. Monthly, no contract; or annual with two months free.", "One ladder. We are setting the prices with the people who will use it.")
+        body = body.replace('<a class="btn btn-primary" href="/pricing">Full pricing and what is included</a>', '<a class="btn btn-primary" href="/survey-quick?src=home">Help set the price — 60 seconds</a><a class="btn btn-ghost" href="/pricing">What each plan includes</a>')
+        body = body.replace("quoted at R699 an hour and approved by you first", "quoted and approved by you first")
+    if name == "support":
+        body = body.replace("pre-booked, R1,950 a day, subject to availability and agreed scope", "pre-booked, priced per day and quoted first, subject to availability and agreed scope")
+        body = body.replace("Each day is R1,950, drawn from prepaid credit or invoiced.", "Each day is quoted first, then drawn from prepaid credit or invoiced.")
+    if name == "fair-use":
+        body = body.replace("Named users (maximum; extra R395)", "Named users (maximum)")
+    # /support keeps the assistance rate card (R699/h, after-hours, carry-forward, worked example): a service
+    # rate that exists under any plan price and that the page's worked examples need. Everything else is strict.
+    allowed = {"R699", "R1,048", "R350", "R1,500", "R2,097", "R597"} if name == "support" else set()
+    left = set(re.findall(r"R\d{1,3},\d{3}|R\d{3}\b", body)) - allowed
+    assert not left, name + ": rand amounts survived hide_prices(): " + ", ".join(sorted(left))
+    return body
+
 page("index", "GroupBook — Source suppliers. Coordinate group travel. One place.", "Find hotels and venues across South Africa, request and compare quotes, then coordinate guest accommodation, flights and transfers — in one workspace.", INDEX)
-page("pricing", "Pricing — GroupBook", "One price ladder for group travel professionals: Sourcing R1,950, Boutique R4,950, Full House R9,950 a month. Annual with two months free. No VAT charged.", PRICING)
+if HIDE_PRICES:
+    page("pricing", "Pricing — GroupBook", "One price ladder for group travel professionals: Sourcing, Boutique and Full House. We are setting the prices with the people who will use GroupBook — help us in 60 seconds. Annual with two months free. No VAT charged.", PRICING_RESEARCH)
+else:
+    page("pricing", "Pricing — GroupBook", "One price ladder for group travel professionals: Sourcing R1,950, Boutique R4,950, Full House R9,950 a month. Annual with two months free. No VAT charged.", PRICING)
 page("how-it-works", "How GroupBook works — seven steps from brief to settlement", "Capture the brief, shortlist from the directory, send one request, compare and award, invite the guests, run the travel, and settle — all from one record.", HOW)
 page("for-hotels", "For hotels and venues — GroupBook", "Why a GroupBook request reaches your group desk, carries the brief, and is capped in width. How to update your contact.", HOTELS)
 page("support", "Support — GroupBook", "Our defects are free. Help using GroupBook is included. Assistance beyond that is quoted first. Response targets by severity and plan.", SUPPORT)
