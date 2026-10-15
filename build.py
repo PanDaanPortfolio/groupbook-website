@@ -326,7 +326,7 @@ INDEX = """
 def rung(key, name, price, sub, items, hi=False, badge=None, anchor=True, setup=None):  # setup unused since 30 Sep: onboarding included
     b = f'<div class="badge">{badge}</div>' if badge else ""
     st = f'<div class="setup">+ {setup} once-off implementation · <a href="#implementation">what it covers</a></div>' if setup else ""
-    pm = "" if price.startswith("Talk") else "<small> /month</small>"
+    pm = "" if (price.startswith("Talk") or price == IN_RESEARCH) else "<small> /month</small>"
     return f"""<div class="rung{' hi' if hi else ''}" id="{key}">{b}<div class="tier" data-tier="{key}">{name}</div><div class="price">{price}{pm}</div><div class="annual">{sub}</div>{st}<ul>{"".join(f"<li>{i}</li>" for i in items)}</ul></div>"""
 
 PRICING = """
