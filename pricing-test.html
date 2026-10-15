@@ -140,7 +140,8 @@ function planCards(){
 var SCREENS = [
 { title:'Thank you for helping', body:function(){ return '<p class="lede">GroupBook is a web tool for people who book group accommodation and travel — conferences, incentives, year-end functions, sports tours. Before we put prices on our website, we would like the honest opinion of people who have done this work.</p>'+
  '<div class="card"><h3>How this works</h3><p style="margin-top:8px">About 15 minutes. Thirteen short screens, and a few are just reading. Nothing is sent anywhere until the last screen, where you copy your answers and send them to Danie on WhatsApp or email.</p><p style="margin-top:8px">There are no right answers. If something is unclear, say so — that is exactly what we need to know. Every name and price here is a <b>test</b>, not a decision.</p><p style="margin-top:8px">Your answers come back the way you type them; you can pause and come back later on the same phone or computer.</p></div>'+
- txt('name','Your name (optional)')+'<div class="hint">Only so Danie knows who to thank.</div>'; } },
+ txt('name','Your name (optional)')+'<div class="hint">Only so Danie knows who to thank.</div>'+
+ '<div class="note" style="margin-top:14px"><b>One sourcing job on us.</b> Complete this questionnaire and we switch on one real group brief for your team at no charge: your own brief link, one round of requests to up to 10 hotels or venues, every quote side by side. One user, 30 days, offered to the first 20 who finish. <a href="/trial" target="_blank" rel="noopener">What the trial includes, and the terms</a>.</div>'; } },
 
 { title:'About you', body:function(){ return '<p class="lede">So we can read your answers in context.</p>'+
  ask('role','Which of these is closest to the work you do, or did?',[['corp','Organising events or group travel inside a company (events team, marketing, EA, travel desk)'],['agency','At an event or incentive agency'],['tmc','At a travel agency or travel management company'],['other','Something else','What do or did you do?']])+
@@ -190,11 +191,11 @@ var SCREENS = [
 { title:'The three plans', body:function(){ return '<p class="lede">Each plan includes everything in the plan before it, and each says where it stands on guest events. We want to know whether the <b>names</b> make sense and whether the <b>right things</b> are in each plan. Ignore the prices for now — they come next.</p>'+planCards()+
  ask('names_clear','Do the plan names tell you what each plan is for?',[['yes','Yes, I understood them straight away'],['partly','Partly — one of them is unclear','Which name, and what did you think it meant?'],['no','No, I had to read the small print to work it out','Which names confused you?']])+
  txt('names_fix','If you would rename any plan, what would you call it? (For example, our first customer suggested "Business" instead of "Agency".)')+
- ask('fit','Which plan would your old team have needed?',[['sourcing','Sourcing'],['events','Boutique'],['business','Full House'],['larger','Larger organisations'],['none','None of them fits','Why not? What would have fitted?']])+
+ ask('fit','Which plan would your team have needed?',[['sourcing','Sourcing'],['events','Boutique'],['business','Full House'],['larger','Larger organisations'],['none','None of them fits','Why not? What would have fitted?']])+
  ask('forced','Would you have had to buy a bigger plan than you needed, just to get one feature?',[['no','No'],['yes','Yes','Which feature, and which plan is it in?'],['unsure','Not sure']])+
  txt('plan_note','Is anything in the wrong plan? Anything you would move up or down?'); } },
 
-{ title:'Before the numbers', body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">One screen before you see our prices. Answer for <b>'+(p?p.n:'the plan closest to your old team')+'</b>, per month, in rand, for the whole team.</p>'+
+{ title:'Before the numbers', body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">One screen before you see our prices. Answer for <b>'+(p?p.n:'the plan closest to your team')+'</b>, per month, in rand, for the whole team.</p>'+
  num('price_expect','What would you have expected a tool like this to cost a month?','Your first instinct, before you see anything.','e.g. 3500',true)+
  num('price_acceptable','What monthly price would have felt acceptable — you would sign without much thought?','','e.g. 2500')+
  num('price_expensive','At what monthly price does it start to feel expensive, but you would still consider it?','','e.g. 6000')+
@@ -202,12 +203,12 @@ var SCREENS = [
 
 { title:'The prices', body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">Prices are per month, in rand, no VAT charged. Pay monthly and cancel any month, or pay for ten months up front and use it for twelve. Getting started is included: we set you up and run your first real booking with you on a call.</p>'+
  '<table><tr><th>Plan</th><th>A month</th><th>A year (two months free)</th></tr><tr><td>Sourcing</td><td>R1,950</td><td>R19,500</td></tr><tr><td>Boutique</td><td>R4,950</td><td>R49,500</td></tr><tr><td>Full House</td><td>R9,950</td><td>R99,500</td></tr><tr><td>Larger organisations</td><td colspan="2">Agreed in a contract</td></tr></table>'+
- (p?'<div class="note">You chose <b>'+p.n+'</b> on the previous screen: <b>'+R(p.m)+' a month</b>, or <b>'+R(p.m*10)+' a year</b>.</div>':'<div class="note">You did not choose a plan on the previous screen. Answer for the plan closest to your old team\'s needs.</div>')+
+ (p?'<div class="note">You chose <b>'+p.n+'</b> on the previous screen: <b>'+R(p.m)+' a month</b>, or <b>'+R(p.m*10)+' a year</b>.</div>':'<div class="note">You did not choose a plan on the previous screen. Answer for the plan closest to your team\'s needs.</div>')+
  ask('price_fit','Now that you have seen it: compared with what you expected, this price is…',[['lower','Lower than I expected'],['about','About what I expected'],['higher','Higher than I expected'],['much','Much higher than I expected']])+
- num('price_pay','What would your old team realistically have paid a month for the plan you chose? (a number in rand)','Your honest guess is more useful than a polite one. Put 0 if nothing.','e.g. 2500',true)+
+ num('price_pay','What would your team realistically have paid a month for the plan you chose? (a number in rand)','Your honest guess is more useful than a polite one. Put 0 if nothing.','e.g. 2500',true)+
  ask('price_how','How would they rather have paid?',[['monthly','Monthly, cancel any time'],['annual','Once a year, two months free'],['perevent','Per event, not a subscription'],['unsure','Not sure']])+
  txt('price_compare','What would you compare this price to? (A supplier you paid, a tool you used, a person\'s time?)')+
- ask('buy_at_price','Would your old team have bought the plan you chose at this price?',[['yes','Yes'],['maybe','Maybe — it depends'],['no','No']],'',false)+
+ ask('buy_at_price','Would your team have bought the plan you chose at this price?',[['yes','Yes'],['maybe','Maybe — it depends'],['no','No']],'',false)+
  txt('buy_at_price_why','Why? One line is enough.'); } },
 
 { title:'The limits', body:function(){ return '<p class="lede">Only three things change between plans: how many people can log in, how many guest events are included (and how big), and how much hands-on help you get. Everything else is one fair-use rule, the same on every plan, there to protect the hotels and the directory — not to make you buy a bigger plan.</p>'+
@@ -250,13 +251,14 @@ var SCREENS = [
  txt('sup_note','What support would you have expected that is not here?'); } },
 
 { title:'The decision', body:function(){ return '<p class="lede">Knowing everything you have seen…</p>'+
- ask('buy','Would your old team have bought this?',[['yes','Yes'],['only','Only if something changed','What would have to change?'],['no','No','Why not?']])+
+ ask('buy','Would your team have bought this?',[['yes','Yes'],['only','Only if something changed','What would have to change?'],['no','No','Why not?']])+
  ask('trial','Would they have paid for one month to try it on a real booking?',[['yes','Yes'],['free','Only if the first month was free'],['no','No','Why not?']])+
  txt('definite','What one thing would have made it a definite yes?')+
  txt('hero','One last thing: if you landed on our website and saw the line "Source suppliers. Coordinate group travel. One place." — would you read on? What would you have written instead?')+
  ask('followup','May Danie come back to you with one or two follow-up questions?',[['yes','Yes'],['no','Rather not']],'',true); } },
 
 { title:'Copy your answers to send', body:function(){ return '<p class="lede">Thank you. Nothing has been sent yet. Press the button, then paste into WhatsApp or an email to Danie.</p>'+
+ '<div class="note"><b>Want the free sourcing job?</b> Add the words <b>TRIAL PLEASE</b> and the name of your organisation when you send your answers, and we will be in touch within two working days to set it up. <a href="/trial" target="_blank" rel="noopener">Terms</a>.</div>'+
  '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn gold" id="copy">Copy answers to send</button><button class="btn sec" id="clear">Start a new response</button><span class="toast" id="copytoast"></span></div>'+
  '<pre class="out" id="out">'+summary().replace(/</g,'&lt;')+'</pre>'+
  '<p class="hint" style="margin-top:10px">If the copy button does not work on your phone, press and hold on the box above, choose Select all, then Copy.</p>'; } }

@@ -842,6 +842,47 @@ CONTACT = """
 """
 
 
+TRIAL = """
+<section class="band-white" style="padding-bottom:28px">
+  <div class="wrap">
+    <div class="eyebrow">One sourcing job on us</div>
+    <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Help us set the price, and run your next group brief through GroupBook free.</h1>
+    <p class="lede" style="margin-top:12px">We are deciding what GroupBook should cost by asking the people who will use it. If you complete the 15-minute plans-and-prices questionnaire, we switch on one real sourcing job for your team at no charge: a branded brief link to send your client, one round of requests to the hotels and venues you choose, every quote side by side, award and decline.</p>
+    <div class="btn-row" style="margin-top:18px"><a class="btn btn-primary" href="/pricing-test?src=trial">Start the questionnaire — about 15 minutes</a><a class="btn btn-ghost" href="/survey-quick?src=trial">Only have 60 seconds?</a></div>
+    <p class="note" style="margin-top:12px">Offered to the first 20 people who complete the questionnaire. Reply with your answers by 30 November 2026 and we will set your workspace up within two working days.</p>
+  </div>
+</section>
+<section class="band-cream">
+  <div class="wrap two">
+    <div>
+      <h2>What the trial includes</h2>
+      <ul class="list" style="margin-top:14px">
+        <li><strong>One sourcing job.</strong> One client brief, from your branded brief link or typed in, to one round of requests, to a side-by-side comparison, to award and decline.</li>
+        <li><strong>Up to 10 suppliers.</strong> Hotels, venues or other suppliers from the directory, or ones you add yourself.</li>
+        <li><strong>One named user</strong> for <strong>30 days</strong> from the day we switch it on.</li>
+        <li><strong>Set-up with a person.</strong> A 30-minute call to load your brief and send the first request together.</li>
+        <li><strong>Your results.</strong> Everyone who answers gets what their peers said: how many group events they run, how big, and what they said the work was worth.</li>
+      </ul>
+      <h2 style="margin-top:34px">What it does not include</h2>
+      <ul class="list" style="margin-top:14px">
+        <li>Guest lists, RSVPs, rooming lists, flights, transfers, itineraries or reconciliation — those are the Boutique and Full House plans.</li>
+        <li>Supplier contact details. The trial shows you which hotels and venues are in the directory and sends your request to them; the group-desk contacts themselves stay with the paid plans.</li>
+        <li>A second brief, a second round, or a second user. One trial per organisation.</li>
+      </ul>
+    </div>
+    <div class="card" style="gap:12px">
+      <h3>The terms, in plain words</h3>
+      <p><strong>Requests are real.</strong> Every request goes to a real hotel or venue under your organisation's name, so the brief must be a real one. You are responsible for what it says.</p>
+      <p><strong>Fair use applies</strong>, the same as on every plan. A trial used to collect supplier contacts rather than to run a brief is ended.</p>
+      <p><strong>No service levels.</strong> Support is by email with a reference number; we fix our defects at no charge, but the trial carries no response-time commitment.</p>
+      <p><strong>After 30 days</strong> the workspace is read-only: you can still open and export your quotes, but nothing more is sent and the brief link closes. If you subscribe, everything carries over as it is.</p>
+      <p><strong>Your data.</strong> Kept for 60 days after the trial ends, then deleted unless you subscribe. The GroupBook <a href="/privacy">privacy policy</a> and POPIA operator terms apply from day one. Either side can end the trial at any time by email.</p>
+      <p><strong>No card, no debit order, nothing to cancel.</strong> No VAT is charged by PanDaan (Pty) Ltd.</p>
+    </div>
+  </div>
+</section>
+"""
+
 PRICING_RESEARCH = """
 <section class="band-white" style="padding-bottom:28px">
   <div class="wrap">
@@ -934,4 +975,5 @@ page("how-it-works", "How GroupBook works — seven steps from brief to settleme
 page("for-hotels", "For hotels and venues — GroupBook", "Why a GroupBook request reaches your group desk, carries the brief, and is capped in width. How to update your contact.", HOTELS)
 page("support", "Support — GroupBook", "Our defects are free. Help using GroupBook is included. Assistance beyond that is quoted first. Response targets by severity and plan.", SUPPORT)
 page("fair-use", "Fair use — GroupBook", "One fair-use envelope, the same on every GroupBook plan: hotel protection, directory protection, documents read for you, and what happens at 80% and 100%.", FAIR)
+page("trial", "One sourcing job on us — GroupBook", "Complete the 15-minute plans-and-prices questionnaire and run one real group brief through GroupBook free: one brief, up to 10 suppliers, one user, 30 days.", TRIAL)
 page("contact", "Request a walkthrough — GroupBook", "Forty minutes on one of your own briefs, with the person who built GroupBook.", CONTACT)

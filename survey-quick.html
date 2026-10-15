@@ -116,13 +116,13 @@ function form(){
   '<label class="chk opt2"><input type="checkbox" data-k="marketing_optin"'+(S.marketing_optin?' checked':'')+'><span>Optional: email me when early access opens and about GroupBook news.</span></label>'+
   '<div class="err" id="err"></div>'+
   '<button class="btn" id="send">Send my answers</button>'+
-  '<p class="small" style="margin-top:12px">No prices are shown anywhere. We are asking what <em>you</em> would pay. Nothing is shared or sold.</p>';
+  '<p class="small" style="margin-top:12px">No prices are shown anywhere. We are asking what <em>you</em> would pay. Nothing is shared or sold. Everyone who answers gets the results: what their peers run, how big, and what they said it was worth.</p>';
 }
 function done(){
   var q='?src='+encodeURIComponent(SRC)+'&email='+encodeURIComponent(S.email||'')+'&name='+encodeURIComponent(S.name||'');
   return '<div class="done"><h1>Thank you — that helps more than you know.</h1>'+
   '<p class="lede">'+(S.hotels&&String(S.hotels).trim()?'We will email you the latest group-desk contacts we hold for the hotels you named, each with the date it was last checked.':(S.marketing_optin?'We will email you when early access opens.':'Your answers are in. We will only contact you about this research.'))+'</p>'+
-  '<div class="card"><h3>Want to shape the plans and the prices?</h3><p>There is a longer version, about ten minutes, with more detail on each plan and how it would work for you. Your name and email carry over.</p><p><a href="/survey'+q+'">Open the 10-minute version →</a></p></div>'+
+  '<div class="card"><h3>One sourcing job on us</h3><p>Complete the 15-minute plans-and-prices questionnaire and we switch on one real group brief for your team at no charge: your own brief link, one round of requests to up to 10 hotels or venues, every quote side by side. One user, 30 days, first 20 to finish. <a href="/trial">What it includes, and the terms</a>.</p><p><a href="/pricing-test?src=quick">Open the 15-minute questionnaire →</a></p></div>'+
   '<p style="margin-top:20px">Know someone else who books groups? Send them <b>www.groupbook.co.za/survey-quick</b></p>'+
   '<p><a href="https://www.groupbook.co.za/">See what GroupBook does →</a></p></div>';
 }
