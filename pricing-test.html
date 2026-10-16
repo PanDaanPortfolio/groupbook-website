@@ -169,7 +169,7 @@ function planCardsNoPrice(){
   p('','Sourcing','For teams that book hotels and venues for groups.',['2 people logging in (up to 5) and 1 hour of hands-on help a month','A directory of hotels and venues, each with the group-desk email on file','One branded request to your whole shortlist','Quotes side by side; award in one click, the others are told','Forward a client\'s email and the request is drafted for you'])+
   p(' hi','Boutique','Sourcing, plus running the event itself.',['<b>60 events a year</b> of up to 100 guests, plus 1 larger event a year of up to 150 guests','4 people logging in (up to 10) and 2 hours of hands-on help a month','One guest list, with dietary and special needs','Rooming lists, flights, transfers and car hire','A personal itinerary on every guest\'s phone','Online RSVP (being tested with our first customer)'])+
   p('','Full House','Boutique, plus financial reconciliation and more users, events and guests per event.',['<b>120 events a year</b> of up to 150 guests, plus 3 larger events a year of up to 200 guests','10 people logging in (up to 20) and 4 hours of hands-on help a month','Import the card statement and match it to bookings','Purchase orders and budgets per event'])+
-  '<div class="note"><b>Beyond those limits:</b> an event over the guest limit, or beyond your yearly count, would be charged per event, sized by the number of guests who registered. Over 500 guests would be quoted.</div><div class="note">Larger organisations (more than 10 users, several business units, or buying through procurement): agreed in a contract.</div>';
+  '<div class="note"><b>Beyond those limits:</b> an event over the guest limit, or beyond your yearly count, would be charged per event, sized by the number of guests who registered. Over 500 guests would be quoted.</div>';
 }
 // ---------- survey wiring (submits to the live receiver; no copy-and-paste)
 var API = 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
@@ -188,13 +188,13 @@ function evbSets(){ var P=PLANS[S.fit]; if(S.fit==='sourcing') return []; if(!P)
   return out; }
 function evbQs(){ var P=PLANS[S.fit]||PLANS.business; var sets=evbSets(); if(!sets.length) return ''; var out='';
   sets.forEach(function(z){ var h;
-    if(z.xs) h='Everyday events (up to '+P.cap+' registered guests) beyond the '+P.inc+' a year '+P.n+' includes. You had about '+z.n+' beyond, as worked out from your answers.';
+    if(z.xs) h='More events than your plan includes. '+P.n+' includes '+P.inc+' events a year of up to '+P.cap+' registered guests; you had about '+z.n+' more than that, as worked out from your answers. (Each of those events is within the guest limit; it is the yearly count that is exceeded.)';
     else h='Events of '+BKL[z.k]+' registered guests. '+(z.pass?P.n+' includes '+P.passes+' a year of up to '+P.passcap+' guests; you had about '+z.n+' beyond that.':'You had about '+z.n+' a year, as worked out from your answers.');
     out+='<div class="ask" style="margin-top:14px"><div class="q">'+h+'</div><div class="hint" style="margin:-4px 0 8px">The fee for each such event, <b>on top of</b> the monthly subscription, for running its guest registration. Before you recover anything from your client.</div></div>'+
     num('evp_'+z.k+'_pay','What fee per event would you <b>expect</b> to pay?','','e.g. 5000',true)+
     num('evp_'+z.k+'_cheap','At what fee per event would it feel like a bargain?','','e.g. 3000',true)+
     num('evp_'+z.k+'_walk','At what fee per event would it be too expensive to consider?','','e.g. 15000',true); });
-  return '<h3 style="margin-top:22px">What your plan would not cover</h3><p class="lede" style="margin-top:6px">'+P.n+' covers everyday events up to '+P.cap+' registered guests, up to a yearly count, and a few larger ones. For events beyond that we are considering a separate fee for each event, because running registration for hundreds of guests is more work. We are still not showing prices. Think only of that extra fee for each event, not of the monthly subscription.</p>'+out; }
+  return '<h3 style="margin-top:22px">What your plan would not cover</h3><p class="lede" style="margin-top:6px">'+P.n+' includes '+P.inc+' events a year of up to '+P.cap+' registered guests, and '+P.passes+' larger event'+(P.passes>1?'s':'')+' of up to '+P.passcap+'. For anything beyond that we are considering a separate fee for each event, because running registration for hundreds of guests is more work. We are still not showing prices. Think only of that extra fee for each event, not of the monthly subscription.</p>'+out; }
 function evbOut(){ var o={}; evbSets().forEach(function(z){ o[z.k]={n:z.n,pay:n(S['evp_'+z.k+'_pay']),cheap:n(S['evp_'+z.k+'_cheap']),walk:n(S['evp_'+z.k+'_walk'])}; }); return o; }
 // research27: respondents give a normal month, a busy spell and yearly figures for big events; the year is derived here and stored in the same sz_ keys the rest of the page uses
 var PM = {x1:1,x2:2,x3:3,x4:4}, PMO = {m0:0,m1:1,m2:2,m3:3,m4:4.5,m6:6};
@@ -229,7 +229,8 @@ var BIG = [['n0','None'],['n1','1'],['n2to3','2 or 3'],['n4to6','4 to 6'],['n7p'
 var LAYERS = [['hotels','More than one hotel'],['intl','International flights'],['transfers','More than one transfer supplier'],['visas','Visas or passport details'],['partners','A partner or spouse programme'],['public','Public ticket sales'],['changes','Many changes after the lists were sent'],['none','None of these: it was straightforward']];
 var SOURCING = [['phone','I phone the hotels to find the right person, then email'],['email','I email contacts I already have'],['company','A sourcing company or venue finder does it for me'],['tool','A booking tool or platform'],['rare','I rarely source group accommodation']];
 var USERS = [['u1','Just me'],['u2to3','2 or 3'],['u4to6','4 to 6'],['u7to10','7 to 10'],['u11to20','11 to 20'],['u20p','More than 20']];
-var HOURS = [['h5','Under 5 hours'],['h15','5 to 15 hours'],['h40','16 to 40 hours'],['h40p','More than 40 hours']];
+var HOURS_SRC = [['s2','Under 2 hours'],['s5','2 to 5 hours'],['s10','6 to 10 hours'],['s20','11 to 20 hours'],['s20p','More than 20 hours']];
+var HOURS_RUN = [['r5','Under 5 hours'],['r15','5 to 15 hours'],['r40','16 to 40 hours'],['r80','41 to 80 hours'],['r80p','More than 80 hours']];
 var RFQ = [['r0','None: I rarely ask hotels for quotes'],['r5','1 to 5 a month'],['r15','6 to 15 a month'],['r40','16 to 40 a month'],['r40p','More than 40 a month']];
 var RSVP_WHO = [['own','My team runs it (email, Excel, or a tool)'],['supplier','A specialist RSVP or registration supplier, paid by us or by the client'],['client','The client or the venue does it'],['none','There is no RSVP: guest lists are fixed']];
 var APPROVER = [['me','I could approve it myself'],['boss','My manager or a director'],['finance','Finance or procurement']];
@@ -310,8 +311,8 @@ var SCREENS = [
 
 { title:'How you do it today', body:function(){ return '<p class="lede">What the work looks like now, before any new tool.</p>'+
  num('users','About how many people in your team would log in and use a tool like this?','A best guess is fine: four users and six users make a different bill. Not sure yet? Put your best estimate; you can come back and change it before you send.','e.g. 4',true)+
- ask('hours_src','<b>Finding the hotel or venue.</b> From the brief (from a client or your own business unit) until the hotel or venue is awarded, roughly how many working hours does one typical booking take your team?',HOURS,'Finding hotels or venues, sending requests, chasing and comparing quotes. Everyone\'s time added together. Optional.',true)+
- ask('hours_run','<b>Running the booking.</b> From the award until the final lists are done, roughly how many working hours does one typical booking take your team?',HOURS,'Guest list and RSVP, rooming, flight and transfer lists, and the event summary. Everyone\'s time added together. Optional.',true)+
+ ask('hours_src','<b>Finding the hotel or venue.</b> From the brief (from a client or your own business unit) until the hotel or venue is awarded, roughly how many working hours does one typical booking take your team?',HOURS_SRC,'Finding hotels or venues, sending requests, chasing and comparing quotes. Everyone\'s time added together. Optional.',true)+
+ ask('hours_run','<b>Running the booking.</b> From the award until the final lists are done, roughly how many working hours does one typical booking take your team?',HOURS_RUN,'Guest list and RSVP, rooming, flight and transfer lists, and the event summary. Everyone\'s time added together. Optional.',true)+
  ask('sourcing_today','When you need group accommodation or a venue, how do you get quotes today?',SOURCING,'',true)+
  ask('rfq_pm','How many separate quote requests do you send to hotels or venues in a normal month?',RFQ,'One request = one brief, sent to one or more hotels.',true)+
  ask('rsvp_who','Who usually runs the guests\' RSVP or registration?',RSVP_WHO)+
@@ -321,7 +322,7 @@ var SCREENS = [
  multi('ex1_inc','What did that fee include?',[['sw','Software only'],['setup','Set-up and list imports'],['inv','Invitations and reminders'],['human','Human support'],['onsite','On-site registration or check-in'],['other','Other services']],'Tick all that apply.')+
  ask('ex1_type','Was that a payment for that event alone, or part of a subscription or retainer?',[['event','A payment for that event alone'],['sub','A share of a subscription or retainer']],'',true)+
  ask('ex1_who','Who paid it?',[['us','Our team or company'],['client','The client'],['shared','Shared, or passed on to the client']],'',true)+
- '<div class="ask"><div class="q">How much does your team spend on average <b>per event</b> on tools or services for finding and managing group bookings (software, sourcing companies, RSVP suppliers)?</div><div class="hint" style="margin:-4px 0 8px">Optional. In rand excluding VAT, per event, including a share of any subscription. Leave a box empty where you pay nothing for events of that size.</div></div>'+
+ '<div class="ask"><div class="q">How much does your team spend on average <b>per event</b> on tools or services for finding and managing group bookings (software, sourcing companies, RSVP suppliers)?</div><div class="hint" style="margin:-4px 0 8px">Optional. In rand excluding VAT, per event, including a share of any subscription. Enter 0 where you pay nothing. Leave blank if you cannot estimate or do not handle events of that size.</div></div>'+
  BK.map(function(k){ return num('sp_'+k,'Events of '+BKL[k]+' registered guests','','e.g. 5000'); }).join('')+
  ask('finance_need','Does your team reconcile a company or lodge card statement, or supplier payments, for group events?',[['regular','Yes, regularly'],['some','Sometimes'],['no','No']],'',true)+
  ask('approver','Who would approve spending on a new tool?',APPROVER,'',true); } },
@@ -332,7 +333,7 @@ var SCREENS = [
  ask('step_least','Which ONE step could you live without?',STEPS.concat([['none','I would use all of them']]),'',true); } },
 
 { title:'The three plans', body:function(){ return planCardsNoPrice()+
- ask('fit','Which plan would suit your team?',[['sourcing','Sourcing'],['events','Boutique'],['business','Full House'],['larger','Larger organisations'],['none','None of them fits','Why not? What would fit?']])+
+ ask('fit','Which plan would suit your team?',[['sourcing','Sourcing'],['events','Boutique'],['business','Full House'],['none','None of them fits','Why not? What would fit?']])+
  ask('forced','Would you have to buy a bigger plan than you need, just to get one feature?',[['no','No'],['yes','Yes','Which feature, and which plan is it in?']],'',true); } },
 
 { title:'What would it be worth to you?', body:function(){ var p=PLANS[S.fit]; var nm=p?p.n:'the plan closest to what your team needs';
@@ -349,7 +350,7 @@ var SCREENS = [
  +evbQs(); } },
 
 { title:'The prices', priced:true, body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">Prices are per month, in rand, no VAT charged. Pay monthly and cancel any month, or pay for ten months up front and use it for twelve. Getting started is included: the GroupBook Academy, at least eight training modules that you work through with a case study. Extra people on a plan are R395 a month each, up to the plan maximum.</p><div class="note"><b>Illustrative prices for research only. These are not launch prices or quotations.</b> They are a rough estimate, a peg in the ground so that we have something concrete to test. Final prices and allowances will only be set after extensive research across the different disciplines in the industry, operating costs and pilot usage.</div>'+
- '<table><tr><th>Plan</th><th>A month</th><th>A year (two months free)</th></tr><tr><td>Sourcing</td><td>R1,950</td><td>R19,500</td></tr><tr><td>Boutique</td><td>R4,950</td><td>R49,500</td></tr><tr><td>Full House</td><td>R9,950</td><td>R99,500</td></tr><tr><td>Larger organisations</td><td colspan="2">Agreed in a contract</td></tr></table>'+
+ '<table><tr><th>Plan</th><th>A month</th><th>A year (two months free)</th></tr><tr><td>Sourcing</td><td>R1,950</td><td>R19,500</td></tr><tr><td>Boutique</td><td>R4,950</td><td>R49,500</td></tr><tr><td>Full House</td><td>R9,950</td><td>R99,500</td></tr></table>'+
  (p?'<div class="note">You chose <b>'+p.n+'</b> on the previous screen: <b>'+R(p.m)+' a month</b>, or <b>'+R(p.m*10)+' a year</b>.</div>':'<div class="note">You did not choose a plan on the previous screen. Answer for the plan closest to your team\'s needs.</div>')+
  ask('price_fit','When you look at the price of '+(p?p.n:'this plan')+', it feels…',[['cheap','So low that I would doubt the quality'],['good','Good value for what it does'],['fair','About fair'],['high','Higher than I would like'],['toohigh','Too high for us']])+
  ask('buy_at_price','If this plan were available on these terms today, what would your organisation most likely do?',ACTION)+
