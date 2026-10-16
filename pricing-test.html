@@ -207,6 +207,9 @@ var SCREENS = [
 { title:'Your work', body:function(){ return '<p class="lede">Rough answers are fine. These tell us how big and how busy the work is, so we can check that our plans fit the real thing.</p>'+
  ask('archetype','Which of these describes your work best?',ARCH)+
  ask('events_pm','In a normal month (not your busiest), how many group events or group bookings do you handle?',EV_PM,'One event = one client\'s group, however many hotels it needs.')+
+ num('events_peak','And in your busiest month of the last 12, about how many?','A rough number is fine. Leave empty if you do not have a busy season.','e.g. 12')+
+ num('events_year','Over the last 12 months, about how many group events or group bookings did your team handle in total?','A rough number is fine. Your normal-month answer above and this one should roughly agree; if they do not, your year is seasonal, and that is useful to us.','e.g. 40',true)+
+ num('events_rsvp','Of those, about how many did your team also manage the guests\' RSVP or registration for?','Put 0 if none. This is the part GroupBook would charge per event for.','e.g. 15')+
  ask('size_typ','How many guests does a typical event have?',SIZE,'Count the guests who confirmed or registered, not everyone invited. That is how we would measure it.')+
  ask('size_max','And the largest event you handled in the last 12 months?',SIZE)+
  '<div class="ask"><div class="q">In the last 12 months, about how many of the events where your team managed the guests\' RSVP or registration had:</div><div class="hint" style="margin:-4px 0 8px">Estimates are fine. Leave a box empty if none, or if you do not know.</div></div>'+
@@ -287,7 +290,7 @@ function payload(){
   var fitMap={sourcing:1,events:2,business:3}, roleMap={corp:1,agency:2,mice:2,pco:2,tmc:3,itc:4,other:5};
   var tf=fitMap[S.fit]||null; var gv=tf?n(S.price_expect):null, te=tf?n(S.price_prohibitive):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research15:true, archetype:S.archetype||null, events_pm:S.events_pm||null, size_typ:S.size_typ||null, size_max:S.size_max||null, sz:{b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b300p:n(S.sz_b300p)}, layers:(S.layers||[]).join(',')||null,
+  var a={ research15:true, archetype:S.archetype||null, events_pm:S.events_pm||null, events_peak:n(S.events_peak), events_year:n(S.events_year), events_rsvp:n(S.events_rsvp), size_typ:S.size_typ||null, size_max:S.size_max||null, sz:{b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b300p:n(S.sz_b300p)}, layers:(S.layers||[]).join(',')||null,
     users:n(S.users), hours:S.hours||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, rsvp_paid:n(S.rsvp_paid), approver:S.approver||null, known:S.known||null,
     wf_match:S.wf_match||null, step_most:S.step_most||null, step_least:S.step_least||null, plan_fit:S.fit||null, forced:S.forced||null,
     price_expect:n(S.price_expect), price_expensive:n(S.price_expensive), price_prohibitive:n(S.price_prohibitive),
