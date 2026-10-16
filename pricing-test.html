@@ -115,7 +115,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research26';
+var SURVEY_VERSION = '2026-10-research26b';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -168,7 +168,7 @@ function planCardsNoPrice(){
   return '<p class="lede">Each plan includes everything in the one before it.</p>'+
   p('','Sourcing','For teams that book hotels and venues for groups.',['2 people logging in (up to 5) and 1 hour of hands-on help a month','A directory of hotels and venues, each with the group-desk email on file','One branded request to your whole shortlist','Quotes side by side; award in one click, the others are told','Forward a client\'s email and the request is drafted for you'])+
   p(' hi','Boutique','Sourcing, plus running the event itself.',['<b>60 events a year</b> of up to 100 guests, plus 1 larger event a year of up to 150 guests','4 people logging in (up to 10) and 2 hours of hands-on help a month','One guest list, with dietary and special needs','Rooming lists, flights, transfers and car hire','A personal itinerary on every guest\'s phone','Online RSVP (being tested with our first customer)'])+
-  p('','Full House','Boutique, for several clients\' events at once.',['<b>120 events a year</b> of up to 150 guests, plus 3 larger events a year of up to 200 guests','10 people logging in (up to 20) and 4 hours of hands-on help a month','Import the card statement and match it to bookings','Purchase orders and budgets per event'])+
+  p('','Full House','Boutique, plus financial reconciliation and more users, events and guests per event.',['<b>120 events a year</b> of up to 150 guests, plus 3 larger events a year of up to 200 guests','10 people logging in (up to 20) and 4 hours of hands-on help a month','Import the card statement and match it to bookings','Purchase orders and budgets per event'])+
   '<div class="note"><b>Beyond those limits:</b> an event over the guest limit, or beyond your yearly count, would be charged per event, sized by the number of guests who registered. Over 500 guests would be quoted.</div><div class="note">Larger organisations (more than 10 users, several business units, or buying through procurement): agreed in a contract.</div>';
 }
 // ---------- survey wiring (submits to the live receiver; no copy-and-paste)
