@@ -115,7 +115,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research28';
+var SURVEY_VERSION = '2026-10-research28b';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
