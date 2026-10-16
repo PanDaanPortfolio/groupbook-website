@@ -873,6 +873,7 @@ TRIAL = """
     </div>
     <div class="card" style="gap:12px">
       <h3>The terms, in plain words</h3>
+      <p><strong>What to expect.</strong> Up to 10 requests. Hotels typically reply within a few days, and about 1 in 4 send a quote. If a request bounces, we correct the address and resend it, and it does not use up one of your 10. You are part of a founding group of 20: a real brief run through the real tool, not a guaranteed result. The directory is checked regularly, but we do not promise that every address or detail is correct.</p>
       <p><strong>Requests are real.</strong> Every request goes to a real hotel or venue under your organisation's name, so the brief must be a real one. You are responsible for what it says.</p>
       <p><strong>Fair use applies</strong>, the same as on every plan. A trial used to collect supplier contacts rather than to run a brief is ended.</p>
       <p><strong>No service levels.</strong> Support is by email with a reference number; we fix our defects at no charge, but the trial carries no response-time commitment.</p>
