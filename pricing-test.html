@@ -115,7 +115,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research26b';
+var SURVEY_VERSION = '2026-10-research27';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -175,15 +175,23 @@ function planCardsNoPrice(){
 var API = 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
 var SRC = (new URLSearchParams(location.search).get('src')) || 'website';
 var REVIEW = /^review/.test(SRC);
-var EVB = [['b100','up to 100 registered guests (an everyday event beyond the yearly count a plan includes)',['b100']],['b200','101 to 200 registered guests',['b150','b200']],['b300','201 to 300 registered guests',['b300']],['b500','301 to 500 registered guests',['b500']]];
+var EVB = [['b100','up to 100 registered guests (an everyday event beyond the yearly count a plan includes)',['b100']],['b150','101 to 150 registered guests',['b150']],['b200','151 to 200 registered guests',['b200']],['b300','201 to 300 registered guests',['b300']],['b500','301 to 500 registered guests',['b500']]];
 function evbCount(b){ var t=0; b[2].forEach(function(k){ t+=(+S['sz_'+k]||0); }); return t; }
 function evbQs(){ if(S.fit==='sourcing') return ''; var out=''; EVB.forEach(function(b){ var c=evbCount(b); if(!c) return;
-  out+='<div class="ask" style="margin-top:14px"><div class="q">Events of '+b[1]+'. You had about '+c+' last year.</div><div class="hint" style="margin:-4px 0 8px">The fee for each such event, <b>on top of</b> the monthly subscription, for running its guest registration. Before you recover anything from your client.</div></div>'+
+  out+='<div class="ask" style="margin-top:14px"><div class="q">Events of '+b[1]+'. You had about '+c+' a year, as worked out from your answers.</div><div class="hint" style="margin:-4px 0 8px">The fee for each such event, <b>on top of</b> the monthly subscription, for running its guest registration. Before you recover anything from your client.</div></div>'+
   num('evp_'+b[0]+'_pay','What fee per event would you <b>expect</b> to pay?','','e.g. 5000',true)+
   num('evp_'+b[0]+'_cheap','At what fee per event would it feel like a bargain?','','e.g. 3000',true)+
   num('evp_'+b[0]+'_walk','At what fee per event would it be too expensive to consider?','','e.g. 15000',true); });
   return out ? '<h3 style="margin-top:22px">The bigger events</h3><p class="lede" style="margin-top:6px">The monthly subscription covers your everyday work. For bigger events we are considering a separate fee for each event, because running registration for hundreds of guests is more work. We are still not showing prices. Think only of that extra fee for each event, not of the monthly subscription.</p>'+out : ''; }
 function evbOut(){ var o={}; EVB.forEach(function(b){ if(!evbCount(b)) return; o[b[0]]={n:evbCount(b),pay:n(S['evp_'+b[0]+'_pay']),cheap:n(S['evp_'+b[0]+'_cheap']),walk:n(S['evp_'+b[0]+'_walk'])}; }); return o; }
+// research27: respondents give a normal month, a busy spell and yearly figures for big events; the year is derived here and stored in the same sz_ keys the rest of the page uses
+var PM = {x1:1,x2:2,x3:3,x4:4}, PMO = {m0:0,m1:1,m2:2,m3:3,m4:4.5,m6:6};
+function recomputeSz(){
+  var mult=PM[S.peak_mult]||1, mo=(PMO[S.peak_months]!==undefined?PMO[S.peak_months]:0); if(mult===1) mo=0;
+  ['b100','b150','b200','b300'].forEach(function(k){ var v=n(S['nm_'+k]); S['sz_'+k]=(v===null)?'':String(Math.round(v*(12-mo)+v*mult*mo)); });
+  ['b500','b500p'].forEach(function(k){ var v=n(S['yr_'+k]); S['sz_'+k]=(v===null)?'':String(v); });
+}
+function busyOut(){ var mult=PM[S.peak_mult]||1, o={}; ['b100','b150','b200','b300'].forEach(function(k){ var v=n(S['nm_'+k]); o[k]=(v===null)?null:Math.round(v*mult); }); return o; }
 var PRICED = /priced/.test(SRC);   // draft prices are shown ONLY on links whose src contains 'priced' (private follow-up); the broad survey shows none
 var LABELS = {};
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
@@ -269,33 +277,40 @@ var SCREENS = [
  (REVIEW?'<div class="card" style="border-left:4px solid #8E2A1A"><h3>You are reviewing as well as answering</h3><p style="margin-top:8px">Please answer as yourself and for your own team. On the last screen there is a box for your comments: anything unclear, missing, too long, or not right for an in-house events team. Your answers are kept apart from the general research.</p></div>':'')+
  '<div class="card" style="border-left:4px solid var(--gold)"><h3>Who is behind this</h3><p style="margin-top:8px">GroupBook was built together with <b>Amanda du Preez</b> of AdP Travel Management, a group travel specialist with more than 30 years in the South African travel industry. It came out of the real work: the briefs, the hotels, the rooming lists, the transfers, the card statements. It is built for the people who do that work. <a href="https://www.groupbook.co.za/" target="_blank" rel="noopener">See what GroupBook does</a>.</p></div>'+
  '<div class="card"><h3>How this works</h3><p style="margin-top:8px">About 12 minutes. '+(PRICED?'Nine':'Eight')+' short screens. <b>Your answers go straight to us when you press Send on the last screen.</b> There is nothing to copy or paste. Need to check a figure with a colleague? Tap <b>Save and finish later</b> at the bottom to get a link that brings your answers back on any phone or computer.</p><p style="margin-top:8px">There are no right answers. No client names or confidential figures are needed: your best estimate is what we need. Where a figure is confidential (spend), choose <b>Prefer not to say</b>. Results are reported only as totals, never by company name. If something is unclear, tell us: that is exactly what we need to know. These are research options, not offers or negotiations: every name and price here is a <b>test</b>, and your answers do not commit you to buying.</p></div>'+
- '<div class="note"><b>What you get.</b> The results of this research, and the chance of <b>one free hotel or venue sourcing job</b> (not the full Sourcing plan): one real group brief for your team, one round of requests to up to 10 hotels or venues, every quote side by side. One user, 30 days, one per organisation, for the first 20 eligible organisations that finish by 30 November 2026. To ask for it, tick the box on the last screen. It is up to 10 requests: hotels typically reply within a few days and about 1 in 4 send a quote; if a request bounces we correct the address and resend it. You would be one of a founding group of 20, a chance to try it on a real brief, not a guaranteed result. It does not include hotel accommodation, guest management or guaranteed quotes. <b>Your answers can be positive or negative: they do not affect whether you qualify.</b> <a href="/trial" target="_blank" rel="noopener">The terms</a>.</div>'+
+ '<div class="note"><b>What you get.</b> The results of this research, and the chance of <b>one free hotel or venue sourcing job</b>: one real group brief for your team, one round of requests to up to 10 hotels or venues, every quote side by side. One user, 30 days, one per organisation, for the first 20 eligible organisations that finish by 30 November 2026. To ask for it, tick the box on the last screen. <b>Your answers can be positive or negative: they do not affect whether you qualify.</b> <a href="/trial" target="_blank" rel="noopener">The terms</a>.</div>'+
  ask('screen','Do you organise or book group events or group travel as part of your work?',[['now','Yes'],['past','I used to'],['no','No']]); } },
 
 { title:'Your work', body:function(){ return '<p class="lede">Rough answers are fine. These tell us how big and how busy the work is, so we can check that our plans fit the real thing.</p>'+
  ask('archetype','Which of these describes your work best?',ARCH)+
- ask('events_pm','In a normal month (not your busiest), how many group events or group bookings do you handle?',EV_PM,'One event = one client\'s (or business unit\'s) group, however many hotels it needs.')+
  ask('busy_q','Which three months are usually your busiest?',[['q1','January to March'],['q2','April to June'],['q3','July to September'],['q4','October to December'],['flat','No clear pattern']],'',true)+
- num('events_peak','And in your busiest month of the last 12, about how many?','A rough number is fine. Leave empty if you do not have a busy season.','e.g. 12')+
- num('events_year','Over the last 12 months, about how many group events or group bookings did your team handle in total?','A rough number is fine: give your best estimate and say so in the question after the next one. Need to check a record? Tap Save and finish later at the bottom and come back. Your normal-month answer above and this one should roughly agree; if they do not, your year is seasonal, and that is useful to us.','e.g. 40',true)+
+ num('events_year','Over the last 12 months, about how many group events or group bookings did your team handle in total?','A rough number is fine: give your best estimate and say so in the next question. Need to check a record? Tap Save and finish later at the bottom and come back.','e.g. 40',true)+
  ask('numsrc','Where do the event numbers above come from?',[['records','Our records'],['mixed','Partly records, partly my estimate'],['est','My best estimate']],'',true)+
- ask('size_typ','How many guests does a typical event have?',SIZE,'Count the guests who confirmed or registered, not everyone invited. That is how we would measure it.')+
  ask('size_max','And the largest event you handled in the last 12 months?',SIZE)+
- '<div class="ask"><div class="q">In the last 12 months, about how many of the events where your team managed the guests\' RSVP or registration had:</div><div class="hint" style="margin:-4px 0 8px">Best estimates are fine. Put 0 where there were none. If your team only handles travel and not RSVP, put 0 in every box.</div></div>'+
+ '<div class="ask"><div class="q">In a <b>normal month</b>, about how many of the events where your team managed the guests\' RSVP or registration had:</div><div class="hint" style="margin:-4px 0 8px">Best estimates are fine: a month is easier to picture than a year. Put 0 where there were none. If your team only handles travel and not RSVP, put 0 in every box.</div></div>'+
+ num('nm_b100','100 or fewer registered guests','','e.g. 4',true)+num('nm_b150','101 to 150 registered guests','','e.g. 1',true)+num('nm_b200','151 to 200 registered guests','','e.g. 1',true)+num('nm_b300','201 to 300 registered guests','','e.g. 0',true)+
+ ask('peak_mult','In your busiest months, how many times busier than a normal month are you?',[['x1','About the same: no real busy season'],['x2','About twice as busy'],['x3','About three times as busy'],['x4','Four times as busy or more']],'Think of the same kind of events.')+
+ ask('peak_months','And how many months of the year are that busy?',[['m0','Not applicable: no busy season'],['m1','1 month'],['m2','2 months'],['m3','3 months'],['m4','4 to 5 months'],['m6','6 months or more']])+
+ '<div class="ask"><div class="q">Bigger events are rare, so a yearly figure is easier here. In the last 12 months, about how many of your events had:</div><div class="hint" style="margin:-4px 0 8px">Best estimates. Put 0 if none.</div></div>'+
+ num('yr_b500','301 to 500 registered guests','','e.g. 1',true)+num('yr_b500p','More than 500 registered guests','','e.g. 0',true)+
  '<div class="hint" id="gridchk" style="margin:-2px 0 8px"></div>'+
- num('sz_b100','100 or fewer registered guests','','e.g. 20',true)+num('sz_b150','101 to 150 registered guests','','e.g. 6',true)+num('sz_b200','151 to 200 registered guests','','e.g. 3',true)+num('sz_b300','201 to 300 registered guests','','e.g. 1',true)+num('sz_b500','301 to 500 registered guests','','e.g. 0',true)+num('sz_b500p','More than 500 registered guests','','e.g. 0',true)+
-'<div class="ask"><div class="q">And in your <b>busiest month</b> of the last 12, about how many of those events were of each size?</div><div class="hint" style="margin:-4px 0 8px">Best estimates. Put 0 where there were none. This shows us how much of your year lands in one month.</div></div>'+
- num('bm_b100','100 or fewer registered guests','','e.g. 8')+num('bm_b150','101 to 150 registered guests','','e.g. 2')+num('bm_b200','151 to 200 registered guests','','e.g. 1')+num('bm_b300','201 to 300 registered guests','','e.g. 0')+num('bm_b500','301 to 500 registered guests','','e.g. 0')+num('bm_b500p','More than 500 registered guests','','e.g. 0')+
+ '<div class="ask"><div class="q">In your own words, up to how many guests is an event:</div><div class="hint" style="margin:-4px 0 8px">Optional. Your own view of the words, so we can describe sizes the way you do. It does not change any question above.</div></div>'+
+ num('lab_small','Small: up to how many guests?','','e.g. 50')+num('lab_med','Medium: up to how many?','','e.g. 150')+num('lab_large','Large: up to how many? (Mega is anything above that.)','','e.g. 400')+
  multi('layers','Think of your most layered event last year (not the biggest: the one with the most moving parts). Which of these applied?',LAYERS,'Tick all that apply. Optional.'); } },
 
 { title:'How you do it today', body:function(){ return '<p class="lede">What the work looks like now, before any new tool.</p>'+
  num('users','About how many people in your team would log in and use a tool like this?','A best guess is fine: four users and six users make a different bill. Not sure yet? Put your best estimate; you can come back and change it before you send.','e.g. 4',true)+
  ask('hours','From the brief (from a client or your own business unit) to the final lists, roughly how many working hours does one typical booking take your team?',HOURS,'Everyone\'s time added together.',true)+
  ask('sourcing_today','When you need group accommodation or a venue, how do you get quotes today?',SOURCING,'',true)+
- ask('spend_today','Roughly what does your team spend in a year on tools or services for finding and managing group bookings (software, sourcing companies, RSVP suppliers)?',SPEND,'Skip if you would rather not say.',true)+
  ask('rfq_pm','How many separate quote requests do you send to hotels or venues in a normal month?',RFQ,'One request = one brief, sent to one or more hotels.',true)+
  ask('rsvp_who','Who usually runs the guests\' RSVP or registration?',RSVP_WHO)+
- ask('rsvp_pg','The last time you paid a supplier to run RSVP or registration, roughly what did it cost per registered guest?',RSVPPG,'Skip if you would rather not say.',true)+
+ '<div class="ask"><div class="q">Think of the <b>most recent event where you paid a supplier or a tool for RSVP or registration</b>.</div><div class="hint" style="margin:-4px 0 8px">Optional, and a rough figure is fine. Skip if you have not paid for this. Please leave out accommodation, transport and other costs that are not registration.</div></div>'+
+ num('ex1_g','About how many guests registered?','','e.g. 250')+
+ num('ex1_fee','About what was the total fee, in rand excluding VAT?','','e.g. 25000')+
+ multi('ex1_inc','What did that fee include?',[['sw','Software only'],['setup','Set-up and list imports'],['inv','Invitations and reminders'],['human','Human support'],['onsite','On-site registration or check-in'],['other','Other services']],'Tick all that apply.')+
+ ask('ex1_type','Was that a payment for that event alone, or part of a subscription or retainer?',[['event','A payment for that event alone'],['sub','A share of a subscription or retainer']],'',true)+
+ ask('ex1_who','Who paid it?',[['us','Our team or company'],['client','The client'],['shared','Shared, or passed on to the client']],'',true)+
+ num('ex2_g','If you can: a <b>much larger or smaller</b> event you paid for. About how many guests registered?','Optional.','e.g. 80')+
+ num('ex2_fee','And about what was its total fee, in rand excluding VAT?','Optional.','e.g. 9000')+
  ask('finance_need','Does your team reconcile a company or lodge card statement, or supplier payments, for group events?',[['regular','Yes, regularly'],['some','Sometimes'],['no','No']],'',true)+
  ask('approver','Who would approve spending on a new tool?',APPROVER,'',true); } },
 
@@ -387,18 +402,19 @@ function cut(s,m){ s=(s==null?'':String(s)).trim(); return s?s.slice(0,m):null; 
 function billOut(){ try{ var an=S.cadence==='annual', basis=an?'annual':'monthly'; if(S.fit==='sourcing') return {s:yearBill('sourcing',an).fee,basis:basis}; var b=yearBill('events',an), f=yearBill('business',an); return b.any?{b:b.total,f:f.total,q:b.quoted,basis:basis}:null; }catch(e){ return null; } }
 function szSum(){ var k=['b100','b150','b200','b300','b500','b500p'],t=0,any=false; k.forEach(function(x){ var v=n(S['sz_'+x]); if(v!==null){ t+=v; any=true; } }); return any?t:null; }
 function payload(){
+  recomputeSz();
   var fitMap={sourcing:1,events:2,business:3}, roleMap={corp:1,assoc:1,agency:2,mice:2,pco:2,tours:2,tmc:3,itc:4,other:5};
   var tf=fitMap[S.fit]||null; var gv=null, te=tf?n(S.pe_walk):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research15:true, archetype:S.archetype||null, events_pm:S.events_pm||null, events_peak:n(S.events_peak), events_year:S.events_year_dk?null:n(S.events_year), events_year_dk:!!S.events_year_dk, users_dk:!!S.users_dk, events_rsvp:szSum(), size_typ:S.size_typ||null, size_max:S.size_max||null, szm:{b100:n(S.bm_b100),b150:n(S.bm_b150),b200:n(S.bm_b200),b300:n(S.bm_b300),b500:n(S.bm_b500),b500p:n(S.bm_b500p)}, sz:{b100:n(S.sz_b100),b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b500:n(S.sz_b500),b500p:n(S.sz_b500p)}, layers:(S.layers||[]).join(',')||null,
-    users:S.users_dk?null:n(S.users), hours:S.hours||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, rsvp_pg:S.rsvp_pg||null, spend_today:S.spend_today||null, numsrc:S.numsrc||null, headcount:S.headcount||null, size_label:S.size_label||null,  upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, bill:billOut(), approver:S.approver||null, known:S.known||null,
+  var a={ research15:true, archetype:S.archetype||null, events_peak:(function(){ var b=busyOut(),t=0,a=false; Object.keys(b).forEach(function(k){ if(b[k]!==null){ t+=b[k]; a=true; } }); return a?t:null; })(), events_year:S.events_year_dk?null:n(S.events_year), events_year_dk:!!S.events_year_dk, users_dk:!!S.users_dk, events_rsvp:szSum(), size_max:S.size_max||null, szm:busyOut(), nm:{b100:n(S.nm_b100),b150:n(S.nm_b150),b200:n(S.nm_b200),b300:n(S.nm_b300)}, peak_mult:S.peak_mult||null, peak_months:S.peak_months||null, lab:{s:n(S.lab_small),m:n(S.lab_med),l:n(S.lab_large)}, ex:{g:n(S.ex1_g),fee:n(S.ex1_fee),inc:(S.ex1_inc||[]).join(',')||null,type:S.ex1_type||null,who:S.ex1_who||null,g2:n(S.ex2_g),fee2:n(S.ex2_fee)}, sz:{b100:n(S.sz_b100),b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b500:n(S.sz_b500),b500p:n(S.sz_b500p)}, layers:(S.layers||[]).join(',')||null,
+    users:S.users_dk?null:n(S.users), hours:S.hours||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, numsrc:S.numsrc||null, headcount:S.headcount||null, size_label:S.size_label||null,  upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, bill:billOut(), approver:S.approver||null, known:S.known||null,
     wf_match:S.wf_match||null, step_most:S.step_most||null, step_least:S.step_least||null, plan_fit:S.fit||null, forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
     evp:evbOut(), priced:PRICED, pe_dk:!!S.pe_dk, pe_status:peStatus(), pe_pay:S.pe_dk?null:n(S.pe_pay), pe_low:n(S.pe_low), pe_cheap:n(S.pe_cheap), pe_high:n(S.pe_high), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:S.fit||null, price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, buy_all:S.buy_all||null, cadence:S.cadence||null, rebill:S.rebill||null, final_pick:S.final_pick||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), finance_need:S.finance_need||null, busy_q:S.busy_q||null,
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, results_optin:!!S.results_optin,
     price_unit:'plan prices ZAR per month ex VAT; bill = estimated ZAR per year ex VAT from the respondent grid (band midpoints); rsvp_pg ZAR per registered guest band', rev:4,
     t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.fit__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), buy_all_why:cut(S.buy_all_why,tl), review_note:cut(S.review_note,tl) },
-    plan_text_version:'v6.0-2026-10-16', user_agent:(navigator.userAgent||'').slice(0,160) };
+    plan_text_version:'v6.1-2026-10-16', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
     role:roleMap[S.archetype]||null, rfp_volume:(S.rfq_pm==='dk'?null:idx(RFQ,'rfq_pm')), team_size:S.users_dk?null:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
     tier1_good_value:tf===1?gv:null, tier1_too_expensive:tf===1?te:null, tier2_good_value:tf===2?gv:null, tier2_too_expensive:tf===2?te:null, tier3_good_value:tf===3?gv:null, tier3_too_expensive:tf===3?te:null,
@@ -414,6 +430,7 @@ function endView(kind){
     '<div class="card"><h3>Know someone else who books groups?</h3><p style="margin-top:6px">Send them <b>'+share+'</b>. One sourcing job per organisation.</p></div>';
 }
 function render(){
+  recomputeSz();
   var v=document.getElementById('view'); REQ={};
   var nav=document.querySelector('.navbar');
   if(S._done || S.screen==='no'){ v.innerHTML=endView(S._done?'done':'no'); nav.style.display='none'; var rd=document.getElementById('redo'); if(rd) rd.onclick=function(e){ e.preventDefault(); S.screen=''; save(); step=0; render(); }; document.getElementById('bar').style.width='100%'; window.scrollTo(0,0); return; }
@@ -477,10 +494,10 @@ function peVals(){ return [n(S.pe_low),n(S.pe_cheap),n(S.pe_pay),n(S.pe_high),n(
 function peStatus(){ if(S.pe_dk) return 'cannot_say'; var v=peVals(), g=v.filter(function(x){return x!==null;}).length; return g===0?'skipped':(g===5?'complete':'partial'); }
 function peOrderOk(){ var v=peVals().filter(function(x){return x!==null;}); if(v.length<2) return null; for(var i=1;i<v.length;i++){ if(v[i]<v[i-1]) return false; } return true; }
 function updPe(){ var el=document.getElementById('pechk'); if(!el) return; var ok=S.pe_dk?null:peOrderOk(); el.textContent=(ok===false)?'Usually the amounts rise in the order asked: doubt the quality, bargain, what you expect, starting to feel expensive, too expensive. Please check the order. You can still send it as it is.':''; el.style.color=(ok===false)?'#8E2A1A':''; }
-function updGrid(){ updPe(); var el=document.getElementById('gridchk'); if(!el) return; var t=szSum(), y=S.events_year_dk?null:n(S.events_year);
+function updGrid(){ updPe(); recomputeSz(); var el=document.getElementById('gridchk'); if(!el) return; var t=szSum(), y=S.events_year_dk?null:n(S.events_year);
   if(t===null){ el.textContent=''; return; }
-  var bad=(y!==null&&t>y);
-  el.textContent='Entered so far: '+t+(y!==null?' of the '+y+' events you gave above.'+(bad?' That is more than your yearly total, so please check one of the two.':''):' events.');
+  var bad=(y!==null&&t>y*1.5);
+  el.textContent='Worked out from your answers: about '+t+' RSVP events a year'+(y!==null?' (you said about '+y+' events of all kinds).':'.')+(bad?' That is well above your yearly total, so please check one of them.':'');
   el.style.color=bad?'#8E2A1A':''; }
 function resumeUrl(){ var o={}; Object.keys(S).forEach(function(k){ if(k!=='_done') o[k]=S[k]; });
   var b=btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
