@@ -847,9 +847,9 @@ TRIAL = """
   <div class="wrap">
     <div class="eyebrow">One sourcing job on us</div>
     <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Help us set the price, and run your next group brief through GroupBook free.</h1>
-    <p class="lede" style="margin-top:12px">We are deciding what GroupBook should cost by asking the people who will use it. If you complete the 15-minute plans-and-prices questionnaire, we switch on one real sourcing job for your team at no charge: a branded brief link to send your client, one round of requests to the hotels and venues you choose, every quote side by side, award and decline.</p>
-    <div class="btn-row" style="margin-top:18px"><a class="btn btn-primary" href="/pricing-test?src=trial">Start the questionnaire — about 15 minutes</a><a class="btn btn-ghost" href="/survey-quick?src=trial">Only have 60 seconds?</a></div>
-    <p class="note" style="margin-top:12px">Offered to the first 20 people who complete the questionnaire. Reply with your answers by 30 November 2026 and we will set your workspace up within two working days.</p>
+    <p class="lede" style="margin-top:12px">We are deciding what GroupBook should cost by asking the people who will use it. If you complete the 12-minute plans-and-prices questionnaire and ask for it, we switch on one free sourcing job for your team (not the full Sourcing plan): a branded brief link to send your client, one round of requests to the hotels and venues you choose, every quote side by side, award and decline.</p>
+    <div class="btn-row" style="margin-top:18px"><a class="btn btn-primary" href="/pricing-test?src=trial">Start the questionnaire — about 12 minutes</a><a class="btn btn-ghost" href="/survey-quick?src=trial">Only have 60 seconds?</a></div>
+    <p class="note" style="margin-top:12px">Offered to the first 20 eligible organisations that complete the questionnaire by 30 November 2026 and tick the box on its last screen to ask for the trial. We will set your workspace up within two working days. Your answers can be positive or negative: they do not affect whether you qualify.</p>
   </div>
 </section>
 <section class="band-cream">
@@ -867,6 +867,7 @@ TRIAL = """
       <ul class="list" style="margin-top:14px">
         <li>Guest lists, RSVPs, rooming lists, flights, transfers, itineraries or reconciliation — those are the Boutique and Full House plans.</li>
         <li>Supplier contact details. The trial shows you which hotels and venues are in the directory and sends your request to them; the group-desk contacts themselves stay with the paid plans.</li>
+        <li>Hotel accommodation, guest management, or guaranteed quotes.</li>
         <li>A second brief, a second round, or a second user. One trial per organisation.</li>
       </ul>
     </div>
@@ -975,5 +976,5 @@ page("how-it-works", "How GroupBook works — seven steps from brief to settleme
 page("for-hotels", "For hotels and venues — GroupBook", "Why a GroupBook request reaches your group desk, carries the brief, and is capped in width. How to update your contact.", HOTELS)
 page("support", "Support — GroupBook", "Our defects are free. Help using GroupBook is included. Assistance beyond that is quoted first. Response targets by severity and plan.", SUPPORT)
 page("fair-use", "Fair use — GroupBook", "One fair-use envelope, the same on every GroupBook plan: hotel protection, directory protection, documents read for you, and what happens at 80% and 100%.", FAIR)
-page("trial", "One sourcing job on us — GroupBook", "Complete the 15-minute plans-and-prices questionnaire and run one real group brief through GroupBook free: one brief, up to 10 suppliers, one user, 30 days.", TRIAL)
+page("trial", "One sourcing job on us — GroupBook", "Complete the 12-minute plans-and-prices questionnaire and run one real group brief through GroupBook free: one brief, up to 10 suppliers, one user, 30 days.", TRIAL)
 page("contact", "Request a walkthrough — GroupBook", "Forty minutes on one of your own briefs, with the person who built GroupBook.", CONTACT)
