@@ -115,7 +115,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research20';
+var SURVEY_VERSION = '2026-10-research21';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -225,7 +225,7 @@ var HEAD = [['h1_3','1 to 3'],['h4_10','4 to 10'],['h11_30','11 to 30'],['h31_10
 var SIZELAB = [['small','Small and specialist'],['mid','Established and mid-sized'],['large','One of the larger players in our field'],['top','One of the biggest in South Africa'],['unsure','Not sure, or prefer not to say']];
 var TURN = [['t1','Under R1 million'],['t5','R1 to R5 million'],['t20','R5 to R20 million'],['t100','R20 to R100 million'],['t100p','Over R100 million'],['na','Not applicable: we are an in-house team'],['dk','Not sure'],['pnts','Prefer not to say']];
 function yearBill(pk,annual){
-  var P=PLANS[pk], users=n(S.users)||0, seats=Math.max(0,users-P.users)*395*12, fee=P.m*(annual?10:12)+seats;
+  var P=PLANS[pk], users=U()||0, seats=Math.max(0,users-P.users)*395*12, fee=P.m*(annual?10:12)+seats;
   var sizes=[['b100',80],['b150',125],['b200',175],['b300',250],['b500',400]], inc=0, pass=0, over=0, nover=0, any=false;
   sizes.forEach(function(z){ var c=n(S['sz_'+z[0]])||0; if(c) any=true; for(var i=0;i<c;i++){ var g=z[1];
     if(g<=P.cap && inc<P.inc) inc++; else if(g>P.cap && g<=P.passcap && pass<P.passes) pass++; else { over+=(g<=P.cap?4500:bandPrice(g)); nover++; } } });
@@ -234,13 +234,13 @@ function yearBill(pk,annual){
 }
 function billPanel(){
   var an=S.cadence==='annual', basis=an?'paying once a year (two months free)':'paying monthly';
-  if(S.fit==='sourcing'){ var sb=PLANS.sourcing, seats=Math.max(0,(n(S.users)||0)-sb.users)*395*12, t=sb.m*(an?10:12)+seats, t2=sb.m*(an?12:10)+seats;
+  if(S.fit==='sourcing'){ var sb=PLANS.sourcing, seats=Math.max(0,(U()||0)-sb.users)*395*12, t=sb.m*(an?10:12)+seats, t2=sb.m*(an?12:10)+seats;
     return '<div class="calc"><h3>Your year on Sourcing</h3><div class="result"><b>'+R(t)+' a year</b>Sourcing has no guest events, so there are no event charges. Based on '+basis+(seats?', including extra people beyond the 2 included':'')+'. '+(an?'Paying monthly instead':'Paying once a year instead')+' it would be '+R(t2)+'. Excludes VAT (none is charged) and help hours beyond those included.</div></div>'; }
   var b=yearBill('events',an), f=yearBill('business',an), b2=yearBill('events',!an), f2=yearBill('business',!an);
   if(!b.any) return '<div class="note">You did not tell us the sizes of your RSVP events, so we cannot work out your year. For reference the plan alone, '+basis+', is '+R(b.fee)+' a year on Boutique and '+R(f.fee)+' on Full House.</div>';
   function row(nm,x){ return '<tr><td>'+nm+'</td><td>'+R(x.fee)+'</td><td>'+(x.over?R(x.over)+' ('+x.nover+' event'+(x.nover>1?'s':'')+')':'None')+'</td><td><b>'+R(x.total)+'</b></td></tr>'; }
   var th='style="background:transparent;color:#fff"';
-  return '<div class="calc"><h3>Your year, worked out from your answers</h3><div class="hint" style="margin-top:6px">Based on '+basis+'.</div><div class="result" style="padding:10px"><table style="color:#fff;margin-top:0"><tr><th '+th+'>Plan</th><th '+th+'>'+(an?'Plan, 10 months for 12':'Plan, 12 months')+'</th><th '+th+'>Extra event charges</th><th '+th+'>Total a year</th></tr>'+row('Boutique',b)+row('Full House',f)+'</table></div><div class="hint" style="margin-top:10px">'+(an?'Paying monthly instead':'Paying once a year instead')+' the totals would be '+R(b2.total)+' (Boutique) and '+R(f2.total)+' (Full House). An estimate from the numbers you gave, using the middle of each guest-size row, and including extra people beyond those the plan includes.'+(b.quoted?' You also have '+b.quoted+' event'+(b.quoted>1?'s':'')+' over 500 guests, which would be quoted separately.':'')+' Excludes VAT (none is charged) and help hours beyond those included.'+((n(S.users)||0)>20?' With more than 20 people, a contract for larger organisations would be agreed.':(n(S.users)||0)>10?' Boutique allows up to 10 people, so with '+n(S.users)+' you would need Full House.':'')+'</div></div>';
+  return '<div class="calc"><h3>Your year, worked out from your answers</h3><div class="hint" style="margin-top:6px">Based on '+basis+'.</div><div class="result" style="padding:10px"><table style="color:#fff;margin-top:0"><tr><th '+th+'>Plan</th><th '+th+'>'+(an?'Plan, 10 months for 12':'Plan, 12 months')+'</th><th '+th+'>Extra event charges</th><th '+th+'>Total a year</th></tr>'+row('Boutique',b)+row('Full House',f)+'</table></div><div class="hint" style="margin-top:10px">'+(an?'Paying monthly instead':'Paying once a year instead')+' the totals would be '+R(b2.total)+' (Boutique) and '+R(f2.total)+' (Full House). An estimate from the numbers you gave, using the middle of each guest-size row, and including extra people beyond those the plan includes.'+(b.quoted?' You also have '+b.quoted+' event'+(b.quoted>1?'s':'')+' over 500 guests, which would be quoted separately.':'')+(S.users_dk?' You have not given a team size yet, so extra people beyond those the plan includes are not counted.':'')+' Excludes VAT (none is charged) and help hours beyond those included.'+((U()||0)>20?' With more than 20 people, a contract for larger organisations would be agreed.':(U()||0)>10?' Boutique allows up to 10 people, so with '+U()+' you would need Full House.':'')+'</div></div>';
 }
 var UPPER = { b50:50, b100:100, b150:150, b200:200, b300:300, b500:500, b500p:501 };
 function bandLabel(list,code){ for(var i=0;i<list.length;i++){ if(list[i][0]===code) return list[i][1]; } return ''; }
@@ -259,7 +259,7 @@ var SCREENS = [
  ask('events_pm','In a normal month (not your busiest), how many group events or group bookings do you handle?',EV_PM,'One event = one client\'s (or business unit\'s) group, however many hotels it needs.')+
  ask('busy_q','Which three months are usually your busiest?',[['q1','January to March'],['q2','April to June'],['q3','July to September'],['q4','October to December'],['flat','No clear pattern']],'',true)+
  num('events_peak','And in your busiest month of the last 12, about how many?','A rough number is fine. Leave empty if you do not have a busy season.','e.g. 12')+
- num('events_year','Over the last 12 months, about how many group events or group bookings did your team handle in total?','A rough number is fine; if you are not sure, give your best estimate and choose "My best estimate" below. Your normal-month answer above and this one should roughly agree; if they do not, your year is seasonal, and that is useful to us.','e.g. 40',true)+
+ num('events_year','Over the last 12 months, about how many group events or group bookings did your team handle in total?','A rough number is fine; if you are not sure, give your best estimate and choose "My best estimate" below. Your normal-month answer above and this one should roughly agree; if they do not, your year is seasonal, and that is useful to us.','e.g. 40',true)+tick('events_year_dk','I cannot give this yet: I need to check')+
  ask('numsrc','Where do the event numbers above come from?',[['records','Our records'],['mixed','Partly records, partly my estimate'],['est','My best estimate']],'',true)+
  ask('size_typ','How many guests does a typical event have?',SIZE,'Count the guests who confirmed or registered, not everyone invited. That is how we would measure it.')+
  ask('size_max','And the largest event you handled in the last 12 months?',SIZE)+
@@ -269,7 +269,7 @@ var SCREENS = [
  multi('layers','Think of your most layered event last year (not the biggest: the one with the most moving parts). Which of these applied?',LAYERS,'Tick all that apply. Optional.'); } },
 
 { title:'How you do it today', body:function(){ return '<p class="lede">What the work looks like now, before any new tool.</p>'+
- num('users','About how many people in your team would log in and use a tool like this?','A best guess is fine: four users and six users make a different bill. Not sure yet? Put your best estimate; you can come back and change it before you send.','e.g. 4',true)+
+ num('users','About how many people in your team would log in and use a tool like this?','A best guess is fine: four users and six users make a different bill. Not sure yet? Put your best estimate; you can come back and change it before you send.','e.g. 4',true)+tick('users_dk','I cannot give this yet: I need to check')+
  ask('hours','From the brief (from a client or your own business unit) to the final lists, roughly how many working hours does one typical booking take your team?',HOURS,'Everyone\'s time added together.',true)+
  ask('sourcing_today','When you need group accommodation or a venue, how do you get quotes today?',SOURCING,'',true)+
  ask('spend_today','Roughly what does your team spend in a year on tools or services for finding and managing group bookings (software, sourcing companies, RSVP suppliers)?',SPEND,'Skip if you would rather not say.',true)+
@@ -344,6 +344,7 @@ function calcText(){
 }
 
 // ---------- payload
+function U(){ return S.users_dk?null:n(S.users); }
 function n(x){ return x===undefined||x===''||x===null?null:(isFinite(Number(x))?Number(x):null); }
 function idx(list,key){ var v=S[key]; for(var i=0;i<list.length;i++){ if(list[i][0]===v) return i+1; } return null; }
 function cut(s,m){ s=(s==null?'':String(s)).trim(); return s?s.slice(0,m):null; }
@@ -353,8 +354,8 @@ function payload(){
   var fitMap={sourcing:1,events:2,business:3}, roleMap={corp:1,assoc:1,agency:2,mice:2,pco:2,tours:2,tmc:3,itc:4,other:5};
   var tf=fitMap[S.fit]||null; var gv=null, te=tf?n(S.price_prohibitive):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research15:true, archetype:S.archetype||null, events_pm:S.events_pm||null, events_peak:n(S.events_peak), events_year:n(S.events_year), events_rsvp:szSum(), size_typ:S.size_typ||null, size_max:S.size_max||null, sz:{b100:n(S.sz_b100),b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b500:n(S.sz_b500),b500p:n(S.sz_b500p)}, layers:(S.layers||[]).join(',')||null,
-    users:n(S.users), hours:S.hours||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, rsvp_pg:S.rsvp_pg||null, spend_today:S.spend_today||null, numsrc:S.numsrc||null, headcount:S.headcount||null, size_label:S.size_label||null, turnover:S.turnover||null, upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, bill:billOut(), approver:S.approver||null, known:S.known||null,
+  var a={ research15:true, archetype:S.archetype||null, events_pm:S.events_pm||null, events_peak:n(S.events_peak), events_year:S.events_year_dk?null:n(S.events_year), events_year_dk:!!S.events_year_dk, users_dk:!!S.users_dk, events_rsvp:szSum(), size_typ:S.size_typ||null, size_max:S.size_max||null, sz:{b100:n(S.sz_b100),b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b500:n(S.sz_b500),b500p:n(S.sz_b500p)}, layers:(S.layers||[]).join(',')||null,
+    users:S.users_dk?null:n(S.users), hours:S.hours||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, rsvp_pg:S.rsvp_pg||null, spend_today:S.spend_today||null, numsrc:S.numsrc||null, headcount:S.headcount||null, size_label:S.size_label||null, turnover:S.turnover||null, upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, bill:billOut(), approver:S.approver||null, known:S.known||null,
     wf_match:S.wf_match||null, step_most:S.step_most||null, step_least:S.step_least||null, plan_fit:S.fit||null, forced:S.forced||null,
     price_prohibitive:n(S.price_prohibitive),
     price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, buy_all:S.buy_all||null, cadence:S.cadence||null, rebill:S.rebill||null, final_pick:S.final_pick||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), approve_band:S.approve_band||null, finance_need:S.finance_need||null, busy_q:S.busy_q||null,
@@ -363,7 +364,7 @@ function payload(){
     t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.fit__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), buy_all_why:cut(S.buy_all_why,tl), review_note:cut(S.review_note,tl) },
     plan_text_version:'v6.0-2026-10-16', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
-    role:roleMap[S.archetype]||null, rfp_volume:(S.rfq_pm==='dk'?null:idx(RFQ,'rfq_pm')), team_size:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
+    role:roleMap[S.archetype]||null, rfp_volume:(S.rfq_pm==='dk'?null:idx(RFQ,'rfq_pm')), team_size:S.users_dk?null:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
     tier1_good_value:tf===1?gv:null, tier1_too_expensive:tf===1?te:null, tier2_good_value:tf===2?gv:null, tier2_too_expensive:tf===2?te:null, tier3_good_value:tf===3?gv:null, tier3_too_expensive:tf===3?te:null,
     answers:a, website:(document.querySelector('[data-hp]')||{}).value||'' };
 }
@@ -404,7 +405,7 @@ function render(){
 }
 function missing(){ var v=document.getElementById('view'); var out=[];
   Object.keys(REQ).forEach(function(k){ if(!REQ[k]) return; var el=v.querySelector('[data-k="'+k+'"]'); if(!el) return;
-    var val=S[k]; if(el.type==='checkbox'){ if(!val) out.push(k); return; } if(val===undefined||val===null||String(val).trim()==='') out.push(k); });
+    if((k==='events_year'||k==='users')&&S[k+'_dk']) return; var val=S[k]; if(el.type==='checkbox'){ if(!val) out.push(k); return; } if(val===undefined||val===null||String(val).trim()==='') out.push(k); });
   return out; }
 function flag(keys,msgId,suffix){ var v=document.getElementById('view'); var first=null;
   keys.forEach(function(k){ var el=v.querySelector('[data-k="'+k+'"]'); var a=el&&(el.closest('.ask')||el.closest('.sub')); if(a){ a.classList.add('miss'); if(!first) first=a; } });
@@ -436,7 +437,7 @@ document.getElementById('next').onclick=function(){
   if(step===0 && S.screen==='no'){ render(); return; }
   step++; render(); };
 document.getElementById('back').onclick=function(){ if(step>0){ step--; render(); } };
-function updGrid(){ var el=document.getElementById('gridchk'); if(!el) return; var t=szSum(), y=n(S.events_year);
+function updGrid(){ var el=document.getElementById('gridchk'); if(!el) return; var t=szSum(), y=S.events_year_dk?null:n(S.events_year);
   if(t===null){ el.textContent=''; return; }
   var bad=(y!==null&&t>y);
   el.textContent='Entered so far: '+t+(y!==null?' of the '+y+' events you gave above.'+(bad?' That is more than your yearly total, so please check one of the two.':''):' events.');
