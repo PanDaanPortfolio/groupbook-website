@@ -115,7 +115,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research22';
+var SURVEY_VERSION = '2026-10-research23';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -175,6 +175,7 @@ function planCardsNoPrice(){
 var API = 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
 var SRC = (new URLSearchParams(location.search).get('src')) || 'website';
 var REVIEW = /^review/.test(SRC);
+var PRICED = /priced/.test(SRC);   // draft prices are shown ONLY on links whose src contains 'priced' (private follow-up); the broad survey shows none
 var LABELS = {};
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 function multi(key, q, opts, hint){
@@ -288,15 +289,21 @@ var SCREENS = [
  ask('fit','Which plan would suit your team?',[['sourcing','Sourcing'],['events','Boutique'],['business','Full House'],['larger','Larger organisations'],['none','None of them fits','Why not? What would fit?']])+
  ask('forced','Would you have to buy a bigger plan than you need, just to get one feature?',[['no','No'],['yes','Yes','Which feature, and which plan is it in?'],['unsure','Not sure']],'',true); } },
 
-{ title:'Before we show any prices', body:function(){ var p=PLANS[S.fit];
- return '<p class="lede">We have not shown you a price yet, on purpose. We would like your own view first, so the numbers on the next screen do not influence it. Think of <b>'+(p?p.n:'the plan closest to what your team needs')+'</b> and of what it would be worth to your organisation. All three answers are a monthly amount for the whole team, in rand, excluding VAT. A rough figure is fine.</p>'+
- num('pe_pay','What would you expect to pay each month for this?','Your honest expectation, not a negotiating figure.','e.g. 4000',true)+
- num('pe_cheap','At what monthly amount would it start to feel like a bargain?','Good value, and you would not doubt the quality.','e.g. 2500',true)+
- num('pe_walk','At what monthly amount would you walk away?','So expensive that you would not seriously consider it.','e.g. 12000',true)+
+{ title:'What would it be worth to you?', body:function(){ var p=PLANS[S.fit]; var nm=p?p.n:'the plan closest to what your team needs';
+ var lede = PRICED ? 'We have not shown you a price yet, on purpose. We would like your own view first, so the numbers on the next screen do not influence it.' : 'We are not showing any prices in this survey. We would still like your own view of what this would be worth to your organisation.';
+ return '<p class="lede">'+lede+' Think of <b>'+nm+'</b> exactly as described on the previous screen: its people, its yearly events, its guest limits and the hands-on help included. Every answer is a <b>monthly fee for your whole organisation, in rand, excluding VAT</b>. A rough figure is fine, and apart from the first one you can leave any of them empty.</p>'+
+ num('pe_pay','What monthly fee would you <b>expect</b> to pay for this?','Your honest expectation for your organisation. Not a negotiating figure, and not what you would like to pay.','e.g. 4000',true)+
  tick('pe_dk','I cannot say yet: I would need to think about it or ask someone')+
- '<div class="hint" id="pechk" style="margin-top:6px"></div>'; } },
+ num('pe_low','At what monthly fee would it be so low that you would doubt the quality?','Optional.','e.g. 800')+
+ num('pe_cheap','At what monthly fee would it start to feel like a bargain?','Optional. Good value, and you would not doubt the quality.','e.g. 2500')+
+ num('pe_high','At what monthly fee would it start to feel expensive, but you would still consider it?','Optional.','e.g. 7000')+
+ num('pe_walk','At what monthly fee would it be too expensive to consider at all?','Optional.','e.g. 12000')+
+ '<div class="hint" id="pechk" style="margin-top:6px"></div>'+
+ (PRICED?'':ask('cadence','How would you rather pay for something like this?',[['monthly','Monthly, cancel any time'],['annual','Once a year, with a discount for paying up front'],['unsure','Not sure']])+
+   (S.fit==='sourcing'?multi('upgrade_trigger','What would make you add guest management later?',[['guests','Running guest lists and RSVP'],['travel','Rooms, flights and transfers'],['bigger','Bigger or more events'],['users','More people or more clients using it'],['finance','Card statements and reconciliation'],['none','Nothing: Sourcing is all I need']],'Tick all that apply. Optional.'):''))
+ ; } },
 
-{ title:'The prices', body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">Prices are per month, in rand, no VAT charged. Pay monthly and cancel any month, or pay for ten months up front and use it for twelve. Getting started is included: the GroupBook Academy, at least eight training modules that you work through with a case study. Extra people on a plan are R395 a month each, up to the plan maximum.</p><div class="note"><b>These prices are a rough estimate.</b> They are a peg in the ground so that we have something concrete to test, and they will only be finalised after extensive research across the different disciplines in the industry.</div>'+
+{ title:'The prices', priced:true, body:function(){ var f=S.fit; var p=PLANS[f]; return '<p class="lede">Prices are per month, in rand, no VAT charged. Pay monthly and cancel any month, or pay for ten months up front and use it for twelve. Getting started is included: the GroupBook Academy, at least eight training modules that you work through with a case study. Extra people on a plan are R395 a month each, up to the plan maximum.</p><div class="note"><b>Illustrative prices for research only. These are not launch prices or quotations.</b> They are a rough estimate, a peg in the ground so that we have something concrete to test. Final prices and allowances will only be set after extensive research across the different disciplines in the industry, operating costs and pilot usage.</div>'+
  '<table><tr><th>Plan</th><th>A month</th><th>A year (two months free)</th></tr><tr><td>Sourcing</td><td>R1,950</td><td>R19,500</td></tr><tr><td>Boutique</td><td>R4,950</td><td>R49,500</td></tr><tr><td>Full House</td><td>R9,950</td><td>R99,500</td></tr><tr><td>Larger organisations</td><td colspan="2">Agreed in a contract</td></tr></table>'+
  (p?'<div class="note">You chose <b>'+p.n+'</b> on the previous screen: <b>'+R(p.m)+' a month</b>, or <b>'+R(p.m*10)+' a year</b>.</div>':'<div class="note">You did not choose a plan on the previous screen. Answer for the plan closest to your team\'s needs.</div>')+
  ask('price_fit','When you look at the price of '+(p?p.n:'this plan')+', it feels…',[['cheap','So low that I would doubt the quality'],['good','Good value for what it does'],['fair','About fair'],['high','Higher than I would like'],['toohigh','Too high for us'],['dk','I cannot say']])+
@@ -306,6 +313,13 @@ var SCREENS = [
  ask('cadence','How would you rather pay?',[['monthly','Monthly, cancel any time'],['annual','Once a year, two months free'],['unsure','Not sure']]); } },
 
 { title:'Big events, limits and help', body:function(){
+  if(!PRICED){
+    if(S.fit==='sourcing') return '<p class="lede">Sourcing is a monthly plan with no guest events, so it has no extra event charges.</p>'+
+     ask('structure','Which way of paying for sourcing would you rather have?',[['S_sub','A monthly Sourcing plan'],['S_job','Pay each time I run a sourcing job, with no monthly plan'],['S_stay','Carry on with our current process']],'Pick the one you would choose.')+
+     ask('approve_band','Think of a full year of using something like this for sourcing. Up to what total for the year could you approve yourself, without a second quote or a formal business case?',APPROVE,'Excluding VAT. Skip if you would rather not say.',true);
+    return '<p class="lede">On the plans we are considering, everyday events are covered by the monthly fee up to a yearly count. Bigger events, or events beyond that count, would carry an extra charge for each event, sized by the number of guests who <b>registered</b>. We are not showing prices in this survey.</p>'+
+     ask('rebill','If an extra charge like that applied to an event you run for a client, roughly what share of it could you recover from that client? (In-house teams: choose "Not applicable" if the cost stays with your company.)',REBILL)+
+     ask('approve_band','Think of a full year of your own events on the plan you chose. Up to what total for the year could you approve yourself, without a second quote or a formal business case? Include charges you would recover from clients.',APPROVE,'Excluding VAT. Skip if you would rather not say.',true); }
   var calc = billPanel();
   var fair='<div class="note"><b>The rest, in one paragraph.</b> Everyone on every plan gets the same fair-use limits: a request can go to up to 25 hotels (we suggest 12) and your company can send 150 requests a day. Go over, and you get a warning, and you can go 20% over once in a month; going over all the time is a conversation, never a surprise invoice. Hands-on help is included each month (1, 2 or 4 hours); more is quoted first at R850 an hour. For a big event you can pre-book remote cover for the event days at R1,950 a day.</div>';
   if(S.fit==='sourcing') return '<p class="lede">Sourcing is a monthly plan with no guest events, so there are no extra event charges. Here is your year.</p>'+fair+calc+
@@ -339,6 +353,7 @@ var SCREENS = [
  tick('consent','PanDaan (Pty) Ltd (GroupBook) may store these answers and my details for this research and use them to contact me about it. I can ask for my details to be removed at any time by emailing support@groupbook.co.za.',true)+
  '<div class="missmsg" id="sendmsg"></div>'; } }
 ];
+if(!PRICED) SCREENS = SCREENS.filter(function(sc){ return !sc.priced; });
 
 function calcText(){
   var plan=PLANS[S.ge_plan||S.fit||'events']||PLANS.events; if(plan.inc===0) plan=PLANS.events; var g=+S.ge_guests||0;
@@ -359,13 +374,13 @@ function billOut(){ try{ var an=S.cadence==='annual', basis=an?'annual':'monthly
 function szSum(){ var k=['b100','b150','b200','b300','b500','b500p'],t=0,any=false; k.forEach(function(x){ var v=n(S['sz_'+x]); if(v!==null){ t+=v; any=true; } }); return any?t:null; }
 function payload(){
   var fitMap={sourcing:1,events:2,business:3}, roleMap={corp:1,assoc:1,agency:2,mice:2,pco:2,tours:2,tmc:3,itc:4,other:5};
-  var tf=fitMap[S.fit]||null; var gv=null, te=tf?(S.pe_dk?null:n(S.pe_walk)):null;
+  var tf=fitMap[S.fit]||null; var gv=null, te=tf?n(S.pe_walk):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
   var a={ research15:true, archetype:S.archetype||null, events_pm:S.events_pm||null, events_peak:n(S.events_peak), events_year:S.events_year_dk?null:n(S.events_year), events_year_dk:!!S.events_year_dk, users_dk:!!S.users_dk, events_rsvp:szSum(), size_typ:S.size_typ||null, size_max:S.size_max||null, sz:{b100:n(S.sz_b100),b150:n(S.sz_b150),b200:n(S.sz_b200),b300:n(S.sz_b300),b500:n(S.sz_b500),b500p:n(S.sz_b500p)}, layers:(S.layers||[]).join(',')||null,
     users:S.users_dk?null:n(S.users), hours:S.hours||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, rsvp_pg:S.rsvp_pg||null, spend_today:S.spend_today||null, numsrc:S.numsrc||null, headcount:S.headcount||null, size_label:S.size_label||null, turnover:S.turnover||null, upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, bill:billOut(), approver:S.approver||null, known:S.known||null,
     wf_match:S.wf_match||null, step_most:S.step_most||null, step_least:S.step_least||null, plan_fit:S.fit||null, forced:S.forced||null,
-    price_prohibitive:(S.pe_dk?null:n(S.pe_walk)),
-    pe_dk:!!S.pe_dk, pe_pay:S.pe_dk?null:n(S.pe_pay), pe_cheap:S.pe_dk?null:n(S.pe_cheap), pe_walk:S.pe_dk?null:n(S.pe_walk), pe_plan:S.fit||null, price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, buy_all:S.buy_all||null, cadence:S.cadence||null, rebill:S.rebill||null, final_pick:S.final_pick||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), approve_band:S.approve_band||null, finance_need:S.finance_need||null, busy_q:S.busy_q||null,
+    price_prohibitive:n(S.pe_walk),
+    priced:PRICED, pe_dk:!!S.pe_dk, pe_status:peStatus(), pe_pay:S.pe_dk?null:n(S.pe_pay), pe_low:n(S.pe_low), pe_cheap:n(S.pe_cheap), pe_high:n(S.pe_high), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:S.fit||null, price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, buy_all:S.buy_all||null, cadence:S.cadence||null, rebill:S.rebill||null, final_pick:S.final_pick||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), approve_band:S.approve_band||null, finance_need:S.finance_need||null, busy_q:S.busy_q||null,
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, results_optin:!!S.results_optin,
     price_unit:'plan prices ZAR per month ex VAT; bill = estimated ZAR per year ex VAT from the respondent grid (band midpoints); rsvp_pg ZAR per registered guest band', rev:4,
     t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.fit__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), buy_all_why:cut(S.buy_all_why,tl), review_note:cut(S.review_note,tl) },
@@ -412,7 +427,7 @@ function render(){
 }
 function missing(){ var v=document.getElementById('view'); var out=[];
   Object.keys(REQ).forEach(function(k){ if(!REQ[k]) return; var el=v.querySelector('[data-k="'+k+'"]'); if(!el) return;
-    if((k==='events_year'||k==='users')&&S[k+'_dk']) return; if(k.indexOf('pe_')===0&&S.pe_dk) return; var val=S[k]; if(el.type==='checkbox'){ if(!val) out.push(k); return; } if(val===undefined||val===null||String(val).trim()==='') out.push(k); });
+    if((k==='events_year'||k==='users')&&S[k+'_dk']) return; if(k==='pe_pay'&&S.pe_dk) return; var val=S[k]; if(el.type==='checkbox'){ if(!val) out.push(k); return; } if(val===undefined||val===null||String(val).trim()==='') out.push(k); });
   return out; }
 function flag(keys,msgId,suffix){ var v=document.getElementById('view'); var first=null;
   keys.forEach(function(k){ var el=v.querySelector('[data-k="'+k+'"]'); var a=el&&(el.closest('.ask')||el.closest('.sub')); if(a){ a.classList.add('miss'); if(!first) first=a; } });
@@ -444,8 +459,10 @@ document.getElementById('next').onclick=function(){
   if(step===0 && S.screen==='no'){ render(); return; }
   step++; render(); };
 document.getElementById('back').onclick=function(){ if(step>0){ step--; render(); } };
-function updPe(){ var el=document.getElementById('pechk'); if(!el) return; var a=n(S.pe_cheap), b=n(S.pe_pay), c=n(S.pe_walk); if(S.pe_dk||a===null||b===null||c===null){ el.textContent=''; return; }
-  var bad=!(a<=b&&b<=c); el.textContent=bad?'Usually the bargain amount is the lowest, then what you expect to pay, then the walk-away amount. Please check the order.':''; el.style.color=bad?'#8E2A1A':''; }
+function peVals(){ return [n(S.pe_low),n(S.pe_cheap),n(S.pe_pay),n(S.pe_high),n(S.pe_walk)]; }
+function peStatus(){ if(S.pe_dk) return 'cannot_say'; var v=peVals(), g=v.filter(function(x){return x!==null;}).length; return g===0?'skipped':(g===5?'complete':'partial'); }
+function peOrderOk(){ var v=peVals().filter(function(x){return x!==null;}); if(v.length<2) return null; for(var i=1;i<v.length;i++){ if(v[i]<v[i-1]) return false; } return true; }
+function updPe(){ var el=document.getElementById('pechk'); if(!el) return; var ok=S.pe_dk?null:peOrderOk(); el.textContent=(ok===false)?'Usually the amounts rise in the order asked: doubt the quality, bargain, what you expect, starting to feel expensive, too expensive. Please check the order. You can still send it as it is.':''; el.style.color=(ok===false)?'#8E2A1A':''; }
 function updGrid(){ updPe(); var el=document.getElementById('gridchk'); if(!el) return; var t=szSum(), y=S.events_year_dk?null:n(S.events_year);
   if(t===null){ el.textContent=''; return; }
   var bad=(y!==null&&t>y);
