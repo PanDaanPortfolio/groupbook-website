@@ -72,6 +72,8 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 .sub{margin:8px 0 2px 0;padding-left:0}
 .sub textarea{min-height:60px}
 .ask.miss .q{color:#7A2E1A}.sub.miss textarea{border-color:#C9775F}.ask.miss .opts .opt{border-color:#C9775F}
+.ask.miss{border-left:4px solid #C9775F;padding-left:10px;background:#FDF3EF;border-radius:8px}.ask.miss label.f{color:#7A2E1A}.ask.miss input,.ask.miss select,.ask.miss textarea{border-color:#C9775F}
+#missmsg{position:fixed;left:16px;right:16px;bottom:92px;z-index:40;box-shadow:0 4px 14px rgba(0,0,0,.2);max-width:760px;margin:0 auto}.reqnote{color:#7A2E1A;font-weight:600}
 .missmsg{background:#F7E3DB;color:#7A2E1A;border-radius:10px;padding:10px 14px;font-size:14px;margin-top:14px;display:none}
 .req{color:var(--gold);font-weight:700;margin-left:4px}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;width:100%}
@@ -117,7 +119,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research30g';
+var SURVEY_VERSION = '2026-10-research30h';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -135,13 +137,13 @@ function ask(key, q, opts, hint, optional){
   REQ[key] = !optional;
   return '<div class="ask" data-ask="'+key+'"><div class="q">'+q+(optional?'':'<span class="req" title="needed">*</span>')+'</div>'+(hint?'<div class="hint" style="margin:-4px 0 8px">'+hint+'</div>':'')+'<div class="opts">'+
     opts.map(function(o){ var v=o[0], l=o[1], fu=o[2]; var on = S[key]===v; var fk=key+'__'+v;
-      var box = fu ? '<div class="sub" data-fu="'+fk+'" style="display:'+(on?'block':'none')+'"><label class="f" style="margin-top:4px;font-weight:500;font-size:14px">'+fu+'<textarea data-k="'+fk+'">'+esc(S[fk])+'</textarea></label></div>' : '';
+      var box = fu ? '<div class="sub" data-fu="'+fk+'" style="display:'+(on?'block':'none')+'"><label class="f" style="margin-top:4px;font-weight:500;font-size:14px">'+fu+' <span class="reqnote" style="font-weight:600;font-size:13px">(needed to go on)</span><textarea data-k="'+fk+'">'+esc(S[fk])+'</textarea></label></div>' : '';
       if(fu){ LABELS[fk]={q:l+' — '+fu}; if(on) REQ[fk]=true; }
       return '<div><label class="opt'+(on?' on':'')+'"><input type="radio" name="'+key+'" value="'+v+'"'+(on?' checked':'')+' data-k="'+key+'"><span>'+l+'</span></label>'+box+'</div>'; }).join('')+'</div></div>';
 }
 var REQ = {};
 function txt(key, label, hint){ return '<label class="f">'+label+'<textarea data-k="'+key+'">'+esc(S[key])+'</textarea></label>'+(hint?'<div class="hint">'+hint+'</div>':''); }
-function num(key, label, hint, ph, required, dec){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'<input type="text" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></label>'+(hint?'<div class="hint">'+hint+'</div>':'')+'</div>'; }
+function num(key, label, hint, ph, required, dec){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'<input type="text" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></label>'+(hint?'<div class="hint">'+hint+'</div>':'')+(required?'<div class="hint reqnote">Needed to go on.</div>':'')+'</div>'; }
 function R(n){ return 'R'+Math.round(n).toLocaleString('en-ZA'); }
 
 // ---------- the model (test values)
@@ -212,9 +214,9 @@ function incQs(){ if(S.fit==='sourcing') return ''; return '<div class="ask" sty
 // research30c: the stepped row format (a label, then two boxes side by side) used wherever answers come in pairs or in a size ladder
 function prow(key,title,a,b,req){ // a,b = [datakey,caption,placeholder] or null (shows a dash)
   function cell(c){ if(!c) return '<div class="dash">&ndash;</div>'; if(req) REQ[c[0]]=true;
-    return '<label>'+c[1]+'<input type="text" inputmode="'+(c[3]?'decimal':'numeric')+'" autocomplete="off" data-k="'+c[0]+'" value="'+esc(S[c[0]])+'" placeholder="'+(c[2]||'')+'"></label>'; }
+    return '<label>'+c[1]+'<input type="text" inputmode="'+(c[3]?'decimal':'numeric')+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-k="'+c[0]+'" value="'+esc(S[c[0]])+'" placeholder="'+(c[2]||'')+'"></label>'; }
   return '<div class="ask" data-ask="'+key+'" style="margin-top:14px"><div class="q" style="margin-bottom:4px">'+title+(req?'<span class="req">*</span>':'')+'</div><div class="pair2">'+cell(a)+cell(b)+'</div></div>'; }
-function lrow(label,key,ph,req,dec){ if(req) REQ[key]=true; return '<div class="ask lr" data-ask="'+key+'" style="margin-top:0"><div class="lrow"><span>'+label+(req?'<span class="req">*</span>':'')+'</span><input type="text" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></div></div>'; }
+function lrow(label,key,ph,req,dec){ if(req) REQ[key]=true; return '<div class="ask lr" data-ask="'+key+'" style="margin-top:0"><div class="lrow"><span>'+label+(req?'<span class="req">*</span>':'')+'</span><input type="text" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></div></div>'; }
 var PRICED = /priced/.test(SRC);   // draft prices are shown ONLY on links whose src contains 'priced' (private follow-up); the broad survey shows none
 var LABELS = {};
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
@@ -229,7 +231,7 @@ function tick(key, label, req){
 }
 function field(key, label, type, ph, req){
   if(req) REQ[key]=true;
-  return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(req?'<span class="req">*</span>':'')+'<input type="'+type+'" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'" autocomplete="'+(key==='email'?'email':key==='name'?'given-name':'organization')+'"></label></div>';
+  return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(req?'<span class="req">*</span>':'')+'<input type="'+type+'" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'" autocomplete="'+(key==='email'?'email':key==='name'?'given-name':'organization')+'"></label>'+(req?'<div class="hint reqnote">Needed to send.</div>':'')+'</div>';
 }
 
 // ---------- answer bands (aligned to the pricing edges: 100 / 150 / 200 / 300 / 500)
@@ -416,7 +418,7 @@ function render(){
     el.addEventListener(ev,function(){ var k=el.getAttribute('data-k');
       if(el.type==='checkbox'){ S[k]=el.checked; var lb=el.closest('.opt'); if(lb) lb.classList.toggle('on',el.checked); }
       else { var val=el.value; var im=el.getAttribute('inputmode'); if(im==='numeric'){ val=val.replace(/[^0-9]/g,''); if(val!==el.value) el.value=val; } else if(im==='decimal'){ val=val.replace(/,/g,'.').replace(/[^0-9.]/g,'').replace(/^(\d*\.\d?).*$/,'$1'); if(val!==el.value) el.value=val; } S[k]=val; }
-      save(); if(typeof updGrid==='function') updGrid(); var a=el.closest('.ask'); if(a) a.classList.remove('miss');
+      save(); if(typeof updGrid==='function') updGrid(); var a=el.closest('.ask'); if(a) a.classList.remove('miss'); if(!v.querySelector('.ask.miss,.sub.miss')){ var mm=document.getElementById('missmsg'); if(mm) mm.style.display='none'; }
       if(el.type==='radio'){ v.querySelectorAll('input[name="'+el.name+'"]').forEach(function(r){ r.closest('.opt').classList.toggle('on', r.checked); var fu=r.closest('div').querySelector('.sub'); if(fu){ fu.style.display=r.checked?'block':'none'; var fk=fu.getAttribute('data-fu'); REQ[fk]=r.checked; } }); }
     });
   });
