@@ -581,6 +581,7 @@ h1{font:700 clamp(1.5rem,4vw,2.3rem)/1.1 var(--display);margin:8px 0 0;text-wrap
 </div>
 
 <script>
+try{if(/[?&]s=1/.test(location.search)){document.addEventListener('DOMContentLoaded',function(){var c=document.querySelector('.ctl');if(!c)return;var d=document.createElement('div');d.style.cssText='display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)';d.innerHTML='<span>From the survey? When you are done, go back and press <b>Next</b>.</span><button class="nav" type="button" id="backsv" style="padding:6px 12px;font-size:13px">Back to the survey</button>';c.appendChild(d);document.getElementById('backsv').onclick=function(){window.close();setTimeout(function(){location.href='/pricing-test';},300);};});}}catch(e){}
 try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){document.body.classList.add('emb');}
 (function(){
   /* Real screenshots go here as data: URIs (demo organisation only, never a customer's live data). Empty = no button. */
