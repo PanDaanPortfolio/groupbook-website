@@ -117,7 +117,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research30e';
+var SURVEY_VERSION = '2026-10-research30f';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -313,16 +313,18 @@ var SCREENS = [
  ask('hours_run','Roughly how many working hours does one typical booking take from the award until the final lists are done?',HOURS_RUN,'Guest list and RSVP, rooming, flight and transfer lists, and the event summary. Everyone\'s time added together. Optional.',true)+
  sec('Paying for it')+
  ask('finance_need','Does your team reconcile a company or lodge card statement, or supplier payments, for group events?',[['regular','Yes, regularly'],['some','Sometimes'],['no','No']])+
- ask('approver','Who would approve spending on a new tool?',APPROVER); } },
+ ask('approver','Who would approve spending on a new tool?',APPROVER)+
+ ask('seen_gb','Before the next screen: have you used or seen GroupBook before?',[['no','No, this is my first look'],['heard','I have heard of it'],['seen','I have seen a demo or screens'],['used','I have used it']]); } },
 
-{ title:'See GroupBook at work', body:function(){ return '<p class="lede">A short click-through of what GroupBook does, from the client\'s brief to the final bill. Real screens, made-up names. Go at your own pace.</p>'+
- ask('seen_gb','Have you used or seen GroupBook before?',[['no','No, this is my first look'],['heard','I have heard of it'],['seen','I have seen a demo or screens'],['used','I have used it']])+
- '<div class="reelwrap"><iframe src="/in-motion" title="GroupBook in motion: a click-through" style="width:100%;height:min(80vh,780px);min-height:560px;border:1px solid #ddd;border-radius:12px;background:#fff"></iframe></div>'+
- '<p class="hint" style="margin:8px 0 14px">Tap the <b>gold button</b> inside the box to step through. You can also <a href="/in-motion" target="_blank" rel="noopener">open it in its own tab</a>.</p>'+
+{ title:'See GroupBook at work', body:function(){ return '<p class="lede" style="margin-bottom:10px">A short click-through, from the client\'s brief to the final bill. Tap the <b>gold button</b> in the box to step through. Real screens, made-up names.</p>'+
+ '<div class="reelwrap"><iframe src="/in-motion" title="GroupBook in motion: a click-through" style="width:100%;height:calc(100vh - 290px);height:calc(100dvh - 290px);min-height:480px;border:1px solid #ddd;border-radius:12px;background:#fff"></iframe></div>'+
+ '<p class="hint" style="margin:8px 0 0">Small screen? <a href="/in-motion" target="_blank" rel="noopener">Open it in its own tab</a>, then come back and press Next.</p>'; } },
+
+{ title:'What did you make of it?', body:function(){ return '<p class="lede">Your first impression is what we need.</p>'+
  ask('reel_clarity','How clear is what GroupBook would do for your team?',[['clear','Clear: I could explain it to a colleague'],['mostly','Mostly clear'],['unsure','Not very clear'],['demo','I would need a demo to say']])+
- '<details style="margin:6px 0 14px"><summary style="cursor:pointer;font-weight:600">Prefer to read it? The seven steps</summary>'+STEPS_HTML()+'</details>'+
  ask('wf_match','Does this match how the work happens where you work?',[['yes','Yes, that is the job'],['mostly','Mostly: something is missing or in the wrong order','What is missing or in the wrong order?'],['no','No, we work quite differently','How does it work where you are?']])+
- ask('step_most','Which ONE step would be worth paying for most?',STEPS.concat([['none','None of these would be worth paying for']])); } },
+ ask('step_most','Which ONE step would be worth paying for most?',STEPS.concat([['none','None of these would be worth paying for']]),'Tap a step to choose it.')+
+ '<details style="margin:6px 0 14px"><summary style="cursor:pointer;font-weight:600">Prefer to read it? The seven steps</summary>'+STEPS_HTML()+'</details>'; } },
 
 { title:'The three plans', body:function(){ return '<p class="lede">The plans we are considering all work the same way: a monthly subscription that includes a set number of events up to a guest limit. Events beyond that, or bigger ones, would be charged separately for each event.</p>'+ask('concept','How suitable would that way of paying be for your team?',CONCEPT)+planCardsNoPrice()+
  ask('fit','Which plan would suit your team?',[['sourcing','Sourcing'],['events','Boutique'],['business','Full House'],['none','None of them fits','Why not? What would fit?']])+

@@ -17,6 +17,7 @@
 body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--body);padding-block:20px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .shell{max-width:1040px;margin:0 auto;display:grid;gap:16px}
 .eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--goldtext)}
+body.emb{padding-block:6px 6px}body.emb .eyebrow,body.emb h1{display:none}
 h1{font:700 clamp(1.5rem,4vw,2.3rem)/1.1 var(--display);margin:8px 0 0;text-wrap:balance}
 .stage{background:var(--st-bg);color:var(--st-ink);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;touch-action:pan-y}
 .scene{grid-area:1/1;padding:clamp(18px,4vw,36px);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.25fr);gap:clamp(18px,3vw,36px);align-items:center;visibility:hidden;opacity:0;transition:opacity .3s}
@@ -580,6 +581,7 @@ h1{font:700 clamp(1.5rem,4vw,2.3rem)/1.1 var(--display);margin:8px 0 0;text-wrap
 </div>
 
 <script>
+try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){document.body.classList.add('emb');}
 (function(){
   /* Real screenshots go here as data: URIs (demo organisation only, never a customer's live data). Empty = no button. */
   
