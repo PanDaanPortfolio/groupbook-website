@@ -102,6 +102,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 .pl2.hi{border-color:var(--gold)}.pl2 .nm{font-family:"Playfair Display",serif;font-size:21px;color:var(--navy)}
 .pl2 .for{font-size:14.5px;color:var(--ink2);margin-top:2px}.pl2 ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px;font-size:14.5px;color:var(--ink)}
 .pl2 li{padding-left:22px;position:relative}.pl2 li:before{content:"\2713";position:absolute;left:0;color:var(--ok);font-weight:700}
+.pair2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pair2 label{display:block;font-size:13px;font-weight:500;color:var(--ink3)}.pair2 input{margin-top:2px}
 @media (max-width:520px){.bands{grid-template-columns:1fr}.pair{grid-template-columns:1fr}}
 </style></head><body>
 <header><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>Would GroupBook fit your team? A short questionnaire</span></header>
@@ -115,7 +116,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research30';
+var SURVEY_VERSION = '2026-10-research30b';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -198,18 +199,19 @@ function recomputeSz(){
 function szSum(){ var t=0,any=false; BK.forEach(function(x){ var v=n(S['sz_'+x]); if(v!==null){ t+=v; any=true; } }); return any?t:null; }
 function szOut(){ var o={}; BK.forEach(function(k){ o[k]=n(S['sz_'+k]); }); return o; }
 // ONE fee scenario per size band, the same for every plan: "you have used up everything your plan includes". Rand amounts, ex VAT, for the extra event only.
-var FEEBANDS = [['xs','an everyday event of up to 100 registered guests'],['b200','an event of 101 to 200 registered guests'],['b300','an event of 201 to 300 registered guests'],['b500','an event of 301 to 500 registered guests']];
+var FEEBANDS = [['xs','Up to 100 guests'],['b200','101 to 200 guests'],['b300','201 to 300 guests'],['b500','301 to 500 guests']];
 function feeReq(){ return S.rsvp_who!=='none' && szSum()!==0; }
 function evQs(){ if(S.fit==='sourcing') return ''; var rq=feeReq(), P=PLANS[S.fit]||PLANS.events;
-  var out='<h3 style="margin-top:26px">Beyond what the plan includes</h3><p class="lede" style="margin-top:6px">Picture this. You have used everything your plan includes: the yearly events and the larger-event allowance (for <b>'+P.n+'</b>: '+P.inc+' events of up to '+P.cap+' guests, plus '+P.passes+' of up to '+P.passcap+'). You now run <b>one more event</b>. The extra charge for that one event would be <b>on top of</b> the monthly subscription, for the guest RSVP or registration only. Events over 500 guests would be quoted separately.</p>';
-  FEEBANDS.forEach(function(f){ out+='<div class="ask" style="margin-top:14px"><div class="q">One extra event: '+f[1]+'.</div></div>'+
-    num('fee_'+f[0]+'_pay','What extra charge would you <b>expect</b> to pay for that one event?','In rand, excluding VAT. '+(rq?'A best guess is fine.':'Skip if you never run guest registration.'),'e.g. 5000',rq)+
-    num('fee_'+f[0]+'_walk','At what extra charge would it be <b>too expensive</b> to seriously consider?','',  'e.g. 12000',rq); });
+  var out='<h3 style="margin-top:26px">Beyond what the plan includes</h3><p class="lede" style="margin-top:6px">Suppose you have used everything your plan includes ('+P.n+': '+P.inc+' events of up to '+P.cap+' guests, plus '+P.passes+' of up to '+P.passcap+') and you run <b>one more event</b>. For each size, what <b>extra charge</b>, on top of the monthly fee, for the guest RSVP or registration only? In rand, excluding VAT. Over 500 guests would be quoted separately. '+(rq?'A best guess is fine.':'Skip if you never run guest registration.')+'</p>';
+  FEEBANDS.forEach(function(f){ if(rq){ REQ['fee_'+f[0]+'_pay']=true; REQ['fee_'+f[0]+'_walk']=true; }
+    out+='<div class="ask" data-ask="fee_'+f[0]+'" style="margin-top:14px"><div class="q" style="margin-bottom:4px">'+f[1]+(rq?'<span class="req">*</span>':'')+'</div><div class="pair2">'+
+      '<label>I would expect<input type="text" inputmode="numeric" autocomplete="off" data-k="fee_'+f[0]+'_pay" value="'+esc(S['fee_'+f[0]+'_pay'])+'" placeholder="e.g. 5000"></label>'+
+      '<label>Too expensive at<input type="text" inputmode="numeric" autocomplete="off" data-k="fee_'+f[0]+'_walk" value="'+esc(S['fee_'+f[0]+'_walk'])+'" placeholder="e.g. 12000"></label></div></div>'; });
   return out; }
 function feeOut(){ var o={}; FEEBANDS.forEach(function(f){ var a=n(S['fee_'+f[0]+'_pay']), w=n(S['fee_'+f[0]+'_walk']); if(a!==null||w!==null) o[f[0]]={n:null,pay:a,cheap:null,walk:w}; }); return o; }
-function incQs(){ if(S.fit==='sourcing') return ''; return '<div class="ask" style="margin-top:22px"><div class="q">For a monthly fee like the one you gave, what would be reasonable for the package to include?</div><div class="hint" style="margin:-4px 0 8px">Your own view, whatever the plan above says. One number each. Not sure? Tick the box instead.</div></div>'+
-  num('inc_events','Events a year included in the monthly fee','','e.g. 60',true)+tick('inc_events_dk','Not sure')+
-  num('inc_pax','Up to how many registered guests per event, included in the monthly fee','','e.g. 100',true)+tick('inc_pax_dk','Not sure'); }
+function incQs(){ if(S.fit==='sourcing') return ''; return '<div class="ask" style="margin-top:22px"><div class="q">For a monthly fee like the one you gave, what would be reasonable for the package to include?</div><div class="hint" style="margin:-4px 0 8px">Your own view, whatever the plan above says. One number each: your best guess is what we need.</div></div>'+
+  num('inc_events','Events a year included in the monthly fee','','e.g. 60',true)+
+  num('inc_pax','Up to how many registered guests per event, included in the monthly fee','','e.g. 100',true); }
 var PRICED = /priced/.test(SRC);   // draft prices are shown ONLY on links whose src contains 'priced' (private follow-up); the broad survey shows none
 var LABELS = {};
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
@@ -361,7 +363,7 @@ function payload(){
   var fitMap={sourcing:1,events:2,business:3}, roleMap={corp:1,assoc:1,agency:2,mice:2,pco:2,tours:2,tmc:3,itc:4,other:5};
   var tf=fitMap[S.fit]||null; var gv=null, te=tf?n(S.pe_walk):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research30:true, archetype:S.archetype||null, team:S.team||null, clients:(S.clients||[]).join(',')||null, events_year:n(S.events_year), nm:(function(){ var o={}; MONTHLY.forEach(function(k){ o[k]=n(S['nm_'+k]); }); return o; })(), yr:(function(){ var o={}; YEARLY.forEach(function(k){ o[k]=n(S['yr_'+k]); }); return o; })(), peak_months:S.peak_months||null, peak_mult:S.peak_mult||null, sz:szOut(), events_rsvp:szSum(), busy_q:S.busy_q||null, concept:S.concept||null, inc_events:S.inc_events_dk?null:n(S.inc_events), inc_pax:S.inc_pax_dk?null:n(S.inc_pax), inc_events_dk:!!S.inc_events_dk, inc_pax_dk:!!S.inc_pax_dk,
+  var a={ research30:true, archetype:S.archetype||null, team:S.team||null, clients:(S.clients||[]).join(',')||null, events_year:n(S.events_year), nm:(function(){ var o={}; MONTHLY.forEach(function(k){ o[k]=n(S['nm_'+k]); }); return o; })(), yr:(function(){ var o={}; YEARLY.forEach(function(k){ o[k]=n(S['yr_'+k]); }); return o; })(), peak_months:S.peak_months||null, peak_mult:S.peak_mult||null, sz:szOut(), events_rsvp:szSum(), busy_q:S.busy_q||null, concept:S.concept||null, inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
     users:n(S.users), hours_src:S.hours_src||null, hours_run:S.hours_run||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, approver:S.approver||null, finance_need:S.finance_need||null,
     wf_match:S.wf_match||null, step_most:S.step_most||null, plan_fit:S.fit||null, forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
