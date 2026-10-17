@@ -117,7 +117,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research30c';
+var SURVEY_VERSION = '2026-10-research30d';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -315,7 +315,12 @@ var SCREENS = [
  ask('finance_need','Does your team reconcile a company or lodge card statement, or supplier payments, for group events?',[['regular','Yes, regularly'],['some','Sometimes'],['no','No']])+
  ask('approver','Who would approve spending on a new tool?',APPROVER); } },
 
-{ title:'What GroupBook does, in seven steps', body:function(){ return STEPS_HTML() +
+{ title:'See GroupBook at work', body:function(){ return '<p class="lede">A short click-through of what GroupBook does, from the client\'s brief to the final bill. Real screens, made-up names. Go at your own pace.</p>'+
+ ask('seen_gb','Have you used or seen GroupBook before?',[['no','No, this is my first look'],['heard','I have heard of it'],['seen','I have seen a demo or screens'],['used','I have used it']])+
+ '<div class="reelwrap"><iframe src="/in-motion" title="GroupBook in motion: a click-through" style="width:100%;height:min(80vh,780px);min-height:560px;border:1px solid #ddd;border-radius:12px;background:#fff"></iframe></div>'+
+ '<p class="hint" style="margin:8px 0 14px">Tap the <b>gold button</b> inside the box to step through. You can also <a href="/in-motion" target="_blank" rel="noopener">open it in its own tab</a>.</p>'+
+ ask('reel_clarity','How clear is what GroupBook would do for your team?',[['clear','Clear: I could explain it to a colleague'],['mostly','Mostly clear'],['unsure','Not very clear'],['demo','I would need a demo to say']])+
+ '<details style="margin:6px 0 14px"><summary style="cursor:pointer;font-weight:600">Prefer to read it? The seven steps</summary>'+STEPS_HTML()+'</details>'+
  ask('wf_match','Does this match how the work happens where you work?',[['yes','Yes, that is the job'],['mostly','Mostly: something is missing or in the wrong order','What is missing or in the wrong order?'],['no','No, we work quite differently','How does it work where you are?']])+
  ask('step_most','Which ONE step would be worth paying for most?',STEPS.concat([['none','None of these would be worth paying for']])); } },
 
@@ -369,7 +374,7 @@ function payload(){
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
   var a={ research30:true, archetype:S.archetype||null, team:S.team||null, clients:(S.clients||[]).join(',')||null, events_year:n(S.events_year), nm:(function(){ var o={}; MONTHLY.forEach(function(k){ o[k]=n(S['nm_'+k]); }); return o; })(), yr:(function(){ var o={}; YEARLY.forEach(function(k){ o[k]=n(S['yr_'+k]); }); return o; })(), peak_months:S.peak_months||null, peak_mult:S.peak_mult||null, sz:szOut(), events_rsvp:szSum(), busy_q:S.busy_q||null, concept:S.concept||null, inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
     users:n(S.users), hours_src:S.hours_src||null, hours_run:S.hours_run||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, approver:S.approver||null, finance_need:S.finance_need||null,
-    wf_match:S.wf_match||null, step_most:S.step_most||null, plan_fit:S.fit||null, forced:S.forced||null,
+    seen_gb:S.seen_gb||null, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:S.step_most||null, plan_fit:S.fit||null, forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
     evp:feeOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:S.fit||null, price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
