@@ -102,7 +102,8 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 .pl2.hi{border-color:var(--gold)}.pl2 .nm{font-family:"Playfair Display",serif;font-size:21px;color:var(--navy)}
 .pl2 .for{font-size:14.5px;color:var(--ink2);margin-top:2px}.pl2 ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px;font-size:14.5px;color:var(--ink)}
 .pl2 li{padding-left:22px;position:relative}.pl2 li:before{content:"\2713";position:absolute;left:0;color:var(--ok);font-weight:700}
-.pair2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pair2 label{display:block;font-size:13px;font-weight:500;color:var(--ink3)}.pair2 input{margin-top:2px}
+.lrow{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:10px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line)}.lrow span{font-weight:500}.lrow input{margin-top:0}.lsub{font-size:13px;font-weight:600;color:var(--navy);margin-top:14px}
+.pair2 .dash{color:var(--line);text-align:center;padding:12px 0;font-size:18px}.pair2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pair2 label{display:block;font-size:13px;font-weight:500;color:var(--ink3)}.pair2 input{margin-top:2px}
 @media (max-width:520px){.bands{grid-template-columns:1fr}.pair{grid-template-columns:1fr}}
 </style></head><body>
 <header><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>Would GroupBook fit your team? A short questionnaire</span></header>
@@ -116,7 +117,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research30b';
+var SURVEY_VERSION = '2026-10-research30c';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -203,15 +204,17 @@ var FEEBANDS = [['xs','Up to 100 guests'],['b200','101 to 200 guests'],['b300','
 function feeReq(){ return S.rsvp_who!=='none' && szSum()!==0; }
 function evQs(){ if(S.fit==='sourcing') return ''; var rq=feeReq(), P=PLANS[S.fit]||PLANS.events;
   var out='<h3 style="margin-top:26px">Beyond what the plan includes</h3><p class="lede" style="margin-top:6px">Suppose you have used everything your plan includes ('+P.n+': '+P.inc+' events of up to '+P.cap+' guests, plus '+P.passes+' of up to '+P.passcap+') and you run <b>one more event</b>. For each size, what <b>extra charge</b>, on top of the monthly fee, for the guest RSVP or registration only? In rand, excluding VAT. Over 500 guests would be quoted separately. '+(rq?'A best guess is fine.':'Skip if you never run guest registration.')+'</p>';
-  FEEBANDS.forEach(function(f){ if(rq){ REQ['fee_'+f[0]+'_pay']=true; REQ['fee_'+f[0]+'_walk']=true; }
-    out+='<div class="ask" data-ask="fee_'+f[0]+'" style="margin-top:14px"><div class="q" style="margin-bottom:4px">'+f[1]+(rq?'<span class="req">*</span>':'')+'</div><div class="pair2">'+
-      '<label>I would expect<input type="text" inputmode="numeric" autocomplete="off" data-k="fee_'+f[0]+'_pay" value="'+esc(S['fee_'+f[0]+'_pay'])+'" placeholder="e.g. 5000"></label>'+
-      '<label>Too expensive at<input type="text" inputmode="numeric" autocomplete="off" data-k="fee_'+f[0]+'_walk" value="'+esc(S['fee_'+f[0]+'_walk'])+'" placeholder="e.g. 12000"></label></div></div>'; });
+  FEEBANDS.forEach(function(f){ out+=prow('fee_'+f[0],f[1],['fee_'+f[0]+'_pay','I would expect','e.g. 5000'],['fee_'+f[0]+'_walk','Too expensive at','e.g. 12000'],rq); });
   return out; }
 function feeOut(){ var o={}; FEEBANDS.forEach(function(f){ var a=n(S['fee_'+f[0]+'_pay']), w=n(S['fee_'+f[0]+'_walk']); if(a!==null||w!==null) o[f[0]]={n:null,pay:a,cheap:null,walk:w}; }); return o; }
-function incQs(){ if(S.fit==='sourcing') return ''; return '<div class="ask" style="margin-top:22px"><div class="q">For a monthly fee like the one you gave, what would be reasonable for the package to include?</div><div class="hint" style="margin:-4px 0 8px">Your own view, whatever the plan above says. One number each: your best guess is what we need.</div></div>'+
-  num('inc_events','Events a year included in the monthly fee','','e.g. 60',true)+
-  num('inc_pax','Up to how many registered guests per event, included in the monthly fee','','e.g. 100',true); }
+function incQs(){ if(S.fit==='sourcing') return ''; return '<div class="ask" style="margin-top:22px"><div class="q">For a monthly fee like the one you gave, what would be reasonable for the package to include?</div><div class="hint" style="margin:-4px 0 4px">Your own view, whatever the plan above says. Your best guess is what we need.</div></div>'+
+  prow('inc','Included in the monthly fee',['inc_events','Events a year','e.g. 60'],['inc_pax','Guests per event, up to','e.g. 100'],true); }
+// research30c: the stepped row format (a label, then two boxes side by side) used wherever answers come in pairs or in a size ladder
+function prow(key,title,a,b,req){ // a,b = [datakey,caption,placeholder] or null (shows a dash)
+  function cell(c){ if(!c) return '<div class="dash">&ndash;</div>'; if(req) REQ[c[0]]=true;
+    return '<label>'+c[1]+'<input type="text" inputmode="'+(c[3]?'decimal':'numeric')+'" autocomplete="off" data-k="'+c[0]+'" value="'+esc(S[c[0]])+'" placeholder="'+(c[2]||'')+'"></label>'; }
+  return '<div class="ask" data-ask="'+key+'" style="margin-top:14px"><div class="q" style="margin-bottom:4px">'+title+(req?'<span class="req">*</span>':'')+'</div><div class="pair2">'+cell(a)+cell(b)+'</div></div>'; }
+function lrow(label,key,ph,req,dec){ if(req) REQ[key]=true; return '<div class="ask lr" data-ask="'+key+'" style="margin-top:0"><div class="lrow"><span>'+label+(req?'<span class="req">*</span>':'')+'</span><input type="text" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></div></div>'; }
 var PRICED = /priced/.test(SRC);   // draft prices are shown ONLY on links whose src contains 'priced' (private follow-up); the broad survey shows none
 var LABELS = {};
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
@@ -290,12 +293,13 @@ var SCREENS = [
 
 { title:'Your events', body:function(){ return '<p class="lede">Think of the events where guests RSVP or register. Count them whether your team runs the RSVP, the client does, or you pay a supplier to do it. Rough numbers are fine.</p>'+
  num('events_year','Over a year, about how many events is that in total?','Your best estimate. Put 0 if you only find hotels or venues.','e.g. 40',true)+
- '<div class="ask"><div class="q">In a <b>normal month</b>, about how many of those events have:</div><div class="hint" style="margin:-4px 0 8px">Put 0 where there are none. Half an event (0.5) is fine for one every other month.</div></div>'+
- MONTHLY.map(function(k){ return num('nm_'+k,BKL[k]+' registered guests','','e.g. 2',true,true); }).join('')+
+ '<div class="ask"><div class="q">How many events of each size?</div><div class="hint" style="margin:-4px 0 4px">Smaller events: how many in a <b>normal month</b> (half an event, 0.5, is fine for one every other month). Bigger events are rarer: how many in a <b>year</b>. Put 0 where there are none.</div></div>'+
+ '<div class="lsub">In a normal month</div>'+
+ MONTHLY.map(function(k){ return lrow(BKL[k]+' guests','nm_'+k,'e.g. 2',true,true); }).join('')+
+ '<div class="lsub">In a year (bigger events)</div>'+
+ YEARLY.map(function(k){ return lrow(BKL[k].charAt(0).toUpperCase()+BKL[k].slice(1)+' guests','yr_'+k,'e.g. 1',true); }).join('')+
  ask('peak_months','How long is your busy season?',[['m0','No real busy season'],['m1','1 month'],['m2','2 months'],['m3','3 months'],['m4','4 months'],['m5','5 months'],['m6','6 months or more']])+
  ask('peak_mult','In the busy season, how much busier are you than in a normal month?',[['x1','About the same'],['x2','About twice as busy'],['x3','About three times as busy'],['x4','Four times as busy or more']],'Think of the same kind of events.')+
- '<div class="ask"><div class="q">Bigger events are rarer, so a yearly number is easier. In a year, about how many events have:</div><div class="hint" style="margin:-4px 0 8px">Put 0 if none.</div></div>'+
- YEARLY.map(function(k){ return num('yr_'+k,BKL[k].charAt(0).toUpperCase()+BKL[k].slice(1)+' registered guests','','e.g. 1',true); }).join('')+
  '<div class="hint" id="gridchk" style="margin:-2px 0 8px"></div>'+
  ask('busy_q','Which three months are usually your busiest?',[['q1','January to March'],['q2','April to June'],['q3','July to September'],['q4','October to December'],['flat','No clear pattern']],'',true); } },
 
@@ -323,8 +327,8 @@ var SCREENS = [
  var lede = PRICED ? 'We have not shown you a price yet, on purpose. We would like your own view first, so the numbers on the next screen do not influence it.' : 'We are not showing any prices in this survey. We would still like your own view of what this would be worth to your organisation.';
  return '<p class="lede">'+lede+' Here is the package the questions below refer to:</p>'+planSummary()+
  '<p class="lede" style="margin-top:14px">Every answer is a <b>monthly fee for your whole organisation, in rand, excluding VAT</b>. Your best estimate is what we need.</p>'+
- num('pe_pay','What monthly subscription fee would you <b>expect</b> to pay for this package?','Your honest expectation, not a negotiating figure and not what you would like to pay. This is the base monthly subscription: larger events and extra capacity may be charged separately.','e.g. 4000',true)+
- num('pe_walk','At what monthly fee would this package become <b>too expensive</b> for you to seriously consider?','','e.g. 12000',true)+
+ '<p class="hint" style="margin-top:6px">Your honest expectation, not a negotiating figure. This is the base monthly subscription: larger events and extra capacity may be charged separately.</p>'+
+ prow('pe','Monthly subscription for this package',['pe_pay','I would expect','e.g. 4000'],['pe_walk','Too expensive at','e.g. 12000'],true)+
  '<div class="hint" id="pechk" style="margin-top:6px"></div>'+
  (S.fit==='sourcing'?multi('upgrade_trigger','What would make you add guest management later?',[['guests','Running guest lists and RSVP'],['travel','Rooms, flights and transfers'],['bigger','Bigger or more events'],['users','More people or more clients using it'],['finance','Card statements and reconciliation'],['none','Nothing: Sourcing is all I need']],'Tick all that apply. Optional.'):incQs()+evQs())+
  sec('How you would rather pay')+
