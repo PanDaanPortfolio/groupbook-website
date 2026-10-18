@@ -592,7 +592,7 @@ h1{font:700 clamp(1.5rem,4vw,2.3rem)/1.1 var(--display);margin:8px 0 0;text-wrap
 </div>
 
 <script>
-try{if(/[?&]s=1/.test(location.search)){document.addEventListener('DOMContentLoaded',function(){var c=document.querySelector('.ctl');if(!c)return;var d=document.createElement('div');d.style.cssText='display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted)';d.innerHTML='<span>From the survey? When you are done, go back and press <b>Next</b>.</span><button class="nav" type="button" id="backsv" style="padding:6px 12px;font-size:13px">Back to the survey</button>';c.appendChild(d);document.getElementById('backsv').onclick=function(){window.close();setTimeout(function(){location.href='/pricing-test';},300);};});}}catch(e){}
+try{if(/[?&]s=1/.test(location.search)){document.addEventListener('DOMContentLoaded',function(){var c=document.querySelector('.ctl');if(!c)return;var st=document.createElement('style');st.textContent='#sbar{display:none;margin-top:14px;padding:14px;border:2px solid var(--gold,#C9A24B);border-radius:14px;background:#FFF8E6;flex-direction:column;gap:10px;align-items:stretch;text-align:center;color:#0b1424;font-size:15px}body.atend #sbar{display:flex}#backsv{background:var(--gold,#C9A24B);color:#0b1424;border:0;border-radius:999px;padding:14px 20px;font:inherit;font-size:17px;font-weight:700;cursor:pointer}';document.head.appendChild(st);var d=document.createElement('div');d.id='sbar';d.innerHTML='<span><b>That is the whole walk-through.</b> Now go back to the survey and press <b>Next</b>.</span><button type="button" id="backsv">Back to the survey</button>';c.appendChild(d);document.getElementById('backsv').onclick=function(){window.close();setTimeout(function(){location.href='/pricing-test';},300);};});}}catch(e){}
 try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){document.body.classList.add('emb');}
 (function(){
   /* Real screenshots go here as data: URIs (demo organisation only, never a customer's live data). Empty = no button. */
@@ -665,6 +665,7 @@ try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){doc
     idx=Math.max(0,Math.min(scenes.length-1,i));if(idx>visited)visited=idx;
     scenes.forEach(function(s,k){s.classList.toggle('active',k===idx);s.setAttribute('aria-hidden',k!==idx);s.classList.remove('on');var v=s.querySelector('.viz');if(v)v.classList.remove('showshot')});
     if(!reduce){void stage.offsetWidth;scenes[idx].classList.add('on')}
+    document.body.classList.toggle('atend',idx===scenes.length-1);
     var fr=scenes[idx].querySelector('.frm');if(fr){var sc=fr.parentNode;sc.scrollLeft=sc.scrollWidth}
     segs.forEach(function(s,k){s.classList.toggle('vis',k<=visited);s.classList.toggle('cur',k===idx)});
     prev.disabled=idx===0;next.textContent=idx===scenes.length-1?'Start again':((!SHORT&&scenes[idx+1].classList.contains('proof'))?'See it for real':'Next');label();
