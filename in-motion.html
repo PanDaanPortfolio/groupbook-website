@@ -17,6 +17,7 @@
 body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--body);padding-block:20px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .shell{max-width:1040px;margin:0 auto;display:grid;gap:16px}
 .eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--goldtext)}
+body.short .proof .h{font-size:clamp(1.35rem,3vw,2rem);line-height:1.15}
 body.emb{padding-block:6px 6px}body.emb .eyebrow,body.emb h1{display:none}
 h1{font:700 clamp(1.5rem,4vw,2.3rem)/1.1 var(--display);margin:8px 0 0;text-wrap:balance}
 .stage{background:var(--st-bg);color:var(--st-ink);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;touch-action:pan-y}
@@ -586,6 +587,24 @@ try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){doc
 (function(){
   /* Real screenshots go here as data: URIs (demo organisation only, never a customer's live data). Empty = no button. */
   
+  var SHORT=/[?&]v=short/.test(location.search);
+  if(SHORT){
+    document.body.classList.add('short');
+    var HERO={
+      'Real screen: The client brief form':['1 \u00b7 Client brief','One online form. One click turns the brief into an RFQ.'],
+      'Real screen: The hotel directory':['2 \u00b7 Sourcing','1,000+ hotels and venues, with the group-desk email on file. One branded RFQ to your shortlist.'],
+      'Real screen: Quotes side by side':['2 \u00b7 Sourcing','Quotes side by side. Award in one click; the others are told.'],
+      'Real screen: The transfer planner':['3 \u00b7 Events and guests','RSVP, flights, transfers and rooming from one guest list. Change it once; everything updates.'],
+      'Real screen: Your dashboard and Smart Inbox':['3 \u00b7 Events and guests','Forward an email or PDF to the Smart Inbox. It is filed where it belongs.'],
+      'Real screen: The Companion':['4 \u00b7 Companion','See what is done, in progress, overdue and next, on every event.'],
+      'Real screen: Reconciliation':['5 \u00b7 Reconciliation','Card statement matched to bookings. You check only what does not fit.']};
+    [].slice.call(document.querySelectorAll('.scene')).forEach(function(s){
+      var al=s.getAttribute('aria-label');
+      if(al==='The whole picture') return;
+      if(HERO[al]){ var pl=s.querySelector('.pl'); if(pl) pl.innerHTML='<div class="ph"><span class="pbadge">'+HERO[al][0]+'</span></div><h2 class="h">'+HERO[al][1]+'</h2><p class="note" style="margin-top:8px">Real GroupBook screen. Names are made up.</p>'; }
+      else s.parentNode.removeChild(s);
+    });
+  }
   var stage=document.getElementById('stage');
   var scenes=[].slice.call(document.querySelectorAll('.scene'));
   var nowLabel=document.getElementById('nowLabel'),segsEl=document.getElementById('segs');
@@ -598,14 +617,14 @@ try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){doc
     ['Johan Botha','FA 101','09:50'],['Ayesha Patel','SA 335','11:10'],['Sipho Dlamini','SA 335','11:10'],
     ['Lerato Mahlangu','FA 105','11:20'],['Craig Ellis','FA 105','11:20',1],['Zanele Nkosi','SA 339','13:05'],['Willem Jacobs','SA 339','13:05']];
   var pdfs=document.getElementById('pdfs'),rows=document.getElementById('rows');
-  guests.forEach(function(g,i){
+  if(pdfs&&rows) guests.forEach(function(g,i){
     var p=document.createElement('span');p.className='pdf';p.textContent='PDF';p.style.setProperty('--d',(1+i*0.2)+'s');pdfs.appendChild(p);
     var r=document.createElement('div');r.className='lrow a'+(g[3]?' flag':'');r.style.setProperty('--d',(2+i*0.35)+'s');
     r.innerHTML='<span>'+g[0]+(g[3]?'<span class="flagtag">check spelling</span>':'')+'</span><span class="m">'+g[1]+'</span><span class="m">JNB &rarr; CPT</span><span class="m">'+g[2]+'</span>';
     rows.appendChild(r);
   });
   var stm=document.getElementById('stm');
-  [['Airline tickets','R38,400','ok','matched'],['Lodge accommodation','R85,200','ok','matched'],['Conference room','R42,000','ok','matched'],
+  if(stm) [['Airline tickets','R38,400','ok','matched'],['Lodge accommodation','R85,200','ok','matched'],['Conference room','R42,000','ok','matched'],
    ['Catering','R21,600','ok','matched'],['Car hire','R14,300','ok','matched'],['Hotel breakfasts','R11,200','ok','matched'],
    ['Second airline','R9,200','warn','R12 difference'],['Transport supplier','R9,600','bad','supplier not known']].forEach(function(l,i){
     var r=document.createElement('div');r.className='srow a'+(l[2]==='ok'?'':' '+l[2]);r.style.setProperty('--d',(1+i*.5)+'s');
@@ -635,7 +654,7 @@ try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){doc
     scenes.forEach(function(s,k){s.classList.toggle('active',k===idx);s.setAttribute('aria-hidden',k!==idx);s.classList.remove('on');var v=s.querySelector('.viz');if(v)v.classList.remove('showshot')});
     if(!reduce){void stage.offsetWidth;scenes[idx].classList.add('on')}
     segs.forEach(function(s,k){s.classList.toggle('vis',k<=visited);s.classList.toggle('cur',k===idx)});
-    prev.disabled=idx===0;next.textContent=idx===scenes.length-1?'Start again':(scenes[idx+1].classList.contains('proof')?'See it for real':'Next');label();
+    prev.disabled=idx===0;next.textContent=idx===scenes.length-1?'Start again':((!SHORT&&scenes[idx+1].classList.contains('proof'))?'See it for real':'Next');label();
   }
   next.addEventListener('click',function(){idx===scenes.length-1?show(0):show(idx+1)});
   prev.addEventListener('click',function(){show(idx-1)});

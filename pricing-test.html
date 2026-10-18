@@ -119,7 +119,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research30i';
+var SURVEY_VERSION = '2026-10-research30j';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -189,6 +189,7 @@ function planSummary(){
 var API = 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
 var SRC = (new URLSearchParams(location.search).get('src')) || 'website';
 var REVIEW = /^review/.test(SRC);
+var REELV = (new URLSearchParams(location.search).get('reel')==='short') ? 'short' : (S.reel_variant==='short'?'short':'full'); if(REELV==='short') S.reel_variant='short';
 // research30: the same seven brackets everywhere. Normal month for the four smaller brackets; yearly for the three larger ones (rare events a normal month would miss)
 var BK = ['b50','b100','b150','b200','b300','b500','b500p'];
 var BKL = {b50:'1 to 50',b100:'51 to 100',b150:'101 to 150',b200:'151 to 200',b300:'201 to 300',b500:'301 to 500',b500p:'more than 500'};
@@ -320,9 +321,9 @@ var SCREENS = [
 
 { title:'See GroupBook at work', body:function(){ return '<p class="lede" style="margin-bottom:10px">A short click-through, from the client\'s brief to the final bill. <span class=\"reelhint\">Tap the <b>gold button</b> in the box to step through.</span> Real screens, made-up names.</p>'+
  '<style>@media(max-width:760px){.reelwrap,.reelhint{display:none}}@media(min-width:761px){.reelmob{display:none}}</style>'+
- '<div class="reelwrap"><iframe src="/in-motion" title="GroupBook in motion: a click-through" style="width:100%;height:calc(100vh - 290px);height:calc(100dvh - 290px);min-height:480px;border:1px solid #ddd;border-radius:12px;background:#fff"></iframe></div>'+
- '<p class="hint reelhint" style="margin:8px 0 0">Small screen? <a href="/in-motion?s=1" target="_blank" rel="noopener">Open it in its own tab</a>, then come back and press Next.</p>'+
- '<div class="card reelmob"><h3>The walk-through</h3><ul style="margin:8px 0 12px;padding-left:20px;display:grid;gap:6px"><li>About 21 short screens, at your own pace</li><li>Real screens, made-up names</li><li>It opens in a new tab: when you are done, come back here and press <b>Next</b></li></ul><a class="btn" href="/in-motion?s=1" target="_blank" rel="noopener" onclick="S.reel_opened=true;save()" style="display:block;text-align:center;background:var(--gold);color:#fff;font-weight:700;padding:14px;border-radius:999px;text-decoration:none">Start the walk-through</a></div>'; } },
+ '<div class="reelwrap"><iframe src="/in-motion'+(REELV==='short'?'?v=short':'')+'" title="GroupBook in motion: a click-through" style="width:100%;height:calc(100vh - 290px);height:calc(100dvh - 290px);min-height:480px;border:1px solid #ddd;border-radius:12px;background:#fff"></iframe></div>'+
+ '<p class="hint reelhint" style="margin:8px 0 0">Small screen? <a href="/in-motion?s=1'+(REELV==='short'?'&v=short':'')+'" target="_blank" rel="noopener">Open it in its own tab</a>, then come back and press Next.</p>'+
+ '<div class="card reelmob"><h3>The walk-through</h3><ul style="margin:8px 0 12px;padding-left:20px;display:grid;gap:6px"><li>About 21 short screens, at your own pace</li><li>Real screens, made-up names</li><li>It opens in a new tab: when you are done, come back here and press <b>Next</b></li></ul><a class="btn" href="/in-motion?s=1'+(REELV==='short'?'&v=short':'')+'" target="_blank" rel="noopener" onclick="S.reel_opened=true;save()" style="display:block;text-align:center;background:var(--gold);color:#fff;font-weight:700;padding:14px;border-radius:999px;text-decoration:none">Start the walk-through</a></div>'; } },
 
 { title:'What did you make of it?', body:function(){ return '<p class="lede">Your first impression is what we need.</p>'+
  ask('reel_clarity','How clear is what GroupBook would do for your team?',[['clear','Clear: I could explain it to a colleague'],['mostly','Mostly clear'],['unsure','Not very clear'],['demo','I would need a demo to say']])+
@@ -380,7 +381,7 @@ function payload(){
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
   var a={ research30:true, archetype:S.archetype||null, team:S.team||null, clients:(S.clients||[]).join(',')||null, events_year:n(S.events_year), nm:(function(){ var o={}; MONTHLY.forEach(function(k){ o[k]=n(S['nm_'+k]); }); return o; })(), yr:(function(){ var o={}; YEARLY.forEach(function(k){ o[k]=n(S['yr_'+k]); }); return o; })(), peak_months:S.peak_months||null, peak_mult:S.peak_mult||null, sz:szOut(), events_rsvp:szSum(), busy_q:S.busy_q||null, concept:S.concept||null, inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
     users:n(S.users), hours_src:S.hours_src||null, hours_run:S.hours_run||null, sourcing_today:S.sourcing_today||null, rfq_pm:S.rfq_pm||null, rsvp_who:S.rsvp_who||null, upgrade_trigger:(S.upgrade_trigger||[]).join(',')||null, approver:S.approver||null, finance_need:S.finance_need||null,
-    seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:S.step_most||null, plan_fit:S.fit||null, forced:S.forced||null,
+    seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:S.step_most||null, plan_fit:S.fit||null, forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
     evp:feeOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:S.fit||null, price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
