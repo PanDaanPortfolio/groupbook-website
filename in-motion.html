@@ -592,15 +592,16 @@ try{if(window.self!==window.top)document.body.classList.add('emb');}catch(e){doc
     document.body.classList.add('short');
     var HERO={
       'Real screen: The client brief form':['1 \u00b7 Client brief','One online form. One click turns the brief into an RFQ.'],
+      'Real screen: A venue record':['2 \u00b7 Sourcing','Every venue on record: room capacities for every layout, contact details and the date last checked.'],
       'Real screen: The hotel directory':['2 \u00b7 Sourcing','1,000+ hotels and venues, with the group-desk email on file. One branded RFQ to your shortlist.'],
       'Real screen: Quotes side by side':['2 \u00b7 Sourcing','Quotes side by side. Award in one click; the others are told.'],
-      'Real screen: The transfer planner':['3 \u00b7 Events and guests','RSVP, flights, transfers and rooming from one guest list. Change it once; everything updates.'],
-      'Real screen: Your dashboard and Smart Inbox':['3 \u00b7 Events and guests','Forward an email or PDF to the Smart Inbox. It is filed where it belongs.'],
+      'Real screen: The transfer planner':['3 \u00b7 Events and guests','The real planner: flights matched to hotel stays, and the odd ones flagged for you to decide.'],
+      'Real screen: Your dashboard and Smart Inbox':['3 \u00b7 Events and guests','Forward an email or a PDF to the Smart Inbox. It is read, the data is pulled out and the fields are filled in. No manual capturing.'],
       'Real screen: The Companion':['4 \u00b7 Companion','See what is done, in progress, overdue and next, on every event.'],
       'Real screen: Reconciliation':['5 \u00b7 Reconciliation','Card statement matched to bookings. You check only what does not fit.']};
     [].slice.call(document.querySelectorAll('.scene')).forEach(function(s){
       var al=s.getAttribute('aria-label');
-      if(al==='The whole picture') return;
+      if(al==='The whole picture'||al==='Transfer planning'||al==='Companion') return;
       if(HERO[al]){ var pl=s.querySelector('.pl'); if(pl) pl.innerHTML='<div class="ph"><span class="pbadge">'+HERO[al][0]+'</span></div><h2 class="h">'+HERO[al][1]+'</h2><p class="note" style="margin-top:8px">Real GroupBook screen. Names are made up.</p>'; }
       else s.parentNode.removeChild(s);
     });
