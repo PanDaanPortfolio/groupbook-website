@@ -236,7 +236,8 @@ function evQs(){ if(!hasRsvp()) return ''; var rq=feeReq(), sz=sizeOf(S.size)||S
   FEEBANDS.forEach(function(f){ out+=prow('fee_'+f[0],f[1],['fee_'+f[0]+'_pay','I would expect (rand)','e.g. 5000'],['fee_'+f[0]+'_walk','Too expensive at (rand)','e.g. 12000'],false); });
   out+='</div>';
   return out; }
-function updOver(){ var pg=document.getElementById('pgblock'), fl=document.getElementById('flatblock'); if(!pg||!fl) return; var v=S.over_pref||''; var rq=feeReq();
+function updOver(){ var pj=document.getElementById('projblock'); if(pj){ var st=S.structure||''; var showPj=/^(D|G|S_job|S_ret)$/.test(st); pj.style.display=showPj?'block':'none'; REQ.proj_pay=showPj; REQ.proj_walk=false; pj.querySelectorAll('.req').forEach(function(e){e.remove();}); if(showPj) pj.querySelectorAll('.ask > .q').forEach(function(q){ q.insertAdjacentHTML('beforeend','<span class="req">*</span>'); }); }
+  var pg=document.getElementById('pgblock'), fl=document.getElementById('flatblock'); if(!pg||!fl) return; var v=S.over_pref||''; var rq=feeReq();
   var showPg=(v==='perguest'||v==='either'), showFl=(v==='flat'||v==='either');
   pg.style.display=showPg?'block':'none'; fl.style.display=showFl?'block':'none';
   REQ.pg_pay=REQ.pg_walk=(showPg&&rq); FEEBANDS.forEach(function(f){ REQ['fee_'+f[0]+'_pay']=REQ['fee_'+f[0]+'_walk']=(showFl&&rq); });
@@ -310,15 +311,16 @@ var STRUCT = {
   F: 'The same package as shown, at a lower monthly price'
 };
 var STRUCT_NP = {
-  A: 'A monthly fee for my modules, with a set number of RSVP events included; bigger events charged a flat price per event',
-  B: 'A monthly fee for my modules that includes a yearly pool of guests; once the pool is used, a rate per extra guest',
-  C: 'A monthly fee for my modules with RSVP events included; above the guest limit, a rate per extra guest, never more than a set price per event',
-  D: 'No monthly fee: I pay each time I run an event or a sourcing job',
+  C: 'A monthly fee for the modules I use, with RSVP events up to my size\'s guest limit included; over the limit, a rate per extra guest, never more than a set price per event',
+  A: 'A monthly fee for the modules I use, with RSVP events included; bigger events charged a flat price per event',
+  B: 'A monthly fee for the modules I use that includes a yearly pool of registered guests; once the pool is used, a rate per extra guest',
+  D: 'No monthly fee: I pay per project. Each event or sourcing job is priced on its own, using whichever modules it needs',
+  G: 'A small monthly retainer for the workspace, plus a fee per project for the modules that project uses',
   E: 'A cheaper monthly fee with no help hours included; help from us is charged by the hour when I use it',
   F: 'The same package as described, at a lower monthly price'
 };
 function structOpts(){
-  if(!S._ord){ var a=['A','B','C','D','E']; for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } S._ord=a; save(); }
+  if(!S._ord||S._ord.length<6){ var a=['A','B','C','D','E','G']; for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } S._ord=a; save(); }
   return S._ord.map(function(k){ return [k, STRUCT_NP[k]]; }).concat([['stay','None of these: I would carry on as I do today']]);
 }
 var ACTION = [['buy','Start a paid subscription'],['trial','Trial it first, then decide'],['budget','Seek budget approval'],['current','Continue with our current process or supplier'],['cannot','Cannot judge from this information']];
@@ -387,7 +389,8 @@ var SCREENS = [
  incQs()+evQs()+
  sec('How you would rather pay')+
  ask('bundle_pref','If you took more than one module, which would you rather have?',[['modules','Each module priced on its own, added up'],['bundle','A named bundle at a discount'],['either','No preference']],'',true)+
- ask('structure','These are options for how you could pay, not a decision. Which would you rather have?', (selMods().length===1&&selMods()[0]==='sourcing')?[['S_sub','A monthly Sourcing module'],['S_job','Pay each time I run a sourcing job, with no monthly fee'],['S_stay','Carry on with our current process']]:structOpts(),'Pick the one you would choose.')+
+ ask('structure','These are options for how you could pay, not a decision. Which would you rather have?', (selMods().length===1&&selMods()[0]==='sourcing')?[['S_sub','A monthly Sourcing module'],['S_job','Pay per sourcing job, with no monthly fee'],['S_ret','A small monthly retainer plus a fee per sourcing job'],['S_stay','Carry on with our current process']]:structOpts(),'Pick the one you would choose.')+
+ '<div id="projblock" style="display:none">'+prow('proj','If you paid <b>per project</b>, what would one typical event cost you, with every module you use included?',['proj_pay','I would expect (rand per project)','e.g. 8000'],['proj_walk','Too expensive at (rand per project)','e.g. 20000'],false,'Enter an amount in rand for one typical project, excluding VAT')+'<div class="hint" style="margin:6px 0 0">Think of an ordinary event for your team, not your biggest. Sourcing only: one sourcing job.</div></div>'+
  (PRICED?'':ask('cadence','Would you rather pay monthly or once a year?',[['monthly','Monthly, cancel any time'],['annual','Once a year, with a discount for paying up front']])); } },
 
 { title:'The prices', priced:true, body:function(){ var m=selMods(); var si=sizeIdx(S.size); var pk=m.length?pkgPrice(m,si):null; var sz=SIZES[si];
@@ -435,11 +438,11 @@ function payload(){
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'billable hours per booking, band a..e per size group s(up to 50) m(51-150) l(151+)', rsvp_who:rsvpWho, finance_need:finNeed,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
-    evp:feeOut(), pg:pgOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''),
+    evp:feeOut(), pg:pgOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj_pay:n(S.proj_pay), proj_walk:n(S.proj_walk),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
-    price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; over_pref routes the follow-up: pg = ZAR per registered guest over the size cap (expect / too expensive) asked when perguest or either; evp.{xs,b200,b300,b500} = ZAR flat extra charge for ONE extra RSVP event in that size, allowance used up, ex VAT, asked when flat or either; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:7,
+    price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; over_pref routes the follow-up: pg = ZAR per registered guest over the size cap (expect / too expensive) asked when perguest or either; evp.{xs,b200,b300,b500} = ZAR flat extra charge for ONE extra RSVP event in that size, allowance used up, ex VAT, asked when flat or either; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj_* = ZAR for one typical project when D/G/S_job/S_ret chosen; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:7,
     t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl) },
-    plan_text_version:'v7.2-2026-10-19-modular-routed', user_agent:(navigator.userAgent||'').slice(0,160) };
+    plan_text_version:'v7.3-2026-10-19-modular-perproject', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
     role:roleMap[S.archetype]||null, rfp_volume:null, team_size:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
     tier1_good_value:tf===1?gv:null, tier1_too_expensive:tf===1?te:null, tier2_good_value:tf===2?gv:null, tier2_too_expensive:tf===2?te:null, tier3_good_value:tf===3?gv:null, tier3_too_expensive:tf===3?te:null,
