@@ -321,9 +321,9 @@ var STRUCT_NP = {
 };
 function structOpts(){
   if(!S._ord||S._ord.length<6){ var a=['A','B','C','D','E','G']; for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } S._ord=a; save(); }
-  return S._ord.map(function(k){ return [k, STRUCT_NP[k]]; }).concat([['stay','None of these: I would carry on as I do today']]);
+  return S._ord.map(function(k){ return [k, STRUCT_NP[k]]; }).concat([['stay','None of these: I would carry on as I do today','What would have to change for you to pay for a tool like this?']]);
 }
-var ACTION = [['buy','Start a paid subscription'],['trial','Trial it first, then decide'],['budget','Seek budget approval'],['current','Continue with our current process or supplier'],['cannot','Cannot judge from this information']];
+var ACTION = [['buy','Start a paid subscription'],['trial','Trial it first, then decide'],['budget','Seek budget approval'],['current','Continue with our current process or supplier','What would keep you with it?'],['cannot','Cannot judge from this information','What is missing?']];
 var RSVPPG = [['lt25','Under R25'],['25to50','R25 to R50'],['50to75','R50 to R75'],['75to100','R75 to R100'],['100to150','R100 to R150'],['150p','More than R150'],['none','We have never paid a supplier for this'],['pnts','Prefer not to say']];
 var SPEND = [['none','Nothing'],['lt25','Under R25,000'],['25to100','R25,000 to R100,000'],['100to300','R100,000 to R300,000'],['300p','More than R300,000'],['pnts','Prefer not to say']];
 var APPROVE = [['a25','Up to R25,000'],['a60','R25,000 to R60,000'],['a120','R60,000 to R120,000'],['a250','R120,000 to R250,000'],['a250p','More than R250,000'],['alone_no','I could not approve spending on my own'],['pnts','Prefer not to say']];
@@ -379,6 +379,12 @@ var SCREENS = [
  ask('forced','Is there anything you would need that sits in a module you would not take?',[['no','No'],['yes','Yes','What is it, and which module is it in?']]); } },
 
 { title:'What would it be worth to you?', body:function(){
+ if((S.mods||[]).indexOf('none')>-1){ REQ.none_why=true; return '<p class="lede">You said none of the four modules is for your team. That is a useful answer, and we would like to understand it.</p>'+
+   '<div class="ask" data-ask="none_why">'+txt('none_why','What would need to be true for GroupBook to be worth paying for where you work?<span class="req">*</span>','One or two lines is enough: a missing job, the way you buy, who decides, or something else.')+'</div>'+
+   sec('How you would rather pay, if you ever did')+
+   ask('structure','If GroupBook were ever worth it to you, which of these would you rather have?', structOpts(),'Pick the one you would choose.')+
+   '<div id="projblock" style="display:none">'+prow('proj','If you paid <b>per project</b>, what would one typical event be worth to you?',['proj_pay','I would expect (rand per project)','e.g. 8000'],['proj_walk','Too expensive at (rand per project)','e.g. 20000'],false,'Enter an amount in rand for one typical project, excluding VAT')+'</div>'+
+   (PRICED?'':ask('cadence','Would you rather pay monthly or once a year?',[['monthly','Monthly, cancel any time'],['annual','Once a year, with a discount for paying up front']])); }
  var lede = PRICED ? 'We have not shown you a price yet, on purpose. We would like your own view first, so the numbers on the next screen do not influence it.' : 'We are not showing any prices in this survey. We would still like your own view of what this would be worth to your organisation.';
  return '<p class="lede">'+lede+' Here is the package the questions below refer to: the modules you ticked, at the size you chose.</p>'+planSummary()+
  '<p class="lede" style="margin-top:14px">The <b>subscription</b> answers are a <b>monthly fee for your whole organisation, not per user, in rand, excluding VAT</b>. Your best estimate is what we need.</p>'+
@@ -389,7 +395,7 @@ var SCREENS = [
  incQs()+evQs()+
  sec('How you would rather pay')+
  ask('bundle_pref','If you took more than one module, which would you rather have?',[['modules','Each module priced on its own, added up'],['bundle','A named bundle at a discount'],['either','No preference']],'',true)+
- ask('structure','These are options for how you could pay, not a decision. Which would you rather have?', (selMods().length===1&&selMods()[0]==='sourcing')?[['S_sub','A monthly Sourcing module'],['S_job','Pay per sourcing job, with no monthly fee'],['S_ret','A small monthly retainer plus a fee per sourcing job'],['S_stay','Carry on with our current process']]:structOpts(),'Pick the one you would choose.')+
+ ask('structure','These are options for how you could pay, not a decision. Which would you rather have?', (selMods().length===1&&selMods()[0]==='sourcing')?[['S_sub','A monthly Sourcing module'],['S_job','Pay per sourcing job, with no monthly fee'],['S_ret','A small monthly retainer plus a fee per sourcing job'],['S_stay','Carry on with our current process','What would have to change for you to pay for a tool like this?']]:structOpts(),'Pick the one you would choose.')+
  '<div id="projblock" style="display:none">'+prow('proj','If you paid <b>per project</b>, what would one typical event cost you, with every module you use included?',['proj_pay','I would expect (rand per project)','e.g. 8000'],['proj_walk','Too expensive at (rand per project)','e.g. 20000'],false,'Enter an amount in rand for one typical project, excluding VAT')+'<div class="hint" style="margin:6px 0 0">Think of an ordinary event for your team, not your biggest. Sourcing only: one sourcing job.</div></div>'+
  (PRICED?'':ask('cadence','Would you rather pay monthly or once a year?',[['monthly','Monthly, cancel any time'],['annual','Once a year, with a discount for paying up front']])); } },
 
@@ -408,7 +414,7 @@ var SCREENS = [
 
 { title:'Last step: send it to us', body:function(){ return '<p class="lede">That is everything. Press <b>Send my answers</b> and they go straight to us.</p>'+
  field('name','Your first name','text','',true)+field('email','Work email','email','you@company.co.za',true)+field('org','Your organisation','text','')+
- (REVIEW?txt('review_note','Reviewer comments: where did you hesitate, need a record, need a colleague, or start guessing? What was unclear, missing, or wrong for your kind of team?','Screen numbers help, for example: "Screen 3, hours question". Roughly how long did it take you?'):'')+
+ (REVIEW?(function(){ REQ.review_note=true; return '<div class="ask" data-ask="review_note">'+txt('review_note','Reviewer comments: where did you hesitate, need a record, need a colleague, or start guessing? What was unclear, missing, or wrong for your kind of team?<span class="req">*</span>','Screen numbers help, for example: "Screen 3, hours question". Roughly how long did it take you?')+'</div>'; })():'')+
  txt('definite','Optional: what one thing would have made this a definite yes for you?')+
  tick('interview_ok','I am happy to talk it through on a call of about 20 minutes.')+
  tick('datapack_ok','I could share details of three to five recent events (month, number of guests, who ran the RSVP) if it is easy for me to find.')+
@@ -441,8 +447,8 @@ function payload(){
     evp:feeOut(), pg:pgOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj_pay:n(S.proj_pay), proj_walk:n(S.proj_walk),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
     price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; over_pref routes the follow-up: pg = ZAR per registered guest over the size cap (expect / too expensive) asked when perguest or either; evp.{xs,b200,b300,b500} = ZAR flat extra charge for ONE extra RSVP event in that size, allowance used up, ex VAT, asked when flat or either; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj_* = ZAR for one typical project when D/G/S_job/S_ret chosen; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:7,
-    t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl) },
-    plan_text_version:'v7.5-2026-10-19-modular-size-required', user_agent:(navigator.userAgent||'').slice(0,160) };
+    t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl), none_why:cut(S.none_why,tl), stay_why:cut(S.structure__stay||S.structure__S_stay,tl), action_why:cut(S.buy_at_price__current||S.buy_at_price__cannot,300) },
+    plan_text_version:'v7.6-2026-10-19-modular-escapes-routed', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
     role:roleMap[S.archetype]||null, rfp_volume:null, team_size:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
     tier1_good_value:tf===1?gv:null, tier1_too_expensive:tf===1?te:null, tier2_good_value:tf===2?gv:null, tier2_too_expensive:tf===2?te:null, tier3_good_value:tf===3?gv:null, tier3_too_expensive:tf===3?te:null,
