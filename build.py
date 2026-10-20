@@ -5,7 +5,8 @@ import os, json, re
 OUT = os.path.dirname(os.path.abspath(__file__))
 
 # PRICING-HIDE-001 (Danie, 15 Oct 2026): no rand amounts on the public site while the pricing research
-# runs (Strategy v5.0 §3.6). The plan ladder, inclusions and FAQ stay; every price becomes "in research"
+# runs (Strategy v5.0 §3.6). 19 Oct 2026: the ladder is replaced by the modular card (four modules, one size);
+# every price stays "in research"
 # and the pricing page asks for the 60-second survey. Flip to False and rebuild to restore the full page.
 # /pricing-test shows prices on purpose (it is the research instrument) and is not generated here.
 HIDE_PRICES = True
@@ -179,13 +180,13 @@ INDEX = """
 <section class="band-white">
   <div class="wrap">
     <div class="eyebrow">Choose your path</div>
-    <h2 style="margin-top:10px">Same platform, one price ladder. Start where the work is.</h2>
-    <p class="lede" style="margin-top:10px">Our recommendations follow what you run, not what you are called.</p>
+    <h2 style="margin-top:10px">Same platform, four modules. Take the jobs you do.</h2>
+    <p class="lede" style="margin-top:10px">One group event is four jobs, and in South Africa they are often done by different people. Each party takes its own modules; the event runs through GroupBook from one to the next.</p>
     <div class="grid g4" style="margin-top:28px">
-      <div class="card"><h3>I run events for my company</h3><p>Briefs arrive from every department, quotes come back in every format, and the guest list changes until the day before.</p><p class="muted">We recommend <strong data-tier="practice">Boutique</strong> for teams running guest logistics. Scale, SSO or a service commitment point to <strong data-tier="enterprise">Larger organisations</strong>.</p><a href="/pricing#practice">See the plan →</a></div>
-      <div class="card"><h3>I'm an event agency</h3><p>Every event starts with the same phone calls to find the group desk, and the same spreadsheet rebuilt from scratch.</p><p class="muted">Sourcing-led work fits <strong data-tier="sourcing">Sourcing</strong>; add guest logistics on <strong data-tier="practice">Boutique</strong>.</p><a href="/pricing#sourcing">See the plan →</a></div>
-      <div class="card"><h3>I'm a MICE agency</h3><p>Multi-hotel, multi-city programmes with rooming lists, transfers and supplier packs that must agree with each other.</p><p class="muted">Several events in flight at once is <strong data-tier="practice">Boutique</strong> or <strong data-tier="agency">Full House</strong>.</p><a href="/pricing#agency">See the plan →</a></div>
-      <div class="card"><h3>I move groups</h3><p>Sports tours, incentive trips, conference delegations — the same group, many suppliers, one deadline.</p><p class="muted">Start on <strong data-tier="sourcing">Sourcing</strong>; add rooming, flights and transfers on <strong data-tier="practice">Boutique</strong>.</p><a href="/pricing#sourcing">See the plan →</a></div>
+      <div class="card"><h3>I run events for my company</h3><p>Briefs arrive from every department, quotes come back in every format, and the guest list changes until the day before.</p><p class="muted">Usually <strong>Sourcing + RSVP</strong>: three quotes for the auditor and the guest list in one place, while your agencies do the travel. Scale, SSO or a service commitment point to <strong data-tier="enterprise">Larger organisations</strong>.</p><a href="/pricing#modules">See the modules →</a></div>
+      <div class="card"><h3>I'm an event agency</h3><p>Every event starts with the same phone calls to find the group desk, and the same spreadsheet rebuilt from scratch.</p><p class="muted">Usually <strong>Sourcing + RSVP + Travel</strong>, and Recon if clients hand you a card. Take only the jobs you keep in-house; hand the rest to a specialist on the same event.</p><a href="/pricing#modules">See the modules →</a></div>
+      <div class="card"><h3>I'm a MICE agency</h3><p>Multi-hotel, multi-city programmes with rooming lists, transfers and supplier packs that must agree with each other.</p><p class="muted">Usually all four at <strong>Mid</strong> or <strong>Large</strong> size: several programmes in flight at once, with the finance workspace at the end.</p><a href="/pricing#sizes">See the sizes →</a></div>
+      <div class="card"><h3>I move groups</h3><p>Sports tours, incentive trips, conference delegations — the same group, many suppliers, one deadline.</p><p class="muted">Usually <strong>Sourcing + Travel</strong>, with Recon for the lodge card: rooms, flights and transfers from one list, never charged per guest.</p><a href="/pricing#modules">See the modules →</a></div>
     </div>
   </div>
 </section>
@@ -265,14 +266,14 @@ INDEX = """
     </div>
     <div>
       <div class="eyebrow">Pricing</div>
-      <h2 style="margin-top:10px">One ladder. Monthly, no contract; or annual with two months free.</h2>
+      <h2 style="margin-top:10px">Four modules, one size. We are setting the prices with the people who will use it.</h2>
       <div class="grid g2" style="margin-top:20px">
-        <div class="rung"><div class="tier" data-tier="sourcing">Sourcing</div><div class="price">R1,950<small> /month</small></div><div class="annual">2 users · requests, replies and comparison</div></div>
-        <div class="rung hi"><div class="badge">Teams running events</div><div class="tier" data-tier="practice">Boutique</div><div class="price">R4,950<small> /month</small></div><div class="annual">4 users · guests, rooms, flights, transfers · 60 guest events a year included</div></div>
-        <div class="rung"><div class="tier" data-tier="agency">Full House</div><div class="price">R9,950<small> /month</small></div><div class="annual">10 users · bigger events included, several clients at once, statement matching</div></div>
-        <div class="rung"><div class="tier" data-tier="enterprise">Larger organisations</div><div class="price">Talk to us</div><div class="annual">By order form · SSO, residency, service commitments</div></div>
+        <div class="rung"><div class="tier" data-tier="sourcing">Sourcing</div><div class="price">In research</div><div class="annual">Brief in, one request to the right hotels and venues, quotes side by side, award</div></div>
+        <div class="rung"><div class="tier">RSVP</div><div class="price">In research</div><div class="annual">Invitations, online replies, guest page, check-in — the one module sized by guests</div></div>
+        <div class="rung"><div class="tier">Travel</div><div class="price">In research</div><div class="annual">Rooms, flights, transfers, car hire, supplier lists, guest confirmations — never per guest</div></div>
+        <div class="rung"><div class="tier">Recon</div><div class="price">In research</div><div class="annual">Card statements matched to bookings and purchase orders, budgets per event</div></div>
       </div>
-      <p class="note" style="margin-top:12px">Everyday guest events are included on Boutique and Full House, with a few larger ones; the really big ones are priced per event, shown and approved first. Every plan carries a fair-use envelope. No VAT is charged.</p>
+      <p class="note" style="margin-top:12px">Pick a size for your team — Small, Mid or Large — and tick the modules you use. Two modules get a discount, three or four a bigger one. The shared workspace, your branding, the Smart Inbox, onboarding and help come with any module. Larger organisations by order form. No VAT is charged.</p>
       <div class="btn-row"><a class="btn btn-primary" href="/pricing">Full pricing and what is included</a></div>
     </div>
   </div>
@@ -286,7 +287,7 @@ INDEX = """
       <details class="faq"><summary>Who is GroupBook for?</summary><p>Anyone whose work is sourcing suppliers for a group and then coordinating that group's travel: corporate event teams, event and MICE agencies, and group travel specialists. There is one price ladder; you choose a plan by the work you run, not by what your organisation is called.</p></details>
       <details class="faq"><summary>What does the Smart Inbox actually do?</summary><p>You forward an email or upload a PDF. GroupBook classifies it — client brief, hotel quote, flight confirmation, supplier invoice — reads the details out of it, and files them on the right record: the comparison, the guest's itinerary, the reconciliation. Anything it is unsure of is flagged for you rather than filed silently.</p></details>
       <details class="faq"><summary>How current is the hotel directory?</summary><p>Every listed hotel has a group-desk contact on file, with the date it was last checked. A person maintains it: phoning, checking the property's own pages, and recording where each address came from. The number confirmed directly with the property is published on this page and grows weekly. Bounced addresses are flagged for re-checking before the next request goes out.</p></details>
-      <details class="faq"><summary>We already use an RSVP tool. Does GroupBook replace it?</summary><p>For most events, the guest module covers invitations, entitlements, dietary and special requirements, sub-events and a personalised itinerary per guest, with the guest portal and RSVP in UAT with our launch customer. Everyday events are included on Boutique (up to 100 registered guests) and Full House (up to 150), with a few larger ones each year; the really big ones are priced per event. Where a specialist RSVP tool is already embedded, GroupBook imports the confirmed list and runs the travel from there — that never triggers an event charge.</p></details>
+      <details class="faq"><summary>We already use an RSVP tool. Does GroupBook replace it?</summary><p>For most events, the guest module covers invitations, entitlements, dietary and special requirements, sub-events and a personalised itinerary per guest, with the guest portal and RSVP in UAT with our launch customer. It is one module of four, so you only take it if you run RSVP yourself: events up to your size's guests per event are included, and bigger ones are priced on their registered guests — how that is shaped (per guest, an annual allowance, or a few larger-event passes) is part of our research, and you always see and approve the figure before the event goes live. Where a specialist RSVP tool or supplier is already embedded, leave the RSVP module out: GroupBook imports the confirmed list and runs the travel from there, and the Travel module is never charged per guest.</p></details>
       <details class="faq"><summary>Are there usage limits?</summary><p>Plans differ on users, guest events (how many and how big) and help. Everything else is one fair-use envelope, the same on every plan, there to protect hotels' inboxes and the directory. You see a notice at 80% and can go 20% over once; sustained use above it is a conversation, never a surprise invoice. The envelope is on the <a href="/fair-use">fair-use page</a>.</p></details>
       <details class="faq"><summary>What does support cost?</summary><p>Our defects are fixed at no charge, whenever they occur; response follows the published business-hours targets. Help using GroupBook is included. Work on your own data, set-up or training comes from a monthly allowance of minutes, and anything bigger is quoted at R699 an hour and approved by you first. Details, response targets and the Event Window offer are on the <a href="/support">support page</a>.</p></details>
     </div>
@@ -612,9 +613,9 @@ SUPPORT = """
 <section class="band-white">
   <div class="wrap">
     <div class="eyebrow">2 · What your plan includes</div>
-    <h2 style="margin-top:10px">Support steps up the ladder with you</h2>
+    <h2 style="margin-top:10px">Support steps up with your size</h2>
     <div class="table-scroll" style="margin-top:20px"><table>
-      <thead><tr><th></th><th><span data-tier="sourcing">Sourcing</span></th><th><span data-tier="practice">Boutique</span></th><th><span data-tier="agency">Full House</span></th><th><span data-tier="enterprise">Larger organisations</span></th></tr></thead>
+      <thead><tr><th></th><th>Small</th><th>Mid</th><th>Large</th><th><span data-tier="enterprise">Larger organisations</span></th></tr></thead>
       <tbody>
         <tr><td class="lbl">Sev 1 — a live event is affected: first response within</td><td>2 business hours</td><td>2 business hours</td><td>2 business hours</td><td>As agreed</td></tr>
         <tr><td class="lbl">Sev 2 — a core workflow is blocked</td><td colspan="3">8 business hours</td><td>As agreed</td></tr>
@@ -707,9 +708,9 @@ SUPPORT = """
     <div class="eyebrow">5 · Three real situations</div>
     <h2 style="margin-top:10px">What you would actually pay</h2>
     <div class="grid g3" style="margin-top:22px">
-      <div class="ex"><h3>Guest portal down at 02:00 on arrival day <span class="note">(illustrative)</span></h3><p>Boutique plan, no Event Window booked. You log a call and tick "a live event is affected".</p><ol><li>Sev 1. A person is alerted.</li><li>Cause: a GroupBook defect.</li><li><span class="pill p-free">Defect</span>no charge, whatever time it took.</li></ol><div class="total"><span>You pay</span><span class="amt free">R0</span></div></div>
+      <div class="ex"><h3>Guest portal down at 02:00 on arrival day <span class="note">(illustrative)</span></h3><p>Mid size, no Event Window booked. You log a call and tick "a live event is affected".</p><ol><li>Sev 1. A person is alerted.</li><li>Cause: a GroupBook defect.</li><li><span class="pill p-free">Defect</span>no charge, whatever time it took.</li></ol><div class="total"><span>You pay</span><span class="amt free">R0</span></div></div>
       <div class="ex"><h3>25 minutes fixing a rooming list you imported wrong</h3><p>Sourcing plan, Tuesday 09:00. Duplicate rows in the file you uploaded.</p><ol><li>Sev 3. Not a defect: the file was the cause.</li><li>Over 15 minutes, so a quick estimate — 25 min from your allowance — which you approve on the call.</li><li>25 of your 60 minutes used; 35 left this month.</li></ol><div class="total"><span>You pay</span><span class="amt pool">R0 <span class="note">(from allowance)</span></span></div></div>
-      <div class="ex"><h3>A 3-hour training session for two new staff</h3><p>Boutique plan, R1,500 prepaid credit on the account.</p><ol><li>Planned work: quoted in full at R699/h → R2,097; your named approver approves.</li><li>Planned work does not draw on the monthly allowance.</li><li>R1,500 comes off credit; R597 goes on this month's invoice.</li></ol><div class="total"><span>You pay</span><span class="amt credit">R1,500 credit + R597 invoiced</span></div></div>
+      <div class="ex"><h3>A 3-hour training session for two new staff</h3><p>Mid size, R1,500 prepaid credit on the account.</p><ol><li>Planned work: quoted in full at R699/h → R2,097; your named approver approves.</li><li>Planned work does not draw on the monthly allowance.</li><li>R1,500 comes off credit; R597 goes on this month's invoice.</li></ol><div class="total"><span>You pay</span><span class="amt credit">R1,500 credit + R597 invoiced</span></div></div>
     </div>
   </div>
 </section>
@@ -753,18 +754,18 @@ FAIR = """
         <tr><td class="lbl">Recipients per comparable sourcing round</td><td>soft 12 · hard 25</td><td>A hotel should only see requests it can realistically win</td></tr>
         <tr><td class="lbl">Requests sent per organisation per day</td><td>150</td><td>Keeps every customer's standing with hotels; sending pauses if bounces or complaints rise</td></tr>
         <tr><td class="lbl">Contact reveals</td><td>once per property per 90 days; typical use 200–500 a month, monitored</td><td>The directory is shared; its contacts are used to send your requests, never harvested</td></tr>
-        <tr><td class="lbl">Documents read for you (quotes, confirmations, invoices)</td><td>300 a month on Sourcing · 750 on Boutique and Full House</td><td>Each document costs us to read; this is the one figure with a cost behind it</td></tr>
+        <tr><td class="lbl">Documents read for you (quotes, confirmations, invoices)</td><td>300 a month with Sourcing only · 750 with RSVP, Travel or Recon</td><td>Each document costs us to read; this is the one figure with a cost behind it</td></tr>
         <tr><td class="lbl">Storage</td><td>reasonable use; we talk if it is unusual</td><td></td></tr>
         <tr><td class="lbl">Export of supplier contacts</td><td>not available on any plan</td><td></td></tr>
       </tbody>
     </table></div>
     <h2 style="margin-top:34px">What changes between plans</h2>
     <div class="table-scroll" style="margin-top:16px"><table>
-      <thead><tr><th></th><th><span data-tier="sourcing">Sourcing</span></th><th><span data-tier="practice">Boutique</span></th><th><span data-tier="agency">Full House</span></th></tr></thead>
+      <thead><tr><th></th><th>Small</th><th>Mid</th><th>Large</th></tr></thead>
       <tbody>
-        <tr><td class="lbl">Named users (maximum; extra R395)</td><td>2 (5)</td><td>4 (10)</td><td>10 (20)</td></tr>
-        <tr><td class="lbl">Everyday guest events a year (registered guests each; builds monthly, carried over, month to month)</td><td>—</td><td>60 × up to 100</td><td>120 × up to 150</td></tr>
-        <tr><td class="lbl">Larger guest events a year</td><td>—</td><td>1 × up to 150</td><td>3 × up to 200</td></tr>
+        <tr><td class="lbl">Named users (maximum; extra R395)</td><td>2 (5)</td><td>5 (10)</td><td>10 (20)</td></tr>
+        <tr><td class="lbl">RSVP events a year (registered guests each; with the RSVP module; builds monthly, carried over, month to month)</td><td>50 × up to 100</td><td>80 × up to 150</td><td>100 × up to 250</td></tr>
+        <tr><td class="lbl">Over the guests per event</td><td colspan="3">priced on registered guests, never more than a set price for that size of event, approved before the event goes live — the shape (per guest, annual allowance or larger-event passes) is in research</td></tr>
         <tr><td class="lbl">Hands-on help each month</td><td>60 min</td><td>120 min</td><td>240 min</td></tr>
         <tr><td class="lbl">Finance workspace (statement import and matching, POs, invoices read in)</td><td>—</td><td>—</td><td>✓</td></tr>
       </tbody>
@@ -835,7 +836,7 @@ CONTACT = """
     <div class="next" style="margin-top:28px">
       <div><b>1</b><p>We reply by email to agree a time, usually within one business day.</p></div>
       <div><b>2</b><p>Bring a real brief if you have one; otherwise we run a sample. No demo script.</p></div>
-      <div><b>3</b><p>You leave with a rung recommendation — and we say so if a lower one fits.</p></div>
+      <div><b>3</b><p>You leave with a module and size recommendation — and we say so if fewer modules fit.</p></div>
     </div>
   </div>
 </section>
@@ -865,7 +866,7 @@ TRIAL = """
       </ul>
       <h2 style="margin-top:34px">What it does not include</h2>
       <ul class="list" style="margin-top:14px">
-        <li>Guest lists, RSVPs, rooming lists, flights, transfers, itineraries or reconciliation — those are the Boutique and Full House plans.</li>
+        <li>Guest lists, RSVPs, rooming lists, flights, transfers, itineraries or reconciliation — those are the RSVP, Travel and Recon modules.</li>
         <li>Supplier contact details. The trial shows you which hotels and venues are in the directory and sends your request to them; the group-desk contacts themselves stay with the paid plans.</li>
         <li>Hotel accommodation, guest management, or guaranteed quotes.</li>
         <li>A second brief, a second round, or a second user. One trial per organisation.</li>
@@ -889,22 +890,55 @@ PRICING_RESEARCH = """
 <section class="band-white" style="padding-bottom:28px">
   <div class="wrap">
     <div class="eyebrow">Pricing</div>
-    <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">One price ladder. We are setting the numbers with the people who will use it.</h1>
-    <p class="lede" style="margin-top:12px">The three plans below are set: what each one is for and what it includes. The prices are not on this page yet, on purpose. We are asking South African agencies, event teams and travel desks what the work is worth to them before we print a number, and we would rather ask you than guess.</p>
+    <h1 style="margin-top:10px;font-size:clamp(30px,4vw,44px)">Pay for the jobs you do. We are setting the numbers with the people who will use it.</h1>
+    <p class="lede" style="margin-top:12px">One group event is four jobs: find the venue, invite the guests, run the travel, settle the bill. In South Africa they are often done by different people, so GroupBook is sold in four modules on one size scale. You take the modules you use; a specialist can take theirs on the same event. The prices are not on this page yet, on purpose: we are asking agencies, event teams and travel desks what each job is worth before we print a number.</p>
     <div class="btn-row" style="margin-top:18px"><a class="btn btn-primary" href="/survey-quick?src=pricing">Help set the price — 60 seconds</a><a class="btn btn-ghost" href="/contact">Request a walkthrough</a></div>
-    <p class="note" style="margin-top:12px">No prices are shown in the survey either. Everyone who answers gets the results: what their peers run, how big, and what they said it was worth. Monthly on a debit order, cancel any month, or annual with two months free; no VAT is charged.</p>
+    <p class="note" style="margin-top:12px">No prices are shown in the survey either. Everyone who answers gets the results: what their peers run, how big, which jobs they keep in-house, and what they said each was worth. Monthly on a debit order, cancel at the end of any paid period, or annual at ten months for twelve; no VAT is charged.</p>
   </div>
 </section>
-<section class="band-cream" style="padding-top:36px">
+<section class="band-cream" style="padding-top:36px" id="modules">
   <div class="wrap">
-    <div class="ladder four">
+    <div class="eyebrow">1 · The four modules</div>
+    <h2 style="margin-top:10px">Tick the ones you use</h2>
+    <div class="ladder four" style="margin-top:20px">
 """ + \
-rung("sourcing","Sourcing",IN_RESEARCH,"Help us set it",["2 named users, up to 5","Search hotels and venues by town, capacity and distance; saved shortlists","Branded requests to your shortlist, replies filed automatically","Side-by-side comparison, award and decline","60 minutes of hands-on help a month","Fair use: the same envelope on every plan"]) + \
-rung("practice","Boutique",IN_RESEARCH,"Help us set it",["4 named users, up to 10","Everything in Sourcing","Guest list, rooming lists, flight lists, transfer manifests, car hire, supplier packs, a personal itinerary per guest","Guest portal and RSVP <span class='tag'>In UAT with a launch customer</span>","Everyday guest events included; bigger ones priced per event, shown and approved first","120 minutes of hands-on help a month · Event Window bookable"], hi=True, badge="Recommended for teams running events") + \
-rung("agency","Full House",IN_RESEARCH,"Help us set it",["10 named users, up to 20","Everything in Boutique","Bigger events included; capacity for several clients' groups at once","Card-statement import and the matching workspace — your team matches lines to bookings and purchase orders","Automatic reconciliation matching <span class='tag'>Coming Q4 2026</span>","240 minutes of hands-on help a month · Event Window bookable"]) + \
-rung("enterprise","Larger organisations","Talk to us","Annual · by order form",["Everything in Full House","Users, allowances and service levels by order form","SSO and data residency <span class='tag'>By agreed scope</span>","Security review, named support contact, agreed response targets"]) + """
+rung("sourcing","Sourcing",IN_RESEARCH,"Help us set it",["Brief in: one form, or forward the client's email and the request is drafted for you","Search hotels and venues by town, capacity and distance; the group-desk address on file","One branded request to your shortlist; replies file themselves","Quotes side by side; award in one click, the others are told"]) + \
+rung("rsvp","RSVP",IN_RESEARCH,"Help us set it",["Invitations, online replies and a guest page on your branding <span class='tag'>In UAT with a launch customer</span>","Dietary and special needs, entitlements, VIP and staff categories on the guest list","QR check-in, reminders and change alerts","<b>The one module sized by guests:</b> events up to your size's guests per event are included; bigger ones are priced on registered guests, approved first — the shape is in research"], hi=True, badge="Sized by guests") + \
+rung("travel","Travel",IN_RESEARCH,"Help us set it",["Room blocks and per-hotel rooming lists, flights, transfers with drivers, car hire","Supplier manifests, guest confirmations and a personal itinerary on every guest's phone","Change management: change it once, every list updates","<b>Never charged per guest</b>, whether or not RSVP runs in GroupBook"]) + \
+rung("recon","Recon",IN_RESEARCH,"Help us set it",["Import the lodge-card statement and match lines to bookings and purchase orders","Exceptions reviewed by you; PO registry and budgets per event","Client finance access and supplier map","Automatic matching <span class='tag'>Coming Q4 2026</span>"]) + """
     </div>
-    <p class="note" style="margin-top:14px">Four things change between plans: price, users, guest events (how many and how big) and help — plus the finance workspace on Full House. Everything else is one fair-use envelope, the same on every plan: it protects the hotels' inboxes and the directory, and it is on the <a href="/fair-use">fair-use page</a>. Quantities are never “unlimited”.</p>
+    <p class="note" style="margin-top:14px">Two modules get a discount on the pair; three or four, a bigger one on the lot. Whatever you take, it comes with the shared workspace: the event and its guest list, the Smart Inbox under every step, your branding on everything that leaves the building, remote onboarding and hands-on help. The workspace is never sold on its own.</p>
+  </div>
+</section>
+<section class="band-white" id="sizes">
+  <div class="wrap">
+    <div class="eyebrow">2 · One size for your team</div>
+    <h2 style="margin-top:10px">Size is the only thing that changes a price</h2>
+    <p class="lede" style="margin-top:10px">It is set once for your organisation and applies to every module you take. The user cap, not the price, is what moves a team up a size.</p>
+    <div class="table-scroll" style="margin-top:20px"><table>
+      <thead><tr><th></th><th>Small</th><th>Mid</th><th>Large</th><th><span data-tier="enterprise">Larger organisations</span></th></tr></thead>
+      <tbody>
+        <tr><td class="lbl">Who it is for</td><td>A desk of one or two</td><td>A team running several clients' groups</td><td>A national agency or groups desk</td><td>More than twenty users, several business units, procurement terms</td></tr>
+        <tr><td class="lbl">Named users included (maximum)</td><td>2 (up to 5)</td><td>5 (up to 10)</td><td>10 (up to 20)</td><td>By order form</td></tr>
+        <tr><td class="lbl">RSVP: registered guests per event included</td><td>100</td><td>150</td><td>250</td><td>As agreed</td></tr>
+        <tr><td class="lbl">RSVP: events a year included</td><td>50</td><td>80</td><td>100</td><td>As agreed</td></tr>
+        <tr><td class="lbl">Hands-on help a month</td><td>60 minutes</td><td>120 minutes</td><td>240 minutes</td><td>Named contact</td></tr>
+        <tr><td class="lbl">Monthly, per module</td><td>In research</td><td>In research</td><td>In research</td><td>Talk to us</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:14px">An RSVP event with more registered guests than your size includes is priced on its registered guests, never more than a set price for that size of event, and you see and approve the figure before the event is switched on. Whether that works per guest, as an annual allowance of registered guests, or as a few larger-event passes a year is what we are testing with event teams now. Registered means everyone who replied yes at any point; attendance is never the measure. The size numbers are working values under test.</p>
+  </div>
+</section>
+<section class="band-cream">
+  <div class="wrap">
+    <div class="eyebrow">3 · Or start from a bundle</div>
+    <h2 style="margin-top:10px">The combinations most teams land on</h2>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="card"><h3>Events team</h3><p class="muted">Sourcing + RSVP</p><p>A company's own events or marketing team: three quotes for the auditor and the guest list in one place, while the agencies do the travel.</p></div>
+      <div class="card"><h3>Travel desk</h3><p class="muted">Sourcing + Travel + Recon</p><p>A travel management company, groups desk or travel agency that sources, runs the travel and hands finance a matched card statement, and never runs an RSVP.</p></div>
+      <div class="card" style="border-color:var(--gold)"><h3>Full House</h3><p class="muted">All four</p><p>An agency that runs the whole event, brief to settlement, and keeps the big ones in-house.</p></div>
+    </div>
+    <p class="note" style="margin-top:14px">Any single module on its own is a plan too: Sourcing alone for a team that runs its RSVP elsewhere; RSVP alone for an events team; Recon alone for a desk that only wants the card matched.</p>
   </div>
 </section>
 
@@ -913,10 +947,11 @@ rung("enterprise","Larger organisations","Talk to us","Annual · by order form",
     <h2 style="margin-bottom:18px">Before you choose</h2>
     <div class="grid" style="gap:10px">
       <details class="faq"><summary>When will the prices be published?</summary><p>When the research closes. If you answer the survey, you hear first, and the people who help us set the prices are offered the best terms we will ever offer.</p></details>
-      <details class="faq"><summary>Is there a contract?</summary><p>No. Monthly plans run on a debit order and can be cancelled in any month. Annual plans are invoiced once at ten months' price for twelve months' use.</p></details>
-      <details class="faq"><summary>Is there a set-up or implementation fee?</summary><p>No. Remote onboarding — workspace set-up and one 60-minute session with your administrator — is included with every plan.</p></details>
-      <details class="faq"><summary>What counts as a user?</summary><p>A named login. Each plan includes its users and has a maximum — Sourcing 2 (up to 5), Boutique 4 (up to 10), Full House 10 (up to 20); further named users can be added up to the maximum.</p></details>
-      <details class="faq"><summary>What is a guest event, and when is it charged?</summary><p>Running the RSVP for one event in GroupBook — invitations, online replies, the guest page, check-in — sized by the guests who registered. Everyday guest events are included on Boutique and Full House; the really big ones are priced per event, shown and approved before anything is charged.</p></details>
+      <details class="faq"><summary>Do I have to take all four modules?</summary><p>No. Take the jobs your team does. If a specialist does your RSVP or a travel desk does your rooming lists, they can take their module and work on the same event; nobody pays twice for one event and nobody pays for a job someone else does.</p></details>
+      <details class="faq"><summary>Is there a contract?</summary><p>No. Monthly plans run on a debit order and can be cancelled at the end of any paid period. Annual plans are invoiced once at ten months' price for twelve months' use.</p></details>
+      <details class="faq"><summary>Is there a set-up or implementation fee?</summary><p>No. Remote onboarding — workspace set-up and one 60-minute session with your administrator — is included with any module.</p></details>
+      <details class="faq"><summary>What counts as a user?</summary><p>A named login. Each size includes its users and has a maximum — Small 2 (up to 5), Mid 5 (up to 10), Large 10 (up to 20); further named users can be added up to the maximum, and the size applies to every module you take.</p></details>
+      <details class="faq"><summary>What is a guest event, and when is it charged?</summary><p>Running the RSVP for one event in GroupBook — invitations, online replies, the guest page, check-in — sized by the guests who registered. Events up to your size's guests per event are included; more guests than that are priced on registered guests, never more than a set price for that size of event, shown and approved before anything is charged; the exact shape is in research. A guest list imported for rooms, flights or transfers is never charged.</p></details>
       <details class="faq"><summary>Do hotels pay to be listed or to reply?</summary><p>No. Hotels and venues are listed and receive requests at no charge. The only thing we ask of them is a current group-desk contact.</p></details>
       <details class="faq"><summary>Why is there no VAT on the price?</summary><p>PanDaan (Pty) Ltd is not a registered VAT vendor, so no VAT is charged on any GroupBook invoice. The price shown is the amount invoiced.</p></details>
     </div>
@@ -926,21 +961,22 @@ rung("enterprise","Larger organisations","Talk to us","Annual · by order form",
 <section class="band-cream">
   <div class="wrap two">
     <div>
-      <h2>On every plan</h2>
+      <h2>With any module</h2>
       <ul class="list" style="margin-top:14px">
-        <li>POPIA operator agreement and the same security safeguards, whatever the plan.</li>
+        <li>POPIA operator agreement and the same security safeguards, whatever you take.</li>
         <li>Tenancy isolation: your briefs, clients and guests are yours; the directory is shared, its contacts are not.</li>
         <li>Support by email or in-app, with a reference number and a business-hours response target. Our defects are fixed at no charge, whenever they occur.</li>
+        <li>One fair-use envelope, the same at every size: it protects the hotels' inboxes and the directory, and it is on the <a href="/fair-use">fair-use page</a>. Quantities are never "unlimited".</li>
         <li>No VAT is charged while PanDaan (Pty) Ltd is not a registered VAT vendor.</li>
       </ul>
     </div>
     <div class="card" style="gap:12px">
       <h3>What the roadmap lines mean</h3>
-      <p><span class="tag">In UAT with a launch customer</span> is live for one customer today and being hardened before general release. It is included in the plan shown, at no extra cost, when it releases.</p>
+      <p><span class="tag">In UAT with a launch customer</span> is live for one customer today and being hardened before general release. It is included in the module shown, at no extra cost, when it releases.</p>
       <p><span class="tag">Coming Q4 2026</span> is being built now. Nothing on this page with that tag is charged for until it ships.</p>
       <p><span class="tag">By agreed scope</span> means a capability for larger organisations, delivered under the order form, not switched on off the shelf. Anything without a tag runs in production today.</p>
-      <h3 style="margin-top:8px">Not sure which plan?</h3>
-      <p>Tell us what you run and we will point at a rung — and say so if a lower one fits.</p>
+      <h3 style="margin-top:8px">Not sure which modules?</h3>
+      <p>Tell us who does each of the four jobs where you work and we will point at the modules and the size — and say so if fewer fit.</p>
       <a class="btn btn-primary" href="/contact" style="justify-self:start">Request a walkthrough</a>
     </div>
   </div>
@@ -953,8 +989,7 @@ def hide_prices(name, body):
     if name == "index":
         for amt in ("R1,950", "R4,950", "R9,950"):
             body = body.replace('<div class="price">%s<small> /month</small></div>' % amt, '<div class="price">%s</div>' % IN_RESEARCH)
-        body = body.replace("One ladder. Monthly, no contract; or annual with two months free.", "One ladder. We are setting the prices with the people who will use it.")
-        body = body.replace('<a class="btn btn-primary" href="/pricing">Full pricing and what is included</a>', '<a class="btn btn-primary" href="/survey-quick?src=home">Help set the price — 60 seconds</a><a class="btn btn-ghost" href="/pricing">What each plan includes</a>')
+        body = body.replace('<a class="btn btn-primary" href="/pricing">Full pricing and what is included</a>', '<a class="btn btn-primary" href="/survey-quick?src=home">Help set the price — 60 seconds</a><a class="btn btn-ghost" href="/pricing">What each module includes</a>')
         body = body.replace("quoted at R699 an hour and approved by you first", "quoted and approved by you first")
     if name == "support":
         body = body.replace("pre-booked, R1,950 a day, subject to availability and agreed scope", "pre-booked, priced per day and quoted first, subject to availability and agreed scope")
@@ -970,12 +1005,12 @@ def hide_prices(name, body):
 
 page("index", "GroupBook — Source suppliers. Coordinate group travel. One place.", "Find hotels and venues across South Africa, request and compare quotes, then coordinate guest accommodation, flights and transfers — in one workspace.", INDEX)
 if HIDE_PRICES:
-    page("pricing", "Pricing — GroupBook", "One price ladder for group travel professionals: Sourcing, Boutique and Full House. We are setting the prices with the people who will use GroupBook — help us in 60 seconds. Annual with two months free. No VAT charged.", PRICING_RESEARCH)
+    page("pricing", "Pricing — GroupBook", "Four modules on one size scale: Sourcing, RSVP, Travel and Recon. Take the jobs you do. We are setting the prices with the people who will use GroupBook — help us in 60 seconds. Annual at ten months for twelve. No VAT charged.", PRICING_RESEARCH)
 else:
     page("pricing", "Pricing — GroupBook", "One price ladder for group travel professionals: Sourcing R1,950, Boutique R4,950, Full House R9,950 a month. Annual with two months free. No VAT charged.", PRICING)
 page("how-it-works", "How GroupBook works — seven steps from brief to settlement", "Capture the brief, shortlist from the directory, send one request, compare and award, invite the guests, run the travel, and settle — all from one record.", HOW)
 page("for-hotels", "For hotels and venues — GroupBook", "Why a GroupBook request reaches your group desk, carries the brief, and is capped in width. How to update your contact.", HOTELS)
 page("support", "Support — GroupBook", "Our defects are free. Help using GroupBook is included. Assistance beyond that is quoted first. Response targets by severity and plan.", SUPPORT)
-page("fair-use", "Fair use — GroupBook", "One fair-use envelope, the same on every GroupBook plan: hotel protection, directory protection, documents read for you, and what happens at 80% and 100%.", FAIR)
+page("fair-use", "Fair use — GroupBook", "One fair-use envelope, the same at every GroupBook size: hotel protection, directory protection, documents read for you, and what happens at 80% and 100%.", FAIR)
 page("trial", "One sourcing job on us — GroupBook", "Complete the 12-minute plans-and-prices questionnaire and run one real group brief through GroupBook free: one brief, up to 10 suppliers, one user, 30 days.", TRIAL)
 page("contact", "Request a walkthrough — GroupBook", "Forty minutes on one of your own briefs, with the person who built GroupBook.", CONTACT)
