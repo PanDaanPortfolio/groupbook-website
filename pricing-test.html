@@ -108,6 +108,7 @@ pre.out{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border
 .lrow{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:10px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line)}.lrow span{font-weight:500}.lrow input{margin-top:0}.hrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line)}.hrow span{font-weight:500}.hrow select{margin-top:0;font-size:16px}@media(max-width:560px){.hrow{grid-template-columns:1fr;gap:2px}}
 .lsub{font-size:13px;font-weight:600;color:var(--navy);margin-top:14px}
 .pair2 .dash{color:var(--line);text-align:center;padding:12px 0;font-size:18px}.pair2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pair2 label{display:block;font-size:13px;font-weight:500;color:var(--ink3)}.pair2 input{margin-top:2px}
+input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}.ordwarn{display:none;margin-top:6px;font-size:13px;color:#9a5b00;background:#fff1d6;border-radius:8px;padding:6px 10px}
 @media (max-width:520px){.bands{grid-template-columns:1fr}.pair{grid-template-columns:1fr}}
 </style></head><body>
 <header><img src="https://www.groupbook.co.za/logo-on-navy.png" alt="GroupBook"><span>Would GroupBook fit your team? A short questionnaire</span></header>
@@ -236,7 +237,10 @@ function evQs(){ if(!hasRsvp()) return ''; var rq=feeReq(), sz=sizeOf(S.size)||S
   FEEBANDS.forEach(function(f){ out+=prow('fee_'+f[0],f[1],['fee_'+f[0]+'_pay','I would expect (rand)','e.g. 5000'],['fee_'+f[0]+'_walk','Too expensive at (rand)','e.g. 12000'],false); });
   out+='</div>';
   return out; }
-function updOver(){ var pj=document.getElementById('projblock'); if(pj){ var st=S.structure||''; var showPj=/^(D|G|S_job|S_ret)$/.test(st); pj.style.display=showPj?'block':'none'; REQ.proj_pay=showPj; REQ.proj_walk=false; pj.querySelectorAll('.req').forEach(function(e){e.remove();}); if(showPj) pj.querySelectorAll('.ask > .q').forEach(function(q){ q.insertAdjacentHTML('beforeend','<span class="req">*</span>'); }); }
+var PROJSZ=[['s','Up to 50 guests'],['m','51 to 150 guests'],['l','151 guests or more']];
+function projRows(q){ return '<div class="q" style="margin-top:18px">'+q+'</div>'+UNIT('Enter an amount in rand for one project of that size, excluding VAT. Leave the largest size blank if you never run it.')+PROJSZ.map(function(z){ return prow('proj_'+z[0],z[1],['proj_'+z[0]+'_pay','I would expect (rand)','e.g. '+(z[0]==='s'?'4000':z[0]==='m'?'8000':'15000')],['proj_'+z[0]+'_walk','Too expensive at (rand)','e.g. '+(z[0]==='s'?'8000':z[0]==='m'?'16000':'30000')],false); }).join(''); }
+function projOut(){ var o={}; PROJSZ.forEach(function(z){ var a=n(S['proj_'+z[0]+'_pay']), w=n(S['proj_'+z[0]+'_walk']); if(a!==null||w!==null) o[z[0]]={pay:a,walk:w}; }); return o; }
+function updOver(){ var pj=document.getElementById('projblock'); if(pj){ var st=S.structure||''; var showPj=/^(D|G|S_job|S_ret)$/.test(st); pj.style.display=showPj?'block':'none'; REQ.proj_s_pay=REQ.proj_m_pay=showPj; REQ.proj_l_pay=false; pj.querySelectorAll('.req').forEach(function(e){e.remove();}); if(showPj) pj.querySelectorAll('.ask:not([data-ask="proj_l"]) > .q').forEach(function(q){ q.insertAdjacentHTML('beforeend','<span class="req">*</span>'); }); }
   var pg=document.getElementById('pgblock'), fl=document.getElementById('flatblock'); if(!pg||!fl) return; var v=S.over_pref||''; var rq=feeReq();
   var showPg=(v==='perguest'||v==='either'), showFl=(v==='flat'||v==='either');
   pg.style.display=showPg?'block':'none'; fl.style.display=showFl?'block':'none';
@@ -374,7 +378,7 @@ var SCREENS = [
  MODS.map(function(m){ return ask('job_'+m,MODJOB[m],JOBOPTS); }).join('')+
  '<h3 style="margin-top:26px">How GroupBook is sold</h3>'+moduleCards()+
  ask('concept','How suitable is that way of buying — modules you pick, on one size — for your team?',CONCEPT)+
- multi('mods','Which modules would your team take?',MODS.map(function(m){return [m,MODN[m]];}).concat([['none','None of them']]),'Tick every module you would use. At least one answer is needed.',true)+
+ multi('mods','GroupBook has four modules. Which would your team take?',MODS.map(function(m){return [m,MODN[m]];}).concat([['none','None of them']]),'Tick every module you would use. At least one answer is needed.',true)+
  ask('size','Which size fits your team?',[['small','Small'],['mid','Mid'],['large','Large']],'Go by the number of people who would log in; the size table is above.')+
  ask('forced','Is there anything you would need that sits in a module you would not take?',[['no','No'],['yes','Yes','What is it, and which module is it in?']]); } },
 
@@ -383,7 +387,7 @@ var SCREENS = [
    '<div class="ask" data-ask="none_why">'+txt('none_why','What would need to be true for GroupBook to be worth paying for where you work?<span class="req">*</span>','One or two lines is enough: a missing job, the way you buy, who decides, or something else.')+'</div>'+
    sec('How you would rather pay, if you ever did')+
    ask('structure','If GroupBook were ever worth it to you, which of these would you rather have?', structOpts(),'Pick the one you would choose.')+
-   '<div id="projblock" style="display:none">'+prow('proj','If you paid <b>per project</b>, what would one typical event be worth to you?',['proj_pay','I would expect (rand per project)','e.g. 8000'],['proj_walk','Too expensive at (rand per project)','e.g. 20000'],false,'Enter an amount in rand for one typical project, excluding VAT')+'</div>'+
+   '<div id="projblock" style="display:none">'+projRows('If you paid <b>per project</b>, what would one project be worth to you, by the size of the event?')+'</div>'+
    (PRICED?'':ask('cadence','Would you rather pay monthly or once a year?',[['monthly','Monthly, cancel any time'],['annual','Once a year, with a discount for paying up front']])); }
  var lede = PRICED ? 'We have not shown you a price yet, on purpose. We would like your own view first, so the numbers on the next screen do not influence it.' : 'We are not showing any prices in this survey. We would still like your own view of what this would be worth to your organisation.';
  return '<p class="lede">'+lede+' Here is the package the questions below refer to: the modules you ticked, at the size you chose.</p>'+planSummary()+
@@ -394,9 +398,9 @@ var SCREENS = [
  modQs()+
  incQs()+evQs()+
  sec('How you would rather pay')+
- ask('bundle_pref','If you took more than one module, which would you rather have?',[['modules','Each module priced on its own, added up'],['bundle','A named bundle at a discount'],['either','No preference']],'',true)+
+ ask('bundle_pref','GroupBook has four modules: Sourcing, RSVP, Travel and Recon. If you took more than one, which would you rather have?',[['modules','Each module priced on its own, added up'],['bundle','A named bundle at a discount'],['either','No preference']],'',true)+
  ask('structure','These are options for how you could pay, not a decision. Which would you rather have?', (selMods().length===1&&selMods()[0]==='sourcing')?[['S_sub','A monthly Sourcing module'],['S_job','Pay per sourcing job, with no monthly fee'],['S_ret','A small monthly retainer plus a fee per sourcing job'],['S_stay','Carry on with our current process','What would have to change for you to pay for a tool like this?']]:structOpts(),'Pick the one you would choose.')+
- '<div id="projblock" style="display:none">'+prow('proj','If you paid <b>per project</b>, what would one typical event cost you, with every module you use included?',['proj_pay','I would expect (rand per project)','e.g. 8000'],['proj_walk','Too expensive at (rand per project)','e.g. 20000'],false,'Enter an amount in rand for one typical project, excluding VAT')+'<div class="hint" style="margin:6px 0 0">Think of an ordinary event for your team, not your biggest. Sourcing only: one sourcing job.</div></div>'+
+ '<div id="projblock" style="display:none">'+projRows('If you paid <b>per project</b>, what would one project cost you, with every module you use included, by the size of the event?')+'<div class="hint" style="margin:6px 0 0">Sourcing only: one sourcing job for a group of that size.</div></div>'+
  (PRICED?'':ask('cadence','Would you rather pay monthly or once a year?',[['monthly','Monthly, cancel any time'],['annual','Once a year, with a discount for paying up front']])); } },
 
 { title:'The prices', priced:true, body:function(){ var m=selMods(); var si=sizeIdx(S.size); var pk=m.length?pkgPrice(m,si):null; var sz=SIZES[si];
@@ -428,6 +432,7 @@ if(!PRICED) SCREENS = SCREENS.filter(function(sc){ return !sc.priced; });
 
 // ---------- payload
 function U(){ return S.users_dk?null:n(S.users); }
+function fmtN(x){ var d=String(x==null?'':x).replace(/[^0-9]/g,''); return d.replace(/\B(?=(\d{3})+(?!\d))/g,' '); } // research32i: thousands shown with a space (3 500), stored as digits
 function n(x){ return x===undefined||x===''||x===null?null:(isFinite(Number(x))?Number(x):null); }
 function idx(list,key){ var v=S[key]; for(var i=0;i<list.length;i++){ if(list[i][0]===v) return i+1; } return null; }
 function cut(s,m){ s=(s==null?'':String(s)).trim(); return s?s.slice(0,m):null; }
@@ -444,11 +449,11 @@ function payload(){
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'billable hours per booking, band a..e per size group s(up to 50) m(51-150) l(151+)', rsvp_who:rsvpWho, finance_need:finNeed,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
-    evp:feeOut(), pg:pgOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj_pay:n(S.proj_pay), proj_walk:n(S.proj_walk),
+    evp:feeOut(), pg:pgOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj:projOut(), proj_pay:n(S.proj_m_pay), proj_walk:n(S.proj_m_walk),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
-    price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; over_pref routes the follow-up: pg = ZAR per registered guest over the size cap (expect / too expensive) asked when perguest or either; evp.{xs,b200,b300,b500} = ZAR flat extra charge for ONE extra RSVP event in that size, allowance used up, ex VAT, asked when flat or either; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj_* = ZAR for one typical project when D/G/S_job/S_ret chosen; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:7,
+    price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; over_pref routes the follow-up: pg = ZAR per registered guest over the size cap (expect / too expensive) asked when perguest or either; evp.{xs,b200,b300,b500} = ZAR flat extra charge for ONE extra RSVP event in that size, allowance used up, ex VAT, asked when flat or either; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj.{s,m,l} = ZAR for one project by event size (s up to 50, m 51-150, l 151+) when D/G/S_job/S_ret chosen; proj_pay/proj_walk = the m row, kept for older readers; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:7,
     t:{ arch_other:cut(S.archetype__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl), none_why:cut(S.none_why,tl), stay_why:cut(S.structure__stay||S.structure__S_stay,tl), action_why:cut(S.buy_at_price__current||S.buy_at_price__cannot,300) },
-    plan_text_version:'v7.6-2026-10-19-modular-escapes-routed', user_agent:(navigator.userAgent||'').slice(0,160) };
+    plan_text_version:'v7.8-2026-10-20-amanda-review-fixes', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
     role:roleMap[S.archetype]||null, rfp_volume:null, team_size:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
     tier1_good_value:tf===1?gv:null, tier1_too_expensive:tf===1?te:null, tier2_good_value:tf===2?gv:null, tier2_too_expensive:tf===2?te:null, tier3_good_value:tf===3?gv:null, tier3_too_expensive:tf===3?te:null,
@@ -475,11 +480,12 @@ function render(){
   document.getElementById('back').disabled=step===0;
   var nb=document.getElementById('next'); nb.disabled=false; nb.textContent=last?'Send my answers':'Next';
   document.getElementById('where').textContent = last ? 'Last screen' : (N-1-step)+' to go';
+  v.querySelectorAll('input[inputmode=numeric][data-k]').forEach(function(el){ el.value=fmtN(el.value); });
   v.querySelectorAll('[data-k]').forEach(function(el){
     var ev = (el.tagName==='SELECT'||el.type==='radio'||el.type==='checkbox') ? 'change' : 'input';
     el.addEventListener(ev,function(){ var k=el.getAttribute('data-k');
       if(el.type==='checkbox'){ S[k]=el.checked; var lb=el.closest('.opt'); if(lb) lb.classList.toggle('on',el.checked); }
-      else { var val=el.value; var im=el.getAttribute('inputmode'); if(im==='numeric'){ val=val.replace(/[^0-9]/g,''); if(val!==el.value) el.value=val; } else if(im==='decimal'){ val=val.replace(/,/g,'.').replace(/[^0-9.]/g,'').replace(/^(\d*\.\d?).*$/,'$1'); if(val!==el.value) el.value=val; } S[k]=val; }
+      else { var val=el.value; var im=el.getAttribute('inputmode'); if(im==='numeric'){ var cp=el.selectionStart||0, before=el.value.slice(0,cp).replace(/[^0-9]/g,'').length; val=val.replace(/[^0-9]/g,''); var shown=fmtN(val); if(shown!==el.value){ el.value=shown; var i=0,c=0; while(i<shown.length&&c<before){ if(/[0-9]/.test(shown[i])) c++; i++; } try{ el.setSelectionRange(i,i); }catch(e){} } ordCheck(el,k,val); } else if(im==='decimal'){ val=val.replace(/,/g,'.').replace(/[^0-9.]/g,'').replace(/^(\d*\.\d?).*$/,'$1'); if(val!==el.value) el.value=val; } S[k]=val; }
       save(); if(typeof updGrid==='function') updGrid(); var a=el.closest('.ask'); if(a) a.classList.remove('miss'); if(!v.querySelector('.ask.miss,.sub.miss')){ var mm=document.getElementById('missmsg'); if(mm) mm.style.display='none'; }
       if(el.type==='radio'){ v.querySelectorAll('input[name="'+el.name+'"]').forEach(function(r){ r.closest('.opt').classList.toggle('on', r.checked); var fu=r.closest('div').querySelector('.sub'); if(fu){ fu.style.display=r.checked?'block':'none'; var fk=fu.getAttribute('data-fu'); REQ[fk]=r.checked; } }); }
     });
@@ -490,6 +496,9 @@ function render(){
     S[k]=sel; save(); var ak=el.closest('.ask'); if(ak) ak.classList.remove('miss'); v.querySelectorAll('[data-m="'+k+'"]').forEach(function(c){ c.checked=sel.indexOf(c.value)>-1; c.closest('.opt').classList.toggle('on',c.checked); }); }); });
   S._step=step; save(); if(typeof updGrid==='function') updGrid(); window.scrollTo(0,0);
 }
+// research32i: warn (never block) when 'I would expect' is above 'Too expensive at' in the same pair, e.g. 35 000 typed for 3 500
+function ordCheck(el,k,val){ var m=/^(.*)_(pay|walk)$/.exec(k); if(!m) return; var a=n(m[2]==='pay'?val:S[m[1]+'_pay']), w=n(m[2]==='walk'?val:S[m[1]+'_walk']); var box=el.closest('.ask'); if(!box) return; var wn=box.querySelector('.ordwarn'); if(!wn){ wn=document.createElement('div'); wn.className='ordwarn'; box.appendChild(wn); }
+  if(a!==null&&w!==null&&a>w){ wn.textContent='Please check: "I would expect" (R'+fmtN(a)+') is higher than "Too expensive at" (R'+fmtN(w)+').'; wn.style.display='block'; } else wn.style.display='none'; }
 function missing(){ var v=document.getElementById('view'); var out=[];
   Object.keys(REQ).forEach(function(k){ if(!REQ[k]) return; var el=v.querySelector('[data-k="'+k+'"]')||v.querySelector('[data-m="'+k+'"]'); if(!el) return;
     if(el.hasAttribute('data-m')){ if(!(S[k]&&S[k].length)) out.push(k); return; }
