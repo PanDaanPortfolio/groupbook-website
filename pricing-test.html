@@ -122,7 +122,7 @@ input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research32';
+var SURVEY_VERSION = '2026-10-research33';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -167,12 +167,15 @@ var MODD = {sourcing:'Brief in, one branded request to the right hotels and venu
 var MODJOB = {sourcing:'Finding and booking the hotel or venue',rsvp:'Inviting guests and running the RSVP or registration',travel:'Rooms, flights, transfers and car hire for the guests',recon:'Reconciling the card statement or supplier payments afterwards'};
 var JOBOPTS = [['us','My team does it'],['out','A specialist, agency or supplier does it for us'],['client','The client or another party does it'],['none','Not part of our work']];
 var SIZES = [{k:'small',n:'Small',users:2,maxu:5,cap:100,inc:50,help:'1 hour'},{k:'mid',n:'Mid',users:5,maxu:10,cap:150,inc:80,help:'2 hours'},{k:'large',n:'Large',users:10,maxu:20,cap:250,inc:100,help:'4 hours'}];
-var MODP = {sourcing:[1950,2950,3950],rsvp:[2500,4500,7500],travel:[2500,4500,7500],recon:[1500,2500,3500]};
+var MODP = {sourcing:[1950,2950,3950],rsvp:[2500,4500,7500],travel:[6000,11000,16500],recon:[1500,2500,3500]};
 function sizeOf(k){ for(var i=0;i<SIZES.length;i++){ if(SIZES[i].k===k) return SIZES[i]; } return null; }
 function sizeIdx(k){ for(var i=0;i<SIZES.length;i++){ if(SIZES[i].k===k) return i; } return 1; }
 function selMods(){ return (S.mods||[]).filter(function(m){ return MODS.indexOf(m)>-1; }); }
 function hasRsvp(){ return selMods().indexOf('rsvp')>-1; }
-function pkgPrice(mods,si){ var sum=0; mods.forEach(function(m){ sum+=MODP[m][si]; }); var d=mods.length>=3?0.2:mods.length===2?0.1:0; return {list:sum, monthly:Math.round(sum*(1-d)/50)*50, disc:d}; }
+var TDESK=[8500,14500,21500]; // research33: the Travel desk (Sourcing + Travel + Recon) has its own price; other modules join it at 20% off (decision 19 Oct, D18 23 Oct)
+function pkgPrice(mods,si){ var sum=0; mods.forEach(function(m){ sum+=MODP[m][si]; });
+  if(['sourcing','travel','recon'].every(function(m){ return mods.indexOf(m)>-1; })){ var extra=0; mods.forEach(function(m){ if(['sourcing','travel','recon'].indexOf(m)<0) extra+=MODP[m][si]; }); var mo=TDESK[si]+Math.round(extra*0.8/50)*50; return {list:sum, monthly:mo, disc:1-mo/sum}; }
+  var d=mods.length>=3?0.2:mods.length===2?0.1:0; return {list:sum, monthly:Math.round(sum*(1-d)/50)*50, disc:d}; }
 function pkgName(){ var m=selMods(); var sz=sizeOf(S.size); return (m.length?m.map(function(x){return MODN[x];}).join(' + '):'no modules')+(sz?' at '+sz.n+' size':''); }
 function bandPrice(g){ for (var i=0;i<BANDS.length;i++){ if (g<=BANDS[i][0]) return BANDS[i][1]; } return null; }
 
@@ -197,7 +200,7 @@ var PLAN_FOR = {sourcing:'For teams that book hotels and venues for groups.',eve
 function moduleCards(){
   return '<p class="lede">Four modules. Take one, two, three or all four; each is priced by the size you choose below. <b>Every price in this survey is a monthly fee for your whole team, not per user.</b> Whatever you take, the shared workspace comes with it: the event and its guest list, the Smart Inbox, your branding on everything that leaves the building, onboarding and help.</p>'+
   MODS.map(function(m){ return '<div class="pl2'+(m==='sourcing'?' hi':'')+'"><div class="nm">'+MODN[m]+'</div><div class="for">'+MODD[m]+'</div></div>'; }).join('')+
-  '<h3 style="margin-top:22px">One size for your team</h3><p class="lede" style="margin-top:6px">Size is the only thing that changes a price. It applies to every module you take.</p>'+
+  '<h3 style="margin-top:22px">One size for your team</h3><p class="lede" style="margin-top:6px">Size is the only thing that changes a price. It applies to every module you take, and follows the number of people signing in or the number of events you run a year, whichever is higher.</p>'+
   '<table><tr><th></th>'+SIZES.map(function(s){return '<th>'+s.n+'</th>';}).join('')+'</tr>'+
   '<tr><td>People logging in (up to)</td>'+SIZES.map(function(s){return '<td>'+s.users+' ('+s.maxu+')</td>';}).join('')+'</tr>'+
   '<tr><td>RSVP: guests per event included</td>'+SIZES.map(function(s){return '<td>'+s.cap+'</td>';}).join('')+'</tr>'+
@@ -342,14 +345,14 @@ var SCREENS = [
 { title:'Would GroupBook fit how your team works?', body:function(){ return '<p class="lede">GroupBook is a web tool for running group events and group travel, from the brief to the final bill. It is sold in four parts, so you take only the jobs your team does. We are testing which parts, sizes and prices suit teams like yours.</p>'+
  (REVIEW?'<div class="card" style="border-left:4px solid #8E2A1A"><h3>You are reviewing as well as answering</h3><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>Answer as yourself, for your own team</li><li><b>Note where you hesitate, need a record, or start guessing</b></li><li>A comments box is on the last screen; your answers are kept apart</li></ul></div>':'')+
  '<div class="card"><h3>How this works</h3><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>'+(typeof SCREENS!=='undefined'?(['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'][SCREENS.length]||SCREENS.length):'Eight')+' screens, mostly tap-to-answer, including a short walk-through of GroupBook</li><li><b>Best guesses are exactly what we need</b>: no records, no colleague</li><li>Answers go to us when you press <b>Send</b> on the last screen</li><li>Need to stop? <b>Save and finish later</b> (bottom of the page) gives you a link</li><li>All names and prices are <b>tests</b>; nothing commits you to buy</li></ul></div>'+
- '<div class="note"><b>What you get</b><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>The results of this research</li><li>A chance at <b>one free hotel or venue sourcing job</b> (first 20 eligible organisations to finish by 30 Nov 2026; tick the box on the last screen). Your answers do not affect whether you qualify. <a href="/trial" target="_blank" rel="noopener">Terms</a></li></ul></div>'+
+ '<div class="note"><b>What you get</b><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>The results of this research</li><li>A chance at <b>one free hotel or venue sourcing job</b> (first 20 eligible organisations to finish by 31 Jan 2027; tick the box on the last screen). Your answers do not affect whether you qualify. <a href="/trial" target="_blank" rel="noopener">Terms</a></li></ul></div>'+
  '<p class="hint" style="margin:10px 0 0"><a href="https://www.groupbook.co.za/" target="_blank" rel="noopener">See what GroupBook does</a></p>'+
  ask('screen','Do you organise or book group events or group travel as part of your work?',[['now','Yes'],['past','I used to'],['no','No']])+
  '<div class="pcbox pconly"><b class="t">Prefer to finish on a computer?</b>Email yourself a link and carry on from your computer. We do not receive or keep this email address.<label class="f" style="margin-top:10px">Your email<input type="email" id="pcem" name="pc_email" autocomplete="email" placeholder="you@company.co.za"></label><div class="hint reqnote" id="pcmsg" style="min-height:18px"></div><button type="button" class="btn sec" style="width:100%;margin-top:6px" onclick="gbPc()">Email me a link</button></div>'; } },
 
 { title:'You and your events', body:function(){ return '<p class="lede">Rough answers are fine. Nothing here needs a record.</p>'+
  ask('archetype','Which of these describes your work best?',ARCH)+
- num('users','About how many people in your team would use a tool like this?','A best guess is fine.','e.g. 4',true,false,'Enter a number of people')+
+ num('users','About how many people in your team would use a tool like this?','Count each person who would sign in: every user is one named person, and logins are not shared. A best guess is fine.','e.g. 4',true,false,'Enter a number of people')+
  '<h3 style="margin-top:26px">Your events</h3><p class="lede" style="margin-top:6px">Think of the events where guests RSVP or register. Count them whether your team runs the RSVP, the client does, or you pay a supplier to do it.</p>'+
  num('events_year','Over a year, about how many events is that in total?','Your best estimate. Put 0 if you only find hotels or venues. We use it to check the sizes below.','e.g. 40',true,false,'Enter a number of events a year (not guests)')+
  '<div class="ask"><div class="q">Of those, how many events of each size in a year?</div>'+UNIT('Enter a number of events a year for each size (not guests)')+'<div class="hint" style="margin:-4px 0 4px">Rough numbers are fine. Put 0 where there are none.</div></div>'+
@@ -401,7 +404,7 @@ var SCREENS = [
  function bund(nm,ms){ return '<tr><td>'+nm+' <span class="hint">'+ms.map(function(x){return MODN[x];}).join(' + ')+'</span></td>'+SIZES.map(function(s,i){return '<td>'+R(pkgPrice(ms,i).monthly)+'</td>';}).join('')+'</tr>'; }
  return '<p class="lede">Prices are <b>per month for your whole team, not per user</b>, in rand, no VAT charged. Pay monthly and cancel at the end of any paid period, or pay for ten months up front and use it for twelve. Getting started is included: the GroupBook Academy, at least eight training modules that you work through with a case study. Extra people are R395 a month each, up to the size maximum.</p><div class="note"><b>Illustrative prices for research only. These are not launch prices or quotations.</b> They are a rough estimate, a peg in the ground so that we have something concrete to test. Final prices and allowances will only be set after extensive research across the different disciplines in the industry, operating costs and pilot usage.</div>'+
  '<table><tr><th>Module, a month (whole team)</th>'+SIZES.map(function(s){return '<th>'+s.n+'</th>';}).join('')+'</tr>'+MODS.map(function(x){ return '<tr><td>'+MODN[x]+'</td>'+MODP[x].map(function(v){return '<td>'+R(v)+'</td>';}).join('')+'</tr>'; }).join('')+'</table>'+
- '<div class="hint" style="margin-top:6px">Two modules: 10% off the pair. Three or four: 20% off the lot.</div>'+
+ '<div class="hint" style="margin-top:6px">Two modules: 10% off the pair. Three or four: 20% off the lot. The Travel desk (Sourcing + Travel + Recon) has its own price; RSVP added to it is 20% off.</div>'+
  '<table><tr><th>Bundle</th>'+SIZES.map(function(s){return '<th>'+s.n+'</th>';}).join('')+'</tr>'+bund('Events team',['sourcing','rsvp'])+bund('Travel desk',['sourcing','travel','recon'])+bund('Full House',MODS)+'</table>'+
  '<div class="note"><b>Beyond what your size includes</b> (research prices): an RSVP event with more registered guests than your size allows is R75 per guest over, never more than 101–200 guests R9,500; 201–300 R14,500; 301–500 R19,500; over 500 quoted. An RSVP event beyond your yearly count is R2,950.</div>'+
  (pk?'<div class="note">You chose <b>'+pkgName()+'</b> on an earlier screen: <b>'+R(pk.monthly)+' a month</b>'+(pk.disc?' (list '+R(pk.list)+', '+Math.round(pk.disc*100)+'% off)':'')+', or <b>'+R(pk.monthly*10)+' a year</b>.</div>':'<div class="note">You did not choose modules earlier. Answer for the modules closest to your team\'s needs.</div>')+
@@ -439,7 +442,7 @@ function payload(){
   var finNeed={us:'regular',out:'some',client:'some',none:'no'}[S.job_recon]||null;
   var si=sizeIdx(S.size); var pk=mods.length?pkgPrice(mods,si):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research30:true, research32:true, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
+  var a={ research30:true, research32:true, research33:true, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'not asked from v7.9 (22 Oct 2026); hours_src / hours_run stay null', rsvp_who:rsvpWho, finance_need:finNeed,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
