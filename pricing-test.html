@@ -219,6 +219,8 @@ function planSummary(){
 // ---------- survey wiring (submits to the live receiver; no copy-and-paste)
 var API = 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
 var SRC = (new URLSearchParams(location.search).get('src')) || 'website';
+// survey invites (26 Oct 2026): personal token from the invite email (&t=...), kept with the saved answers so a resumed survey still carries it
+var INV = (new URLSearchParams(location.search).get('t')) || ''; if(/^[A-Za-z0-9_-]{8,40}$/.test(INV)){ S._t=INV; save(); }
 var REVIEW = /^review/.test(SRC);
 var REELQ = new URLSearchParams(location.search).get('reel'); var REELV = (REELQ==='full') ? 'full' : (REELQ==='short') ? 'short' : (S.reel_variant==='full'?'full':'short'); S.reel_variant=REELV;
 // research30: the same seven brackets everywhere. Normal month for the four smaller brackets; yearly for the three larger ones (rare events a normal month would miss)
@@ -449,7 +451,7 @@ function payload(){
   var finNeed={us:'regular',out:'some',client:'some',none:'no'}[S.job_recon]||null;
   var si=sizeIdx(S.size); var pk=mods.length?pkgPrice(mods,si):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research30:true, research32:true, research33:true, research34:true, my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
+  var a={ research30:true, research32:true, research33:true, research34:true, invite_token:(typeof S._t==='string'&&/^[A-Za-z0-9_-]{8,40}$/.test(S._t))?S._t:null, my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'not asked from v7.9 (22 Oct 2026); hours_src / hours_run stay null', rsvp_who:rsvpWho, finance_need:finNeed,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
