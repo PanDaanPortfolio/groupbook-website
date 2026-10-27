@@ -122,7 +122,7 @@ input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research35';
+var SURVEY_VERSION = '2026-10-research35b';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -440,7 +440,7 @@ if(!PRICED) SCREENS = SCREENS.filter(function(sc){ return !sc.priced; });
 // ---------- payload
 function U(){ return S.users_dk?null:n(S.users); }
 function fmtN(x){ var d=String(x==null?'':x).replace(/[^0-9]/g,''); return d.replace(/\B(?=(\d{3})+(?!\d))/g,' '); } // research32i: thousands shown with a space (3 500), stored as digits
-function n(x){ return x===undefined||x===''||x===null?null:(isFinite(Number(x))?Number(x):null); }
+function n(x){ if(x===undefined||x===null) return null; var c=String(x).replace(/[\s\u00a0\u202f]/g,''); return c===''?null:(isFinite(Number(c))?Number(c):null); } // r36: amounts shown as '4 500' must still read as 4500
 function idx(list,key){ var v=S[key]; for(var i=0;i<list.length;i++){ if(list[i][0]===v) return i+1; } return null; }
 function cut(s,m){ s=(s==null?'':String(s)).trim(); return s?s.slice(0,m):null; }
 function payload(){
@@ -533,7 +533,7 @@ function submit(){
 }
 document.getElementById('next').onclick=function(){
   var v=document.getElementById('view');
-  v.querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined && el.value!=='') S[k]=el.value; }); save();
+  v.querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined && el.value!=='') S[k]=(el.getAttribute('inputmode')==='numeric'?el.value.replace(/[^0-9]/g,''):el.value); }); save();
   if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
   if(step===N-1){ submit(); return; }
   v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
@@ -556,11 +556,11 @@ function resumeUrl(){ var o={}; Object.keys(S).forEach(function(k){ if(k!=='_don
 window.gbPc=function(){ var em=(document.getElementById('pcem').value||'').trim(), m=document.getElementById('pcmsg');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ m.textContent='Please type a valid email address first.'; return; }
   m.textContent='';
-  document.getElementById('view').querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined && el.value!=='') S[k]=el.value; }); S._step=step; save();
+  document.getElementById('view').querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined && el.value!=='') S[k]=(el.getAttribute('inputmode')==='numeric'?el.value.replace(/[^0-9]/g,''):el.value); }); S._step=step; save();
   location.href='mailto:'+encodeURIComponent(em).replace('%40','@')+'?subject='+encodeURIComponent('Open this on your computer: GroupBook questionnaire')+'&body='+encodeURIComponent('Open this link on your computer to carry on where you stopped:\n\n'+resumeUrl()); };
 document.getElementById('sv').onclick=function(e){ e.preventDefault();
   var v=document.getElementById('view');
-  v.querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined && el.value!=='') S[k]=el.value; }); S._step=step; save();
+  v.querySelectorAll('[data-k]').forEach(function(el){ var k=el.getAttribute('data-k'); if(el.type==='radio'){ if(el.checked) S[k]=el.value; } else if(el.type==='checkbox'){ S[k]=el.checked; } else if(el.value!==undefined && el.value!=='') S[k]=(el.getAttribute('inputmode')==='numeric'?el.value.replace(/[^0-9]/g,''):el.value); }); S._step=step; save();
   var old=document.getElementById('svp'); if(old) old.remove();
   v.insertAdjacentHTML('afterbegin','<div class="card" id="svp" style="border-left:4px solid var(--gold)"><h3>Your link to finish later</h3><p style="margin-top:6px">Open this link on any phone or computer to carry on where you stopped. It contains the answers you have given so far, so keep it to yourself or a colleague you trust. Nothing has been sent to us yet.</p><label class="f"><textarea id="svl" readonly rows="4"></textarea></label><div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap"><button class="btn" id="svc" type="button">Copy link</button><a class="btn sec" id="sve" style="text-decoration:none;display:inline-flex;align-items:center">Email it to myself</a></div><div class="hint" id="svm" style="margin-top:6px"></div></div>');
   var url=resumeUrl(); var ta=document.getElementById('svl'); ta.value=url;
