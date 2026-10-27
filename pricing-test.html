@@ -122,7 +122,7 @@ input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research36';
+var SURVEY_VERSION = '2026-10-research36b';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -270,7 +270,7 @@ function prow(key,title,a,b,req,unit){ // a,b = [datakey,caption,placeholder] or
     return '<label>'+c[1]+'<input type="text" inputmode="'+(c[3]?'decimal':'numeric')+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-k="'+c[0]+'" value="'+esc(S[c[0]])+'" placeholder="'+(c[2]||'')+'"></label>'; }
   var dk=DKROWS.test(key)?'<label class="opt dkopt'+(S[key+'_dk']?' on':'')+'" style="margin-top:6px"><input type="checkbox" data-k="'+key+'_dk"'+(S[key+'_dk']?' checked':'')+'><span>I can\'t say</span></label>':'';
   return '<div class="ask" data-ask="'+key+'" style="margin-top:14px"><div class="q" style="margin-bottom:4px">'+title+(req?'<span class="req">*</span>':'')+'</div>'+(unit?UNIT(unit):'')+'<div class="pair2">'+cell(a)+cell(b)+'</div>'+dk+'</div>'; }
-var DKROWS=/^(pe|mod_[a-z]+|inc|pg|blk_250)$/; // r36: price and allowance rows can be answered "I can't say" instead of a forced guess
+var DKROWS=/^$/; // r36b: 'I can't say' removed (Danie, 27 Oct): price rows are compulsory, a best guess is fine; // r36: price and allowance rows can be answered "I can't say" instead of a forced guess
 function dkOut(){ var o={}; Object.keys(S).forEach(function(k){ if(/_dk$/.test(k)&&S[k]===true) o[k.replace(/_dk$/,'')]=true; }); return o; }
 function lrow(label,key,ph,req,dec){ if(req) REQ[key]=true; return '<div class="ask lr" data-ask="'+key+'" style="margin-top:0"><div class="lrow"><span>'+label+(req?'<span class="req">*</span>':'')+'</span><input type="text" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></div></div>'; }
 var PRICED = /priced/.test(SRC);   // draft prices are shown ONLY on links whose src contains 'priced' (private follow-up); the broad survey shows none
