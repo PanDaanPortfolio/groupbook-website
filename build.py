@@ -920,8 +920,8 @@ rung("recon","Recon",IN_RESEARCH,"Help us set it",["Import the lodge-card statem
       <tbody>
         <tr><td class="lbl">Who it is for</td><td>A desk of one or two</td><td>A team running several clients' groups</td><td>A national agency or groups desk</td><td>More than twenty users, several business units, procurement terms</td></tr>
         <tr><td class="lbl">Named users included (maximum)</td><td>2 (up to 5)</td><td>5 (up to 10)</td><td>10 (up to 20)</td><td>By order form</td></tr>
-        <tr><td class="lbl">RSVP: registered guests per event included</td><td>100</td><td>150</td><td>250</td><td>As agreed</td></tr>
-        <tr><td class="lbl">RSVP: events a year included</td><td>50</td><td>80</td><td>100</td><td>As agreed</td></tr>
+        <tr><td class="lbl">RSVP: registered guests a year included, across all events</td><td>1,500</td><td>3,000</td><td>6,000</td><td>As agreed</td></tr>
+        <tr><td class="lbl">Events a year (any kind)</td><td>50</td><td>80</td><td>100</td><td>As agreed</td></tr>
         <tr><td class="lbl">Hands-on help a month</td><td>60 minutes</td><td>120 minutes</td><td>240 minutes</td><td>Named contact</td></tr>
         <tr><td class="lbl">Monthly, per module</td><td>In research</td><td>In research</td><td>In research</td><td>Talk to us</td></tr>
       </tbody>
@@ -951,7 +951,7 @@ rung("recon","Recon",IN_RESEARCH,"Help us set it",["Import the lodge-card statem
       <details class="faq"><summary>Is there a contract?</summary><p>No. Monthly plans run on a debit order and can be cancelled at the end of any paid period. Annual plans are invoiced once at ten months' price for twelve months' use.</p></details>
       <details class="faq"><summary>Is there a set-up or implementation fee?</summary><p>No. Remote onboarding — workspace set-up and one 60-minute session with your administrator — is included with any module.</p></details>
       <details class="faq"><summary>What counts as a user?</summary><p>A named login. Each size includes its users and has a maximum — Small 2 (up to 5), Mid 5 (up to 10), Large 10 (up to 20); further named users can be added up to the maximum, and the size applies to every module you take.</p></details>
-      <details class="faq"><summary>What is a guest event, and when is it charged?</summary><p>Running the RSVP for one event in GroupBook — invitations, online replies, the guest page, check-in — sized by the guests who registered. Events up to your size's guests per event are included; more guests than that are priced on registered guests, never more than a set price for that size of event, shown and approved before anything is charged; the exact shape is in research. A guest list imported for rooms, flights or transfers is never charged.</p></details>
+      <details class="faq"><summary>What is a guest event, and when is it charged?</summary><p>Running the RSVP for one event in GroupBook — invitations, online replies, the guest page, check-in — counted by the guests who registered. Each size includes a yearly allowance of registered guests, shared by all your events; nothing is charged per event. If you need more in a year, you top up in advance with a block of extra guests and approve it before it is used; a live invitation never stops. The exact allowances and prices are in research. A guest list imported for rooms, flights or transfers is never charged.</p></details>
       <details class="faq"><summary>Do hotels pay to be listed or to reply?</summary><p>No. Hotels and venues are listed and receive requests at no charge. The only thing we ask of them is a current group-desk contact.</p></details>
       <details class="faq"><summary>Why is there no VAT on the price?</summary><p>PanDaan (Pty) Ltd is not a registered VAT vendor, so no VAT is charged on any GroupBook invoice. The price shown is the amount invoiced.</p></details>
     </div>

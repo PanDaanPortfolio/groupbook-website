@@ -122,7 +122,7 @@ input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research34';
+var SURVEY_VERSION = '2026-10-research35';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -166,7 +166,8 @@ var MODD = {sourcing:'Brief in, one branded request to the right hotels and venu
             recon:'Import the card statement and match it to bookings and purchase orders; exceptions reviewed by you; budgets per event.'};
 var MODJOB = {sourcing:'Finding and booking the hotel or venue',rsvp:'Inviting guests and running the RSVP or registration',travel:'Rooms, flights, transfers and car hire for the guests',recon:'Reconciling the card statement or supplier payments afterwards'};
 var JOBOPTS = [['us','My team does it'],['out','A specialist, agency or supplier does it for us'],['client','The client or another party does it'],['none','Not part of our work']];
-var SIZES = [{k:'small',n:'Small',users:2,maxu:5,cap:100,inc:50,help:'1 hour'},{k:'mid',n:'Mid',users:5,maxu:10,cap:150,inc:80,help:'2 hours'},{k:'large',n:'Large',users:10,maxu:20,cap:250,inc:100,help:'4 hours'}];
+var SIZES = [{k:'small',n:'Small',users:2,maxu:5,cap:100,inc:50,pool:1500,help:'1 hour'},{k:'mid',n:'Mid',users:5,maxu:10,cap:150,inc:80,pool:3000,help:'2 hours'},{k:'large',n:'Large',users:10,maxu:20,cap:250,inc:100,pool:6000,help:'4 hours'}]; // research35 (27 Oct 2026): RSVP is a yearly allowance of registered guests (pool); cap is no longer shown
+function K(n){ return Math.round(n).toLocaleString('en-ZA'); }
 var MODP = {sourcing:[1950,2950,3950],rsvp:[2500,4500,7500],travel:[6000,11000,16500],recon:[1500,2500,3500]};
 function sizeOf(k){ for(var i=0;i<SIZES.length;i++){ if(SIZES[i].k===k) return SIZES[i]; } return null; }
 function sizeIdx(k){ for(var i=0;i<SIZES.length;i++){ if(SIZES[i].k===k) return i; } return 1; }
@@ -203,16 +204,16 @@ function moduleCards(){
   '<h3 style="margin-top:22px">One size for your team</h3><p class="lede" style="margin-top:6px">Size is the only thing that changes a price. It applies to every module you take, and follows the number of people signing in or the number of events you run a year, whichever is higher.</p>'+
   '<table><tr><th></th>'+SIZES.map(function(s){return '<th>'+s.n+'</th>';}).join('')+'</tr>'+
   '<tr><td>People logging in (up to)</td>'+SIZES.map(function(s){return '<td>'+s.users+' ('+s.maxu+')</td>';}).join('')+'</tr>'+
-  '<tr><td>RSVP: guests per event included</td>'+SIZES.map(function(s){return '<td>'+s.cap+'</td>';}).join('')+'</tr>'+
-  '<tr><td>RSVP: events a year included</td>'+SIZES.map(function(s){return '<td>'+s.inc+'</td>';}).join('')+'</tr>'+
+  '<tr><td>RSVP: registered guests a year included, across all your events</td>'+SIZES.map(function(s){return '<td>'+K(s.pool)+'</td>';}).join('')+'</tr>'+
+  '<tr><td>Events a year (any kind)</td>'+SIZES.map(function(s){return '<td>'+s.inc+'</td>';}).join('')+'</tr>'+
   '<tr><td>Hands-on help a month</td>'+SIZES.map(function(s){return '<td>'+s.help+'</td>';}).join('')+'</tr></table>'+
-  '<div class="note"><b>The only thing ever charged per event:</b> an RSVP event with more registered guests than your size includes is charged per extra guest, never more than a set price for that size of event, and you approve it before the event is switched on. A guest list imported for rooms, flights or transfers is never charged.</div>';
+  '<div class="note"><b>Nothing is charged per event.</b> RSVP comes with a yearly allowance of registered guests for your size, shared by all your events, big or small. If you need more in a year, you top up in advance with a block of extra guests and approve it before it is used; a live invitation never stops. A guest list imported for rooms, flights or transfers is never charged.</div>';
 }
 // research29: the package the price questions refer to, shown directly above them (the chosen plan; if none fits, Boutique as a reference point)
 function planSummary(){
   var m=selMods(); var sz=sizeOf(S.size)||SIZES[1]; if(!m.length) m=['sourcing','rsvp'];
   var items=m.map(function(x){ return '<b>'+MODN[x]+'</b>: '+MODD[x]; });
-  items.push(sz.users+' people logging in (up to '+sz.maxu+') and '+sz.help+' of hands-on help a month'+(m.indexOf('rsvp')>-1?'; RSVP events of up to '+sz.cap+' guests, '+sz.inc+' a year':''));
+  items.push(sz.users+' people logging in (up to '+sz.maxu+') and '+sz.help+' of hands-on help a month'+(m.indexOf('rsvp')>-1?'; RSVP for up to '+K(sz.pool)+' registered guests a year, across all your events':''));
   return '<div class="pl2 hi"><div class="nm">'+m.map(function(x){return MODN[x];}).join(' + ')+' <span style="font-family:DM Sans;font-size:14px;color:var(--ink3)">at '+sz.n+' size</span></div><ul>'+items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>'+
     (selMods().length&&sizeOf(S.size)?'':'<div class="hint" style="margin-top:6px">You did not pick modules or a size, so please answer for Sourcing + RSVP at Mid size as a reference point.</div>');
 }
@@ -228,16 +229,17 @@ function recomputeSz(){ /* research30m: sizes are typed directly as events a yea
 function szSum(){ var t=0,any=false; BK.forEach(function(x){ var v=n(S['sz_'+x]); if(v!==null){ t+=v; any=true; } }); return any?t:null; }
 function szOut(){ var o={}; BK.forEach(function(k){ o[k]=n(S['sz_'+k]); }); return o; }
 // ONE fee scenario per size band, the same for every plan: "you have used up everything your plan includes". Rand amounts, ex VAT, for the extra event only.
-var FEEBANDS = [['xs','Up to 100 guests'],['b200','101 to 200 guests'],['b300','201 to 300 guests'],['b500','301 to 500 guests']];
+var FEEBANDS = [['xs','Up to 100 guests'],['b200','101 to 200 guests'],['b300','201 to 300 guests'],['b500','301 to 500 guests']]; // research35: no longer asked; kept so evp stays an empty object for older readers
+var BLOCKS = [['250','250 extra guests','5000','12000'],['1000','1,000 extra guests','15000','40000']];
 function feeReq(){ return S.job_rsvp!=='none' && szSum()!==0; }
 function evQs(){ if(!hasRsvp()) return ''; var rq=feeReq(), sz=sizeOf(S.size)||SIZES[1];
-  var out='<h3 style="margin-top:26px">Beyond what your size includes</h3><p class="lede" style="margin-top:6px">Your size ('+sz.n+') includes RSVP events of up to '+sz.cap+' registered guests. Suppose you run an event with <b>more guests than that</b>. '+(rq?'A best guess is fine.':'Skip if you never run guest registration.')+'</p>';
-  out+=ask('over_pref','How would you rather be charged for the guests over the limit?',[['perguest','A charge per extra guest'],['flat','A flat price for that size of event'],['either','Either, as long as I see and approve it before the event goes live']],'Your answer decides which questions follow.',rq);
+  var out='<h3 style="margin-top:26px">Beyond your yearly allowance</h3><p class="lede" style="margin-top:6px">Your size ('+sz.n+') includes <b>'+K(sz.pool)+' registered guests a year</b>, across all your RSVP events. Suppose you need <b>more than that</b> in a year. '+(rq?'A best guess is fine.':'Skip if you never run guest registration.')+'</p>';
+  out+=ask('over_pref','How would you rather pay for the extra guests?',[['perguest','A rate per extra guest, billed afterwards'],['block','A top-up block of extra guests, bought in advance (for example 250 at a time)'],['either','Either, as long as I see and approve it before it is used']],'Your answer decides which questions follow.',rq);
   // per-guest block (shown for perguest / either)
-  out+='<div id="pgblock" style="display:none">'+prow('pg','For <b>each registered guest over the limit</b>, what would you expect to pay?',['pg_pay','I would expect (rand per guest)','e.g. 60'],['pg_walk','Too expensive at (rand per guest)','e.g. 150'],false,'Enter an amount in rand per extra guest, excluding VAT')+'<div class="hint" style="margin:6px 0 0">As a guide: a 200-guest event at '+sz.n+' size is '+(200-sz.cap)+' guests over the limit.</div></div>';
-  // flat block (shown for flat / either): one flat price per size of event, allowance used up
-  out+='<div id="flatblock" style="display:none"><div class="q" style="margin-top:18px">Suppose you have used everything your size includes ('+sz.inc+' RSVP events a year of up to '+sz.cap+' guests) and run <b>one more event</b>. For each size, what <b>flat extra charge</b> would you expect, on top of the monthly fee, for the guest RSVP or registration only? Over 500 guests would be quoted separately.</div>'+UNIT('Enter an amount in rand, excluding VAT, for one event');
-  FEEBANDS.forEach(function(f){ out+=prow('fee_'+f[0],f[1],['fee_'+f[0]+'_pay','I would expect (rand)','e.g. 5000'],['fee_'+f[0]+'_walk','Too expensive at (rand)','e.g. 12000'],false); });
+  out+='<div id="pgblock" style="display:none">'+prow('pg','For <b>each registered guest beyond your yearly allowance</b>, what would you expect to pay?',['pg_pay','I would expect (rand per guest)','e.g. 30'],['pg_walk','Too expensive at (rand per guest)','e.g. 80'],false,'Enter an amount in rand per extra guest, excluding VAT')+'<div class="hint" style="margin:6px 0 0">As a guide: going 10% over the '+sz.n+' allowance is '+K(sz.pool/10)+' extra guests.</div></div>';
+  // top-up block (shown for block / either): what a prepaid block of extra guests is worth
+  out+='<div id="flatblock" style="display:none"><div class="q" style="margin-top:18px">Suppose you have used your yearly allowance and buy <b>a top-up block of extra guests</b> in advance. What would you expect to pay for each block?</div>'+UNIT('Enter an amount in rand, excluding VAT, for the whole block');
+  BLOCKS.forEach(function(f){ out+=prow('blk_'+f[0],f[1],['blk_'+f[0]+'_pay','I would expect (rand)','e.g. '+f[2]],['blk_'+f[0]+'_walk','Too expensive at (rand)','e.g. '+f[3]],false); });
   out+='</div>';
   return out; }
 var PROJSZ=[['s','Up to 50 guests'],['m','51 to 150 guests'],['l','151 guests or more']];
@@ -245,16 +247,17 @@ function projRows(q){ return '<div class="q" style="margin-top:18px">'+q+'</div>
 function projOut(){ var o={}; PROJSZ.forEach(function(z){ var a=n(S['proj_'+z[0]+'_pay']), w=n(S['proj_'+z[0]+'_walk']); if(a!==null||w!==null) o[z[0]]={pay:a,walk:w}; }); return o; }
 function updOver(){ var pj=document.getElementById('projblock'); if(pj){ var st=S.structure||''; var showPj=/^(D|G|S_job|S_ret)$/.test(st); pj.style.display=showPj?'block':'none'; REQ.proj_s_pay=REQ.proj_m_pay=showPj; REQ.proj_l_pay=false; pj.querySelectorAll('.req').forEach(function(e){e.remove();}); if(showPj) pj.querySelectorAll('.ask:not([data-ask="proj_l"]) > .q').forEach(function(q){ q.insertAdjacentHTML('beforeend','<span class="req">*</span>'); }); }
   var pg=document.getElementById('pgblock'), fl=document.getElementById('flatblock'); if(!pg||!fl) return; var v=S.over_pref||''; var rq=feeReq();
-  var showPg=(v==='perguest'||v==='either'), showFl=(v==='flat'||v==='either');
+  var showPg=(v==='perguest'||v==='either'), showFl=(v==='block'||v==='either');
   pg.style.display=showPg?'block':'none'; fl.style.display=showFl?'block':'none';
-  REQ.pg_pay=REQ.pg_walk=(showPg&&rq); FEEBANDS.forEach(function(f){ REQ['fee_'+f[0]+'_pay']=REQ['fee_'+f[0]+'_walk']=(showFl&&rq); });
+  REQ.pg_pay=REQ.pg_walk=(showPg&&rq); BLOCKS.forEach(function(f){ REQ['blk_'+f[0]+'_pay']=REQ['blk_'+f[0]+'_walk']=(showFl&&rq); });
   pg.querySelectorAll('.req').forEach(function(e){e.remove();}); fl.querySelectorAll('.req').forEach(function(e){e.remove();});
   if(showPg&&rq) pg.querySelectorAll('.ask > .q').forEach(function(q){ q.insertAdjacentHTML('beforeend','<span class="req">*</span>'); });
   if(showFl&&rq) fl.querySelectorAll('.ask > .q').forEach(function(q){ q.insertAdjacentHTML('beforeend','<span class="req">*</span>'); }); }
 function feeOut(){ var o={}; FEEBANDS.forEach(function(f){ var a=n(S['fee_'+f[0]+'_pay']), w=n(S['fee_'+f[0]+'_walk']); if(a!==null||w!==null) o[f[0]]={n:null,pay:a,cheap:null,walk:w}; }); return o; }
 function pgOut(){ return {pay:n(S.pg_pay), walk:n(S.pg_walk)}; }
-function incQs(){ if(!hasRsvp()) return ''; return '<div class="ask" style="margin-top:22px"><div class="q">For a monthly fee like the one you gave, what would be reasonable for the RSVP module at your size to include?</div>'+UNIT('Enter numbers, not rand: events a year, and guests per event')+'<div class="hint" style="margin:-4px 0 4px">Your own view, whatever the plan above says. Your best guess is what we need.</div></div>'+
-  prow('inc','Included in the monthly fee',['inc_events','Number of events a year','e.g. 60'],['inc_pax','Number of guests per event, up to','e.g. 100'],true); }
+function blkOut(){ var o={}; BLOCKS.forEach(function(f){ var a=n(S['blk_'+f[0]+'_pay']), w=n(S['blk_'+f[0]+'_walk']); if(a!==null||w!==null) o[f[0]]={pay:a,walk:w}; }); return o; }
+function incQs(){ if(!hasRsvp()) return ''; return '<div class="ask" style="margin-top:22px"><div class="q">For a monthly fee like the one you gave, what would be reasonable for the RSVP module at your size to include?</div>'+UNIT('Enter numbers, not rand: events a year, and registered guests a year across all events')+'<div class="hint" style="margin:-4px 0 4px">Your own view, whatever the plan above says. Your best guess is what we need.</div></div>'+
+  prow('inc','Included in the monthly fee',['inc_events','Number of events a year','e.g. 60'],['inc_pool','Registered guests a year, across all events','e.g. 2000'],true); }
 // research32: what each module on its own would be worth (only the modules ticked; all optional)
 function modQs(){ var m=selMods(); if(m.length<2) return ''; var sz=sizeOf(S.size)||SIZES[1];
   var out='<h3 style="margin-top:26px">And each module on its own</h3><p class="lede" style="margin-top:6px">If your team took only one of these modules at '+sz.n+' size, what monthly fee would you expect for it? Your best guess for each is what we need.</p>';
@@ -310,9 +313,9 @@ var RSVP_WHO = [['own','My team runs it (email, Excel, or a tool)'],['supplier',
 var APPROVER = [['me','I could approve it myself'],['boss','My manager or a director'],['finance','Finance or procurement']];
 var STEPS = [['1','Step 1: getting the brief right'],['2','Step 2: finding the right hotels and the right person to ask'],['3','Step 3: sending the requests'],['4','Step 4: chasing and comparing the quotes'],['5','Step 5: inviting and looking after the guests'],['6','Step 6: rooms, flights, transfers, car hire'],['7','Step 7: card statements and reconciliation']];
 var STRUCT = {
-  A: 'A monthly plan with a set number of events included; bigger events charged per event, as shown above',
-  B: 'A monthly plan that includes a yearly pool of guests; once the pool is used, a rate per extra guest',
-  C: 'A monthly plan with events included; above the guest limit, a rate per extra guest, never more than the event price shown above',
+  A: 'A monthly plan with a set number of events included; bigger events charged a flat price per event',
+  B: 'A monthly plan that includes a yearly pool of registered guests; once it is used, a top-up block of extra guests bought in advance',
+  C: 'A monthly plan with events up to a guest limit per event included; above the limit, a rate per extra guest, never more than a set price per event',
   D: 'No monthly plan: I pay a fee each time I run an event',
   E: 'A cheaper monthly plan with no help hours included; help from us is charged at R850 an hour when I use it',
   F: 'The same package as shown, at a lower monthly price'
@@ -320,7 +323,7 @@ var STRUCT = {
 var STRUCT_NP = {
   C: 'A monthly fee for the modules I use, with RSVP events up to my size\'s guest limit included; over the limit, a rate per extra guest, never more than a set price per event',
   A: 'A monthly fee for the modules I use, with RSVP events included; bigger events charged a flat price per event',
-  B: 'A monthly fee for the modules I use that includes a yearly pool of registered guests; once the pool is used, a rate per extra guest',
+  B: 'A monthly fee for the modules I use that includes a yearly pool of registered guests; once it is used, a top-up block of extra guests bought in advance',
   D: 'No monthly fee: I pay per project. Each event or sourcing job is priced on its own, using whichever modules it needs',
   G: 'A small monthly retainer for the workspace, plus a fee per project for the modules that project uses',
   E: 'A cheaper monthly fee with no help hours included; help from us is charged by the hour when I use it',
@@ -413,7 +416,7 @@ var SCREENS = [
  '<table><tr><th>Module, a month (whole team)</th>'+SIZES.map(function(s){return '<th>'+s.n+'</th>';}).join('')+'</tr>'+MODS.map(function(x){ return '<tr><td>'+MODN[x]+'</td>'+MODP[x].map(function(v){return '<td>'+R(v)+'</td>';}).join('')+'</tr>'; }).join('')+'</table>'+
  '<div class="hint" style="margin-top:6px">Two modules: 10% off the pair. Three or four: 20% off the lot. The Travel desk (Sourcing + Travel + Recon) has its own price; RSVP added to it is 20% off.</div>'+
  '<table><tr><th>Bundle</th>'+SIZES.map(function(s){return '<th>'+s.n+'</th>';}).join('')+'</tr>'+bund('Events team',['sourcing','rsvp'])+bund('Travel desk',['sourcing','travel','recon'])+bund('Full House',MODS)+'</table>'+
- '<div class="note"><b>Beyond what your size includes</b> (research prices): an RSVP event with more registered guests than your size allows is R75 per guest over, never more than 101–200 guests R9,500; 201–300 R14,500; 301–500 R19,500; over 500 quoted. An RSVP event beyond your yearly count is R2,950.</div>'+
+ '<div class="note"><b>RSVP allowance</b> (research prices): Small 1,500, Mid 3,000, Large 6,000 registered guests a year, across all your events. Beyond that, top-up blocks bought and approved in advance: 250 extra guests R10,000; 500 R17,500; 1,000 R30,000. Nothing is charged per event.</div>'+
  (pk?'<div class="note">You chose <b>'+pkgName()+'</b> on an earlier screen: <b>'+R(pk.monthly)+' a month</b>'+(pk.disc?' (list '+R(pk.list)+', '+Math.round(pk.disc*100)+'% off)':'')+', or <b>'+R(pk.monthly*10)+' a year</b>.</div>':'<div class="note">You did not choose modules earlier. Answer for the modules closest to your team\'s needs.</div>')+
  ask('price_fit','When you look at the price of '+(pk?'your package':'these modules')+', it feels…',[['cheap','So low that I would doubt the quality'],['good','Good value for what it does'],['fair','About fair'],['high','Higher than I would like'],['toohigh','Too high for us']])+
  ask('buy_at_price','If this package were available on these terms today, what would your organisation most likely do?',ACTION)+
@@ -449,15 +452,15 @@ function payload(){
   var finNeed={us:'regular',out:'some',client:'some',none:'no'}[S.job_recon]||null;
   var si=sizeIdx(S.size); var pk=mods.length?pkgPrice(mods,si):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research30:true, research32:true, research33:true, research34:true, my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax),
+  var a={ research30:true, research32:true, research33:true, research34:true, research35:true, my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax), inc_pool:n(S.inc_pool), pool_shown:(sizeOf(S.size)||SIZES[1]).pool,
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'not asked from v7.9 (22 Oct 2026); hours_src / hours_run stay null', rsvp_who:rsvpWho, finance_need:finNeed,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
-    evp:feeOut(), pg:pgOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj:projOut(), proj_pay:n(S.proj_m_pay), proj_walk:n(S.proj_m_walk),
+    evp:feeOut(), pg:pgOut(), blk:blkOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj:projOut(), proj_pay:n(S.proj_m_pay), proj_walk:n(S.proj_m_walk),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
-    price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; over_pref routes the follow-up: pg = ZAR per registered guest over the size cap (expect / too expensive) asked when perguest or either; evp.{xs,b200,b300,b500} = ZAR flat extra charge for ONE extra RSVP event in that size, allowance used up, ex VAT, asked when flat or either; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj.{s,m,l} = ZAR for one project by event size (s up to 50, m 51-150, l 151+) when D/G/S_job/S_ret chosen; proj_pay/proj_walk = the m row, kept for older readers; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:7,
+    price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; r35: RSVP = yearly guest pool (pool_shown); over_pref perguest|block|either; pg = ZAR/guest beyond pool; blk.{250,1000} = ZAR per prepaid block; evp, inc_pax not asked; inc_pool = fair yearly pool; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj.{s,m,l} = ZAR for one project by event size (s up to 50, m 51-150, l 151+) when D/G/S_job/S_ret chosen; proj_pay/proj_walk = the m row, kept for older readers; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:8,
     t:{ arch_other:cut(S.archetype__other,200), role_other:cut(S.my_role__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl), none_why:cut(S.none_why,tl), stay_why:cut(S.structure__stay||S.structure__S_stay,tl), action_why:cut(S.buy_at_price__current||S.buy_at_price__cannot,300) },
-    plan_text_version:'v7.10-2026-10-22-mobile-pc-box-softened', user_agent:(navigator.userAgent||'').slice(0,160) };
+    plan_text_version:'v7.11-2026-10-27-yearly-pool', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
     role:roleMap[S.archetype]||null, rfp_volume:null, team_size:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
     tier1_good_value:tf===1?gv:null, tier1_too_expensive:tf===1?te:null, tier2_good_value:tf===2?gv:null, tier2_too_expensive:tf===2?te:null, tier3_good_value:tf===3?gv:null, tier3_too_expensive:tf===3?te:null,
