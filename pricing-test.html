@@ -122,7 +122,7 @@ input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research36b';
+var SURVEY_VERSION = '2026-10-research36c';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -219,6 +219,7 @@ function planSummary(){
 // ---------- survey wiring (submits to the live receiver; no copy-and-paste)
 var API = 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey';
 var SRC = (new URLSearchParams(location.search).get('src')) || 'website';
+var INVT = ((new URLSearchParams(location.search).get('t'))||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,40) || null; // r36c: personal invite token, so a reply can be matched to the invitation (reminders, size quotas)
 var REVIEW = /^review/.test(SRC);
 var REELQ = new URLSearchParams(location.search).get('reel'); var REELV = (REELQ==='full') ? 'full' : (REELQ==='short') ? 'short' : (S.reel_variant==='full'?'full':'short'); S.reel_variant=REELV;
 // research30: the same seven brackets everywhere. Normal month for the four smaller brackets; yearly for the three larger ones (rare events a normal month would miss)
@@ -455,7 +456,7 @@ function payload(){
   var finNeed={us:'regular',out:'some',client:'some',none:'no'}[S.job_recon]||null;
   var si=sizeIdx(S.size); var pk=mods.length?pkgPrice(mods,si):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research30:true, research32:true, research33:true, research34:true, research35:true, research36:true, dk:dkOut(), my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax), inc_pool:n(S.inc_pool), pool_shown:PRICED?(sizeOf(S.size)||SIZES[1]).pool:null,
+  var a={ research30:true, research32:true, research33:true, research34:true, research35:true, research36:true, invite_token:INVT, dk:dkOut(), my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax), inc_pool:n(S.inc_pool), pool_shown:PRICED?(sizeOf(S.size)||SIZES[1]).pool:null,
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'not asked from v7.9 (22 Oct 2026); hours_src / hours_run stay null', rsvp_who:rsvpWho, finance_need:finNeed,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
