@@ -222,7 +222,8 @@ var SRC = (new URLSearchParams(location.search).get('src')) || 'website';
 var INVT = ((new URLSearchParams(location.search).get('t'))||'').replace(/[^A-Za-z0-9_-]/g,'').slice(0,40) || null; // r36c: personal invite token, so a reply can be matched to the invitation (reminders, size quotas)
 // SURVEY-PROGRESS-001: invited respondents (t=) have each completed screen saved to the server. Prod host -> PROD, any other host (previews, localhost) -> DEV.
 var PROGRESS_API = /(^|\.)groupbook\.co\.za$/.test(location.hostname) ? 'https://evuggnswxypyoiwsfbuk.supabase.co/functions/v1/survey-progress' : 'https://rpmsfxzxyoicmwrhigeo.supabase.co/functions/v1/survey-progress';
-function saveProgress(extra){ if(!INVT) return; try{
+var FOUNDING = INVT && /^fp-/.test(SRC); // founding-programme links only (src=fp-<market>)
+function saveProgress(extra){ if(!FOUNDING) return; try{
   var body={invite_token:INVT, survey_version:SURVEY_VERSION, source:SRC}; for(var k in extra) body[k]=extra[k];
   // never blocks, never shows an error (a failed save must not stop the respondent)
   fetch(PROGRESS_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),keepalive:true}).catch(function(){});
@@ -363,10 +364,10 @@ function sec(t){ return '<h3 style="margin-top:26px">'+t+'</h3>'; }
 var SCREENS = [
 { title:'Would GroupBook fit how your team works?', body:function(){ return '<p class="lede">GroupBook is a web tool for running group events and group travel, from the brief to the final bill. It is sold in four parts, so you take only the jobs your team does. We are testing which parts, sizes and prices suit teams like yours.</p>'+
  (REVIEW?'<div class="card" style="border-left:4px solid #8E2A1A"><h3>You are reviewing as well as answering</h3><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>Answer as yourself, for your own team</li><li><b>Note where you hesitate, need a record, or start guessing</b></li><li>A comments box is on the last screen; your answers are kept apart</li></ul></div>':'')+
- '<div class="card"><h3>How this works</h3><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>'+(typeof SCREENS!=='undefined'?(['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'][SCREENS.length]||SCREENS.length):'Eight')+' screens, mostly tap-to-answer, including a short walk-through of GroupBook</li><li><b>Best guesses are exactly what we need</b>: no records, no colleague</li><li>Answers go to us when you press <b>Send</b> on the last screen</li><li>Need to stop? <b>Save and finish later</b> (bottom of the page) gives you a link</li><li>All names and prices are <b>tests</b>; nothing commits you to buy</li></ul></div>'+
- '<div class="note"><b>What you get</b><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>The results of this research</li><li>A chance at <b>one free hotel or venue sourcing job</b> (first 20 eligible organisations to finish by 31 Jan 2027; tick the box on the last screen). Your answers do not affect whether you qualify. <a href="/trial" target="_blank" rel="noopener">Terms</a></li></ul></div>'+
+ '<div class="card"><h3>How this works</h3><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>'+(typeof SCREENS!=='undefined'?(['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine'][SCREENS.length]||SCREENS.length):'Eight')+' screens, mostly tap-to-answer, including a short walk-through of GroupBook</li><li><b>Best guesses are exactly what we need</b>: no records, no colleague</li><li>'+(FOUNDING?'Your answers are saved as you go; press <b>Send</b> on the last screen to finish':'Answers go to us when you press <b>Send</b> on the last screen')+'</li><li>Need to stop? <b>Save and finish later</b> (bottom of the page) gives you a link</li><li>All names and prices are <b>tests</b>; nothing commits you to buy</li></ul></div>'+
+ (FOUNDING?'':'<div class="note"><b>What you get</b><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>The results of this research</li><li>A chance at <b>one free hotel or venue sourcing job</b> (first 20 eligible organisations to finish by 31 Jan 2027; tick the box on the last screen). Your answers do not affect whether you qualify. <a href="/trial" target="_blank" rel="noopener">Terms</a></li></ul></div>')+
  '<p class="hint" style="margin:10px 0 0"><a href="https://www.groupbook.co.za/" target="_blank" rel="noopener">See what GroupBook does</a></p>'+
- (INVT?'<p class="hint" id="savednote" style="margin:10px 0 0">Your answers are saved to GroupBook as you go, under the founding programme terms you agreed to. You can ask us to delete them at any time.</p>':'')+
+ (FOUNDING?'<p class="hint" id="savednote" style="margin:10px 0 0">Your answers are saved to GroupBook as you go, under the founding programme terms you agreed to. You can ask us to delete them at any time.</p>':'')+
  ask('screen','Do you organise or book group events or group travel as part of your work?',[['now','Yes'],['past','I used to'],['no','No']])+
  '<div class="pcbox pconly"><b class="t">Prefer to finish on a computer?</b>Email yourself a link and carry on from your computer. We do not receive or keep this email address.<label class="f" style="margin-top:10px">Your email<input type="email" id="pcem" name="pc_email" autocomplete="email" placeholder="you@company.co.za"></label><div class="hint reqnote" id="pcmsg" style="min-height:18px"></div><button type="button" class="btn sec" style="width:100%;margin-top:6px" onclick="gbPc()">Email me a link</button></div>'; } },
 
@@ -552,7 +553,7 @@ document.getElementById('next').onclick=function(){
   v.querySelectorAll('.ask.miss').forEach(function(a){a.classList.remove('miss');});
   var m=missing(); if(m.length){ flag(m,'missmsg','question'); return; }
   if(step===0 && S.screen==='no'){ render(); return; }
-  if(INVT){ var pa=progressAnswers(); if(pa) saveProgress({step:step+1,answers:pa}); }
+  if(FOUNDING){ var pa=progressAnswers(); if(pa) saveProgress({step:step+1,answers:pa}); }
   step++; render(); };
 document.getElementById('back').onclick=function(){ if(step>0){ step--; render(); } };
 function peVals(){ return [n(S.pe_pay),n(S.pe_walk)]; }
