@@ -122,7 +122,7 @@ input[inputmode=numeric]{font-variant-numeric:tabular-nums;letter-spacing:.03em}
 // ---------- state
 var S = {}; try { S = JSON.parse(localStorage.getItem('gb_rs') || '{}'); } catch(e) { S = {}; }
 function save(){ try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
-var SURVEY_VERSION = '2026-10-research36c';
+var SURVEY_VERSION = '2026-11-research37';
 if(S._v!==SURVEY_VERSION){ S={_v:SURVEY_VERSION}; try{ localStorage.setItem('gb_rs', JSON.stringify(S)); }catch(e){} }
 // resume link: #r=<state> restores answers on any device. Treated as untrusted input.
 (function(){ try{ var m=/^#r=([A-Za-z0-9_\-]+)$/.exec(location.hash); if(!m) return;
@@ -145,7 +145,7 @@ function ask(key, q, opts, hint, optional){
       return '<div><label class="opt'+(on?' on':'')+'"><input type="radio" name="'+key+'" value="'+v+'"'+(on?' checked':'')+' data-k="'+key+'"><span>'+l+'</span></label>'+box+'</div>'; }).join('')+'</div></div>';
 }
 var REQ = {};
-function txt(key, label, hint){ return '<label class="f">'+label+'<textarea data-k="'+key+'">'+esc(S[key])+'</textarea></label>'+(hint?'<div class="hint">'+hint+'</div>':''); }
+function txt(key, label, hint, max){ return '<label class="f">'+label+'<textarea'+(max?' maxlength="'+max+'"':'')+' data-k="'+key+'">'+esc(S[key])+'</textarea></label>'+(hint?'<div class="hint">'+hint+'</div>':''); }
 function UNIT(t){ return '<div class="unit">'+t+'</div>'; }
 function num(key, label, hint, ph, required, dec, unit){ if(required) REQ[key]=true; return '<div class="ask" data-ask="'+key+'"><label class="f">'+label+(required?'<span class="req">*</span>':'')+'</label>'+(unit?UNIT(unit):'')+'<label class="f" style="margin-top:0"><input type="tel" name="gbq_'+key+'" inputmode="'+(dec?'decimal':'numeric')+'" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-k="'+key+'" value="'+esc(S[key])+'" placeholder="'+(ph||'')+'"></label>'+(hint?'<div class="hint">'+hint+'</div>':'')+(required?'<div class="hint reqnote">Needed to go on.</div>':'')+'</div>'; }
 function R(n){ return 'R'+Math.round(n).toLocaleString('en-ZA'); }
@@ -289,7 +289,10 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function multi(key, q, opts, hint, req){
   var sel = S[key] || []; if(req) REQ[key]=true;
   return '<div class="ask" data-ask="'+key+'"><div class="q">'+q+(req?'<span class="req" title="needed">*</span>':'')+'</div>'+(hint?'<div class="hint" style="margin:-4px 0 8px">'+hint+'</div>':'')+'<div class="opts">'+
-    opts.map(function(o){ var on = sel.indexOf(o[0])>-1; return '<div><label class="opt'+(on?' on':'')+'"><input type="checkbox" data-m="'+key+'" value="'+o[0]+'"'+(on?' checked':'')+'><span>'+o[1]+'</span></label></div>'; }).join('')+'</div></div>';
+    opts.map(function(o){ var on = sel.indexOf(o[0])>-1; var fu=o[2], fk=key+'__'+o[0];
+      var box = fu ? '<div class="sub" data-fu="'+fk+'" style="display:'+(on?'block':'none')+'"><label class="f" style="margin-top:4px;font-weight:500;font-size:14px">'+fu+'<input type="text" maxlength="80" autocomplete="off" data-k="'+fk+'" value="'+esc(S[fk])+'"></label></div>' : '';
+      if(fu) LABELS[fk]={q:o[1]+' — '+fu};
+      return '<div><label class="opt'+(on?' on':'')+'"><input type="checkbox" data-m="'+key+'" value="'+o[0]+'"'+(on?' checked':'')+'><span>'+o[1]+'</span></label>'+box+'</div>'; }).join('')+'</div></div>';
 }
 function tick(key, label, req){
   if(req) REQ[key]=true;
@@ -361,6 +364,15 @@ function bandLabel(list,code){ for(var i=0;i<list.length;i++){ if(list[i][0]===c
 
 // ---------- screens (research29: top-down, in the order of an event's journey)
 function sec(t){ return '<h3 style="margin-top:26px">'+t+'</h3>'; }
+// SURVEY-SYSTEM-QS-001 (11 Nov 2026): what the respondent uses today. Only cur_happy can be required, and only once a system is ticked.
+var CURSYS = [['excel','Excel, email and WhatsApp'],['built','Something we built ourselves'],['cvent','Cvent'],['stova','Stova'],['eventsair','EventsAir'],['eventbrite','Eventbrite'],['rsvp_svc','A managed RSVP service (for example IT-EM, The RSVP Agency, EventRSVP)'],['flock','Flock'],['tourplan','Tourplan'],['gds','A GDS or back-office system'],['none','Nothing yet'],['other','Other (type it)','Which one?']];
+var CURDOES = [['hotels','Finding hotels and venues'],['quotes','Comparing quotes'],['rsvp','Invitations and RSVPs'],['guests','Guest lists'],['travel','Flights and transfers'],['rooming','Rooming lists'],['recon','Reconciling invoices and statements'],['reporting','Reporting'],['none','Nothing much'],['other','Other (type it)','What else does it do well?']];
+var CURHAPPY = [['1','Very unhappy'],['2','Unhappy'],['3','Neither happy nor unhappy'],['4','Happy'],['5','Very happy']];
+var CURSPEND = [['u10','Under R10 000'],['10_25','R10 000 to R25 000'],['25_50','R25 000 to R50 000'],['50_100','R50 000 to R100 000'],['100_250','R100 000 to R250 000'],['o250','Over R250 000'],['pns','Prefer not to say'],['dk','I do not know']];
+LABELS.cur_system={q:'Which of these do you use today to run group events or bookings?'}; LABELS.cur_does={q:'What does it do well for you?'}; LABELS.cur_happy={q:'How happy are you with it overall?'}; LABELS.cur_missing={q:'What is the one thing it does not do that you wish it did?'}; LABELS.cur_spend={q:'About what do you pay for all such tools together per year?'};
+function curHappyReq(){ var s=S.cur_system||[]; var need=s.length>0&&!(s.length===1&&s[0]==='none'); REQ.cur_happy=need;
+  var q=document.querySelector('[data-ask="cur_happy"] > .q'); if(q){ var r=q.querySelector('.req'); if(need&&!r) q.insertAdjacentHTML('beforeend','<span class="req" title="needed">*</span>'); if(!need&&r) r.remove(); }
+  if(!need){ var a=document.querySelector('[data-ask="cur_happy"]'); if(a) a.classList.remove('miss'); } }
 var SCREENS = [
 { title:'Would GroupBook fit how your team works?', body:function(){ return '<p class="lede">GroupBook is a web tool for running group events and group travel, from the brief to the final bill. It is sold in four parts, so you take only the jobs your team does. We are testing which parts, sizes and prices suit teams like yours.</p>'+
  (REVIEW?'<div class="card" style="border-left:4px solid #8E2A1A"><h3>You are reviewing as well as answering</h3><ul style="margin:8px 0 0;padding-left:20px;display:grid;gap:6px"><li>Answer as yourself, for your own team</li><li><b>Note where you hesitate, need a record, or start guessing</b></li><li>A comments box is on the last screen; your answers are kept apart</li></ul></div>':'')+
@@ -381,7 +393,13 @@ var SCREENS = [
  num('events_year','Over a year, about how many events is that in total?','Your best estimate. Put 0 if you only find hotels or venues. We use it to check the sizes below.','e.g. 40',true,false,'Enter a number of events a year (not guests)')+
  '<div class="ask"><div class="q">Of those, how many events of each size in a year?</div>'+UNIT('Enter a number of events a year for each size (not guests)')+'<div class="hint" style="margin:-4px 0 4px">Rough numbers are fine. Put 0 where there are none.</div></div>'+
  BK.map(function(k){ return lrow('Events of '+BKL[k]+' guests','sz_'+k,'e.g. 2',true); }).join('')+
- '<div class="hint" id="gridchk" style="margin:6px 0 8px"></div>'; } },
+ '<div class="hint" id="gridchk" style="margin:6px 0 8px"></div>'+
+ '<h3 style="margin-top:26px">How you handle this today</h3><p class="lede" style="margin-top:6px">Nothing here needs a record, and every answer is optional except how happy you are.</p>'+
+ multi('cur_system','Which of these do you use today to run group events or bookings?',CURSYS,'Tick all that apply.')+
+ multi('cur_does','What does it do well for you?',CURDOES,'Tick all that apply.')+
+ ask('cur_happy','How happy are you with it overall?',CURHAPPY,null,true)+
+ '<div class="ask" data-ask="cur_missing">'+txt('cur_missing','What is the one thing it does not do that you wish it did?','Optional. A few words is fine.',200)+'</div>'+
+ ask('cur_spend','About what do you pay for all such tools together per year?',CURSPEND,'Optional. A rough band is fine.',true); } },
 
 { title:'See GroupBook at work', body:function(){ return '<p class="lede" style="margin-bottom:10px">A short click-through, from the client\'s brief to the final bill. <span class=\"reelhint\">Tap the <b>gold button</b> in the box to step through.</span> Real screens, made-up names.</p>'+
  '<style>@media(max-width:760px){.reelwrap,.reelhint{display:none}}@media(min-width:761px){.reelmob{display:none}}</style>'+
@@ -466,14 +484,15 @@ function payload(){
   var finNeed={us:'regular',out:'some',client:'some',none:'no'}[S.job_recon]||null;
   var si=sizeIdx(S.size); var pk=mods.length?pkgPrice(mods,si):null;
   var tl=700; // text caps keep answers under the receiver's 4,096-character limit
-  var a={ research30:true, research32:true, research33:true, research34:true, research35:true, research36:true, invite_token:INVT, dk:dkOut(), my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax), inc_pool:n(S.inc_pool), pool_shown:PRICED?(sizeOf(S.size)||SIZES[1]).pool:null,
+  var a={ research30:true, research32:true, research33:true, research34:true, research35:true, research36:true, research37:true, invite_token:INVT, dk:dkOut(), my_role:S.my_role||null, buy_part:S.buy_part||null, hands_on:S.hands_on||null, jobs:jobs, mods:mods.join(',')||null, size:S.size||null, size_none:cut(S.size__none,300), mod_pe:modOut(), over_pref:S.over_pref||null, bundle_pref:S.bundle_pref||null, pkg_price_test:pk?pk.monthly:null, archetype:S.archetype||null, events_year:n(S.events_year), sz:szOut(), events_rsvp:szSum(), inc_events:n(S.inc_events), inc_pax:n(S.inc_pax), inc_pool:n(S.inc_pool), pool_shown:PRICED?(sizeOf(S.size)||SIZES[1]).pool:null,
     users:n(S.users), hours_src:{s:S.hsrc_s||null,m:S.hsrc_m||null,l:S.hsrc_l||null}, hours_run:{s:S.hrun_s||null,m:S.hrun_m||null,l:S.hrun_l||null}, hours_unit:'not asked from v7.9 (22 Oct 2026); hours_src / hours_run stay null', rsvp_who:rsvpWho, finance_need:finNeed,
+    cur_system:(S.cur_system||[]).join(',')||null, cur_system_other:(S.cur_system||[]).indexOf('other')>-1?cut(S.cur_system__other,80):null, cur_does:(S.cur_does||[]).join(',')||null, cur_does_other:(S.cur_does||[]).indexOf('other')>-1?cut(S.cur_does__other,80):null, cur_happy:n(S.cur_happy), cur_spend:S.cur_spend||null,
     seen_gb:S.seen_gb||null, reel_opened:S.reel_opened?true:null, reel_variant:REELV, reel_clarity:S.reel_clarity||null, wf_match:S.wf_match||null, step_most:(S.step_most||[]).join(',')||null, plan_fit:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), forced:S.forced||null,
     price_prohibitive:n(S.pe_walk),
     evp:feeOut(), pg:pgOut(), blk:blkOut(), priced:PRICED, pe_status:peStatus(), pe_pay:n(S.pe_pay), pe_walk:n(S.pe_walk), pe_order_ok:peOrderOk(), pe_plan:(mods.length?mods.join('+')+'@'+(S.size||'?'):null), price_fit:S.price_fit||null, buy_at_price:S.buy_at_price||null, cadence:S.cadence||null, structure:S.structure||null, structure_order:(S._ord||[]).join(''), proj:projOut(), proj_pay:n(S.proj_m_pay), proj_walk:n(S.proj_m_walk),
     trial_req:!!S.trial_req, interview_ok:!!S.interview_ok, datapack_ok:!!S.datapack_ok, results_optin:!!S.results_optin,
     price_unit:'research32 modular card. pe_* = ZAR per month ex VAT for the whole package in pe_plan (modules@size); mod_pe.{module} = ZAR per month for that module ALONE at the chosen size; r36: no allowance numbers shown on unpriced links (pool_shown null); dk.{row} = ticked cannot say (ignore the numbers in that row); cadence monthly = month to month 3-month minimum, commit12 = 12-month commitment, both billed monthly, either; blk.{250,500,1000}; over_pref perguest|block|either; pg = ZAR/guest beyond pool; blk.{250,500,1000} = ZAR per prepaid block; evp, inc_pax not asked; inc_pool = fair yearly pool; structure: C = the modular card, A flat bands, B pool, D per project (no retainer), G retainer + per project, E help billed, stay; proj.{s,m,l} = ZAR for one project by event size (s up to 50, m 51-150, l 151+) when D/G/S_job/S_ret chosen; proj_pay/proj_walk = the m row, kept for older readers; jobs.{module} = us/out/client/none; rsvp_who and finance_need are derived from jobs for the research30 converter; sz = events a year per size bracket as typed (an estimate); events_year = their own total, kept as a cross-check; inc_* = respondent view of a reasonable RSVP allowance at their size', rev:8,
-    t:{ arch_other:cut(S.archetype__other,200), role_other:cut(S.my_role__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl), none_why:cut(S.none_why,tl), stay_why:cut(S.structure__stay||S.structure__S_stay,tl), action_why:cut(S.buy_at_price__current||S.buy_at_price__cannot,300) },
+    t:{ cur_missing:cut(S.cur_missing,200), arch_other:cut(S.archetype__other,200), role_other:cut(S.my_role__other,200), wf_note:cut(S.wf_match__mostly||S.wf_match__no,tl), fit_none:cut(S.size__none,300), forced_which:cut(S.forced__yes,300), buy_why:cut(S.buy_why,tl), review_note:cut(S.review_note,tl), none_why:cut(S.none_why,tl), stay_why:cut(S.structure__stay||S.structure__S_stay,tl), action_why:cut(S.buy_at_price__current||S.buy_at_price__cannot,300) },
     plan_text_version:'v7.12-2026-10-27-principles-only', user_agent:(navigator.userAgent||'').slice(0,160) };
   return { survey_version:SURVEY_VERSION, source:SRC, name:cut(S.name,200), email:cut(S.email,200), agency:cut(S.org,200),
     role:roleMap[S.archetype]||null, rfp_volume:null, team_size:n(S.users), pain_points:[], tier_fit:tf, consent:!!S.consent, open_feedback:cut(S.definite,1000),
@@ -514,7 +533,11 @@ function render(){
   v.querySelectorAll('[data-m]').forEach(function(el){ el.addEventListener('change',function(){ var k=el.getAttribute('data-m'); var sel=S[k]||[];
     if(el.checked){ if(sel.indexOf(el.value)<0) sel.push(el.value); if(el.value==='none') sel=['none']; else sel=sel.filter(function(x){return x!=='none';}); }
     else { sel=sel.filter(function(x){return x!==el.value;}); }
-    S[k]=sel; save(); var ak=el.closest('.ask'); if(ak) ak.classList.remove('miss'); v.querySelectorAll('[data-m="'+k+'"]').forEach(function(c){ c.checked=sel.indexOf(c.value)>-1; c.closest('.opt').classList.toggle('on',c.checked); }); }); });
+    S[k]=sel; var ak=el.closest('.ask'); if(ak) ak.classList.remove('miss'); v.querySelectorAll('[data-m="'+k+'"]').forEach(function(c){ c.checked=sel.indexOf(c.value)>-1; c.closest('.opt').classList.toggle('on',c.checked);
+      var sb=c.closest('div').querySelector('.sub'); if(sb){ sb.style.display=c.checked?'block':'none'; if(!c.checked){ var fk=sb.getAttribute('data-fu'); delete S[fk]; var ti=sb.querySelector('[data-k]'); if(ti) ti.value=''; } } });
+    if(k==='cur_system') curHappyReq();
+    save(); }); });
+  if(v.querySelector('[data-ask="cur_happy"]')) curHappyReq();
   S._step=step; save(); if(typeof updGrid==='function') updGrid(); window.scrollTo(0,0);
 }
 // research32i: warn (never block) when 'I would expect' is above 'Too expensive at' in the same pair, e.g. 35 000 typed for 3 500
